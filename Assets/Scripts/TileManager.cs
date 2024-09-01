@@ -22,7 +22,7 @@ public class TileManager : MonoBehaviour
     //타일 종류(프리팹, 개수) 리스트
     [SerializeField] private List<TileTypeStruct> tileTypes = new List<TileTypeStruct>();
     //타일 딕셔너리
-    public Dictionary<Vector3, GameObject> tiles = new Dictionary<Vector3, GameObject>();
+    public Dictionary<Vector2, GameObject> tiles = new Dictionary<Vector2, GameObject>();
     public GameObject tilePrefab;
 
 
@@ -43,7 +43,7 @@ public class TileManager : MonoBehaviour
                     tilePrefab.transform.rotation);
                 tile.transform.SetParent(tileParent.transform);
                 tile.name = $"Tile({x},{z})";
-                tiles.Add(tilePos,tile);
+                tiles.Add(new Vector2(x,z),tile);
             }
         }
 
