@@ -24,6 +24,9 @@ public class TileManager : MonoBehaviour
     //타일 딕셔너리
     public Dictionary<Vector2, GameObject> tiles = new Dictionary<Vector2, GameObject>();
     public GameObject tilePrefab;
+    
+    //타일이 다시 뒤집어지는 시간
+    [SerializeField] public float tileReturnTime;
 
 
     void Start()

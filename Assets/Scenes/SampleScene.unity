@@ -375,6 +375,7 @@ MonoBehaviour:
   tileParent: {fileID: 1135192898}
   tileTypes: []
   tilePrefab: {fileID: 9077985435522536941, guid: 5d3b3c8a56ce6407caeb94b5311564d0, type: 3}
+  tileReturnTime: 3
 --- !u!4 &1840335611
 Transform:
   m_ObjectHideFlags: 0
