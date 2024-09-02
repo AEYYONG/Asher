@@ -102,16 +102,22 @@ public class TileManager : MonoBehaviour
         {
             for (int z = 0; z < height; z++)
             {
+                //타일 오브젝트 생성
                 GameObject tile = Instantiate(tileList[x * height + z], new Vector3(x*tileSpacing,0,z*tileSpacing),
                     tileList[x * height + z].transform.rotation);
+                //타일부모의 자식으로 오브젝트 설정
                 tile.transform.SetParent(tileParent.transform);
+                //타일 프리팹 이름 배열 값으로 가져오기
                 string prefabName = tileList[x * height + z].ToString();
+                //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
                 tile.name = $"Tile{prefabName[4]}({x},{z})";
+                //타일 컴포넌트 가져와, 타일 정보 초기화
+                tile.GetComponent<Tile>().InitTile(x,z,prefabName);
+                //타일 딕셔너리에 타일 오브젝트 추가
                 _tiles.Add(new Vector2(x,z),tile);
             }
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
-
     }
 }
