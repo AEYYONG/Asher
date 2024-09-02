@@ -16,6 +16,8 @@ public class Tile : MonoBehaviour
     [SerializeField] private Animator _animator;
     //타일 매니저 스크립트 할당
     private TileManager _tileManager;
+    //플레이어 상호작용 스크립트 할당
+    private PlayerInteract _playerInteract;
 
     void Awake()
     {
@@ -25,6 +27,8 @@ public class Tile : MonoBehaviour
         _animator = GetComponent<Animator>();
         //타일 매니저 스크립트 할당
         _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
+        //플레이어 상호작용 스크립트 할당
+        _playerInteract = GameObject.FindWithTag("Player").GetComponent<PlayerInteract>();
     }
 
     //타일 초기화
@@ -38,27 +42,41 @@ public class Tile : MonoBehaviour
     //타일을 클릭하였을 때
     void OnMouseDown()
     {
-        //선택되지 않은 타일이라면
-        if (!isSelected)
+        //선택되지 않은 타일이라면 && 상호작용 가능하다면
+        if (!isSelected && _playerInteract.canInteract)
         {
             Debug.Log($"({_x},{_z}) Tile{_tileID} Clicked");
+            
+            //타일 선택 횟수 하나 증가
+            _playerInteract.IncSelectCnt();
             //선택 여부 true로 변경
             isSelected = true;
             //뒤집기 애니메이션 시작
             _animator.SetTrigger("Select");
-            //특정 시간 후, 다시 원래대로 뒤집어지는 코루틴 호출
-            StartCoroutine(TileReturn());
+            
+            //타일 아이디 값 저장
+            if (_playerInteract.GetCurSelectCnt() == 1)
+            {
+                _playerInteract.SetTile1(_tileID, new Vector2Int(_x,_z));
+            }
+            else if(_playerInteract.GetCurSelectCnt() == 2)
+            {
+                _playerInteract.SetTile2(_tileID, new Vector2Int(_x,_z));
+            }
+            
         }
     }
 
-    //타일이 다시 원상태로 돌아오는 코루틴
-    IEnumerator TileReturn()
+    //타일이 다시 원상복귀
+    public IEnumerator ReturnTile()
     {
-        //특정 초 이후 원상태로 돌아오기
         yield return new WaitForSeconds(_tileManager.tileReturnTime);
         //되돌아오는 애니메이션 실행
         _animator.SetTrigger("Return");
         //선택 여부 false로 변경
         isSelected = false;
+        //yield return new WaitForSeconds(0.2f);
+        //PlayerInteract 값 초기화
+        _playerInteract.InitValue();
     }
 }

@@ -48,21 +48,33 @@ public class TileManager : MonoBehaviour
     //오류 검증
     void CheckError()
     {
+        //필요 변수 할당하였는지
         if (width == 0 || height == 0 || tileSpacing == 0f || tileReturnTime == 0f)
         {
             Debug.Log("타일 너비/높이/간격/시간 이(가) 할당되지 않음");
         }
+        //필요 오브젝트 할당하였는지
         if (cam == null || tileParent == null || tileTypes.Count == 0)
         {
             Debug.Log("오브젝트가 TileManager에 할당되지 않음");
         }
-
+        //타일 수가 짝수인지(짝 맞춰야하니)
         for (int i = 0; i < tileTypes[i].count; i++)
         {
             if (tileTypes[i].count % 2 != 0)
             {
                 Debug.Log("타일 짝이 맞지 않음");
             }
+        }
+        //각 타일에 설정한 할당량의 합이 총 타일 수와 맞는지
+        int tileSum = 0;
+        for (int i = 0; i < tileTypes.Count; i++)
+        {
+            tileSum += tileTypes[i].count;
+        }
+        if (tileSum != width * height)
+        {
+            Debug.Log("타일 프리팹 할당 타일 수가 부족함");
         }
         
     }
@@ -119,5 +131,11 @@ public class TileManager : MonoBehaviour
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
         cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
+    }
+
+    public void ReturnTile(Vector2 pos1, Vector2 pos2)
+    {
+        StartCoroutine(_tiles[pos1].GetComponent<Tile>().ReturnTile());
+        StartCoroutine(_tiles[pos2].GetComponent<Tile>().ReturnTile());
     }
 }
