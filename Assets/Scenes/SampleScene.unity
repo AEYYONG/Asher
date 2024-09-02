@@ -371,11 +371,18 @@ MonoBehaviour:
   width: 8
   height: 8
   tileSpacing: 1
+  tileReturnTime: 3
   cam: {fileID: 963194227}
   tileParent: {fileID: 1135192898}
-  tileTypes: []
-  tilePrefab: {fileID: 9077985435522536941, guid: 5d3b3c8a56ce6407caeb94b5311564d0, type: 3}
-  tileReturnTime: 3
+  tileTypes:
+  - tilePrefab: {fileID: 9077985435522536941, guid: 5d3b3c8a56ce6407caeb94b5311564d0, type: 3}
+    count: 50
+  - tilePrefab: {fileID: 9077985435522536941, guid: 5c29a680f5ce74635a5a099e37fea71e, type: 3}
+    count: 8
+  - tilePrefab: {fileID: 9077985435522536941, guid: 2cc4fc97c2a744247b5988da68edb3f1, type: 3}
+    count: 4
+  - tilePrefab: {fileID: 9077985435522536941, guid: ce633db10b68147e19048888c2c519b7, type: 3}
+    count: 2
 --- !u!4 &1840335611
 Transform:
   m_ObjectHideFlags: 0
