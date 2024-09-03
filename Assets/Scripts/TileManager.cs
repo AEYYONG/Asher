@@ -15,6 +15,9 @@ public struct TileTypeStruct
 }
 public class TileManager : MonoBehaviour
 {
+    //해당 스테이지의 타이머
+    [SerializeField] private float timer;
+    
     //타일 가로, 세로 개수
     [SerializeField] private int width, height;
     //타일 간격

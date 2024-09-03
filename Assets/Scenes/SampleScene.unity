@@ -414,6 +414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc06c9ad90a7c476d88429844a82a873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 0
   width: 8
   height: 8
   tileSpacing: 1
