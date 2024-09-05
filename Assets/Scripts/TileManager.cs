@@ -130,7 +130,7 @@ public class TileManager : MonoBehaviour
             }
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
-        cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
+        //cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
     }
 
     public void ReturnTile(Vector2 pos1, Vector2 pos2)
