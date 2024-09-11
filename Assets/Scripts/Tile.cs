@@ -39,6 +39,11 @@ public class Tile : MonoBehaviour
         _tileID = tileType[4];
 
     }
+    public void InitTile(int x, int z)
+    {
+        _x = x;
+        _z = z;
+    }
     //타일을 클릭하였을 때
     void OnMouseDown()
     {
