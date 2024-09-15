@@ -3,22 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MapGenerator : EditorWindow
 {
-    private int _prevWidth = 0;
-    private int _prevHeight = 0;
-    
     //타일 생성
-    private int _curWidth = 0; //타일 너비
-    private int _curHeight = 0; //타일 높이
+    private int _prevWidth;
+    private int _prevHeight;
+    private int _curWidth; //타일 너비
+    private int _curHeight; //타일 높이
     private GameObject _tilePrefab; //타일 프리팹
     private GameObject _tileParent; //타일들이 생성될 부모 오브젝트
     
-    //타일 딕셔너리
-    private Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>();
-    
+    //타일 매니저 스크립트
+    private TileManager _tileManager;
     
     //윈도우 메뉴에 "Map Generator"
     [MenuItem("Window/Map Generator")]
@@ -27,123 +27,165 @@ public class MapGenerator : EditorWindow
         EditorWindow.GetWindow(typeof(MapGenerator));
     }
 
-    //actual window codes
+    private void OnEnable()
+    {
+        //해당 씬 내의 tile manager를 통해 값 초기화 하기
+        _tileManager = FindObjectOfType<TileManager>();
+        _prevHeight = _tileManager.height;
+        _prevWidth = _tileManager.width;
+        _curHeight = _prevHeight;
+        _curWidth = _prevWidth;
+        
+        //초기화 확인
+        if (_tilePrefab == null)
+        {
+            Debug.Log("tile prefab does not initiate.");
+        }
+        else if (_tileParent == null)
+        {
+            Debug.Log("tile parent does not initiate");
+        }
+        else if (_tileManager == null)
+        {
+            Debug.Log("tile manager does not initiate");
+        }
+
+        if (_curWidth == 0 && _curHeight == 0)
+        {
+            _tileManager.tileEntries.Clear();
+        }
+    }
+
+    private void OnDisable()
+    {
+        _tileManager.width = _curWidth;
+        _tileManager.height = _curHeight;
+        EditorUtility.SetDirty(_tileManager);
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+    }
+
     private void OnGUI()
     {
-        GUILayout.Label("Tile Generation",EditorStyles.boldLabel);
-        EditorGUILayout.Space();
-        _curWidth = EditorGUILayout.IntSlider("width", _curWidth,0,20);
-        _curHeight = EditorGUILayout.IntSlider("height", _curHeight,0,20);
+        GUILayout.Label("Generate Tile",EditorStyles.largeLabel);
+        _curWidth = EditorGUILayout.IntSlider("width",_curWidth,0,20);
+        _curHeight = EditorGUILayout.IntSlider("height",_curHeight,0,20);
         _tilePrefab = (GameObject)EditorGUILayout.ObjectField("tile", _tilePrefab, typeof(GameObject),false);
         _tileParent = (GameObject)EditorGUILayout.ObjectField("tile parent", _tileParent, typeof(GameObject), true);
         EditorGUILayout.Space();
-
-        //타일의 width, height이 변화함에 따라 씬 내의 타일을 자동으로 배치
+        
         if (_prevWidth != _curWidth)
         {
-            Debug.Log("change width : "+_prevWidth+"->"+_curWidth);
+            //가로 값이 달라졌다면
             GenerateTile();
             _prevWidth = _curWidth;
         }
         if (_prevHeight != _curHeight)
         {
-            Debug.Log("change height : "+_prevHeight+"->"+_curHeight);
+            //세로 값이 달라졌다면
             GenerateTile();
             _prevHeight = _curHeight;
         }
-
     }
-    
-    //씬 내 타일 배치
+
     void GenerateTile()
     {
-        int tileCnt;
-        int x;
-        int z;
-        
-        //width 값이 증가했다면 가로로 타일 증가
-        if (_prevWidth < _curWidth)
+        if (_curWidth > _prevWidth)
         {
-            //새로 생성되어야 하는 타일 개수 계산
-            tileCnt = _curWidth - _prevWidth;
-            for (int h = 0; h < _curHeight; h++)
+            //타일이 가로로 증가
+            for (int i = 0; i < _curHeight; i++)
             {
-                for (int w = 0; w < tileCnt; w++)
+                for (int j = 0; j < _curWidth - _prevWidth; j++)
                 {
-                    x = _prevWidth + w;
-                    z = h;
-                    //타일 오브젝트 생성
-                    GameObject tile = Instantiate(_tilePrefab,new Vector3(x,0,z),_tilePrefab.transform.rotation);
-                    //타일 부모 오브젝트의 자식 오브젝트로 설정
-                    tile.transform.SetParent(_tileParent.transform);
-                    //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
-                    tile.name = $"Tile({x},{z})";
-                    //타일 컴포넌트 가져와, 타일 정보 초기화
-                    tile.GetComponent<Tile>().InitTile(x,z);
-                    //타일 딕셔너리에 타일 오브젝트 추가
-                    _tiles.Add(new Vector2Int(x,z),tile);
+                    int x = _prevWidth + j;
+                    int z = i;
+                    Vector2Int pos = new Vector2Int(x, z);
+                    Debug.Log(pos+"추가");
+                    TileEntry entry = new TileEntry();
+                    entry.position = pos;
+                    entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
+                    entry.tile.name = $"Tile({x},{z})";
+                    entry.tile.transform.position = new Vector3(x, 0, z);
+                    _tileManager.tileEntries.Add(entry);
                 }
             }
         }
-        else //width 값이 변동이 없거나, 감소했다면 가로로 타일 감소
+        else if(_curWidth < _prevWidth)
         {
-            //감소해야 하는 타일 개수 계산
-            tileCnt = _prevWidth - _curWidth;
+            List<TileEntry> removeEntries = new List<TileEntry>();
+            //타일이 가로로 감소
+            for (int i = 0; i <_curHeight; i++)
+            {
+                for (int j = 0; j < _prevWidth-_curWidth; j++)
+                {
+                    int x = _prevWidth -1 - j;
+                    int z = i;
+                    Vector2Int pos = new Vector2Int(x, z);
+                    Debug.Log(pos+"감소");
+                    foreach (var entry in _tileManager.tileEntries)
+                    {
+                        if (entry.position == pos)
+                        {
+                            Debug.Log(pos+"제거");
+                            DestroyImmediate(entry.tile);
+                            removeEntries.Add(entry);
+                        }
+                    }
+                }
+            }
 
-            for (int h = _curHeight-1; h >= 0; h--)
+            foreach (var entry in removeEntries)
             {
-                for (int w = 0; w < tileCnt; w++)
+                _tileManager.tileEntries.Remove(entry);
+                Debug.Log("리무브 엔트리?");
+            }
+        }
+        if (_curHeight > _prevHeight)
+        {
+            //타일이 세로로 증가
+            for (int i = 0; i < _curHeight - _prevHeight; i++)
+            {
+                for (int j = 0; j < _curWidth; j++)
                 {
-                    x = _curWidth - w;
-                    z = h ;
-                    //타일 딕셔너리에서 타일을 찾아, 타일 제거
-                    Vector2Int tilePos = new Vector2Int(x, z);
-                    DestroyImmediate(_tiles[tilePos]);
-                    _tiles.Remove(tilePos);
+                    int x = j;
+                    int z = _prevHeight + i;
+                    Vector2Int pos = new Vector2Int(x, z);
+                    Debug.Log(pos+"추가");
+                    TileEntry entry = new TileEntry();
+                    entry.position = pos;
+                    entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
+                    entry.tile.name = $"Tile({x},{z})";
+                    entry.tile.transform.position = new Vector3(x, 0, z);
+                    _tileManager.tileEntries.Add(entry);
                 }
             }
         }
-        
-        //height 값이 증가했다면 세로로 타일 증가
-        if (_prevHeight < _curHeight)
+        else if(_curHeight < _prevHeight)
         {
-            //새로 생성되어야 하는 타일 개수 계산
-            tileCnt = _curHeight - _prevHeight;
-            for (int h = 0; h < tileCnt; h++)
+            List<TileEntry> removeEntries = new List<TileEntry>();
+            //타일이 세로로 감소
+            for (int i = 0; i < _prevHeight - _curHeight; i++)
             {
-                for (int w = 0; w < _curWidth; w++)
+                for (int j = 0; j < _curWidth; j++)
                 {
-                    x = w ;
-                    z = _prevHeight + h;
-                    //타일 오브젝트 생성
-                    GameObject tile = Instantiate(_tilePrefab,new Vector3(x,0,z),_tilePrefab.transform.rotation);
-                    //타일 부모 오브젝트의 자식 오브젝트로 설정
-                    tile.transform.SetParent(_tileParent.transform);
-                    //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
-                    tile.name = $"Tile({x},{z})";
-                    //타일 컴포넌트 가져와, 타일 정보 초기화
-                    tile.GetComponent<Tile>().InitTile(x,z);
-                    //타일 딕셔너리에 타일 오브젝트 추가
-                    _tiles.Add(new Vector2Int(x,z),tile);   
+                    int x = j;
+                    int z = _prevHeight -1 - i;
+                    Vector2Int pos = new Vector2Int(x, z);
+                    Debug.Log(pos+"감소");
+                    foreach (var entry in _tileManager.tileEntries)
+                    {
+                        if (entry.position == pos)
+                        {
+                            Debug.Log(pos+"제거");
+                            DestroyImmediate(entry.tile);
+                            removeEntries.Add(entry);
+                        }
+                    }
                 }
             }
-        }
-        else //height 값이 변동이 없거나, 감소했다면 세로로 타일 감소
-        {
-            //감소해야 하는 타일 개수 계산
-            tileCnt = _prevHeight - _curHeight;
-            
-            for (int h = 0; h < tileCnt; h++)
+            foreach (var entry in removeEntries)
             {
-                for (int w = _curWidth - 1; w >= 0; w--)
-                {
-                    x = w;
-                    z = _curHeight - h;
-                    //타일 딕셔너리에서 타일을 찾아, 타일 제거
-                    Vector2Int tilePos = new Vector2Int(x, z);
-                    DestroyImmediate(_tiles[tilePos]);
-                    _tiles.Remove(tilePos);
-                }
+                _tileManager.tileEntries.Remove(entry);
+                Debug.Log("리무브 엔트리?");
             }
         }
     }

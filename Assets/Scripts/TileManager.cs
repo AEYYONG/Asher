@@ -13,19 +13,26 @@ public struct TileTypeStruct
     //타일 개수
     public int count;
 }
+
+[System.Serializable]
+public class TileEntry
+{
+    public Vector2Int position;
+    public GameObject tile;
+}
 public class TileManager : MonoBehaviour
 {
     //타일 가로, 세로 개수
-    [SerializeField] private int width, height;
+    public int width, height;
     //타일 간격
-    [SerializeField] private float tileSpacing = 1.0f;
+    public float tileSpacing = 1.0f;
     //타일이 다시 뒤집어지는 시간
     [SerializeField] public float tileReturnTime;
     
     //카메라
     [SerializeField] Camera cam;
     //타일 생성될 parent 오브젝트
-    [SerializeField] private GameObject tileParent;
+    public GameObject tileParent;
     
     
     //타일 종류(프리팹, 개수) 리스트
@@ -33,7 +40,8 @@ public class TileManager : MonoBehaviour
     //타일 셔플을 위한 임시 리스트
     private List<GameObject> _tileShuffleList = new List<GameObject>();
     //타일 딕셔너리
-    private Dictionary<Vector2, GameObject> _tiles = new Dictionary<Vector2, GameObject>();
+    public Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>(); //실제 사용 딕셔너리
+    public List<TileEntry> tileEntries = new List<TileEntry>(); //직렬화 가능한 리스트
     
     void Awake()
     {
@@ -126,16 +134,34 @@ public class TileManager : MonoBehaviour
                 //타일 컴포넌트 가져와, 타일 정보 초기화
                 tile.GetComponent<Tile>().InitTile(x,z,prefabName);
                 //타일 딕셔너리에 타일 오브젝트 추가
-                _tiles.Add(new Vector2(x,z),tile);
+                _tiles.Add(new Vector2Int(x,z),tile);
             }
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
         //cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
     }
 
-    public void ReturnTile(Vector2 pos1, Vector2 pos2)
+    public void ReturnTile(Vector2Int pos1, Vector2Int pos2)
     {
         StartCoroutine(_tiles[pos1].GetComponent<Tile>().ReturnTile());
         StartCoroutine(_tiles[pos2].GetComponent<Tile>().ReturnTile());
+    }
+    
+    public void AddTile(Vector2Int position, GameObject tile)
+    {
+        TileEntry entry = new TileEntry();
+        entry.position = position;
+        entry.tile = tile;
+        
+        tileEntries.Add(entry); // 리스트에 데이터 저장
+        _tiles.Add(position, tile); // 딕셔너리에도 저장
+    }
+
+    public void RemoveTile(Vector2Int position)
+    {
+        // 리스트에서 타일 제거
+        tileEntries.RemoveAll(entry => entry.position == position);
+        // 딕셔너리에서 타일 제거
+        _tiles.Remove(position);
     }
 }

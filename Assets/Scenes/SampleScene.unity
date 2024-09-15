@@ -971,8 +971,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc06c9ad90a7c476d88429844a82a873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 12
-  height: 8
+  width: 0
+  height: 0
   tileSpacing: 1
   tileReturnTime: 0.5
   cam: {fileID: 963194227}
@@ -986,6 +986,39 @@ MonoBehaviour:
     count: 4
   - tilePrefab: {fileID: 9077985435522536941, guid: ce633db10b68147e19048888c2c519b7, type: 3}
     count: 2
+  tileEntries:
+  - position: {x: 0, y: 0}
+    tile: {fileID: 0}
+  - position: {x: 1, y: 0}
+    tile: {fileID: 0}
+  - position: {x: 2, y: 0}
+    tile: {fileID: 0}
+  - position: {x: 3, y: 0}
+    tile: {fileID: 0}
+  - position: {x: 0, y: 1}
+    tile: {fileID: 0}
+  - position: {x: 1, y: 1}
+    tile: {fileID: 0}
+  - position: {x: 2, y: 1}
+    tile: {fileID: 0}
+  - position: {x: 3, y: 1}
+    tile: {fileID: 0}
+  - position: {x: 0, y: 2}
+    tile: {fileID: 0}
+  - position: {x: 1, y: 2}
+    tile: {fileID: 0}
+  - position: {x: 2, y: 2}
+    tile: {fileID: 0}
+  - position: {x: 3, y: 2}
+    tile: {fileID: 0}
+  - position: {x: 0, y: 3}
+    tile: {fileID: 0}
+  - position: {x: 1, y: 3}
+    tile: {fileID: 0}
+  - position: {x: 2, y: 3}
+    tile: {fileID: 0}
+  - position: {x: 3, y: 3}
+    tile: {fileID: 0}
 --- !u!4 &1840335611
 Transform:
   m_ObjectHideFlags: 0

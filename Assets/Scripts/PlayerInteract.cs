@@ -6,7 +6,7 @@ using UnityEngine;
 struct TileInfo
 {
     public char tileID;
-    public Vector2 tilePos;
+    public Vector2Int tilePos;
 }
 public class PlayerInteract : MonoBehaviour
 {
