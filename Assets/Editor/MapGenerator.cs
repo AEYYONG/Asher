@@ -64,6 +64,10 @@ public class MapGenerator : EditorWindow
         {
             _tileManager.tileEntries.Clear();
         }
+
+        // 씬 뷰에서 이벤트를 수신하기 위해 duringSceneGui 이벤트에 핸들러 추가
+        SceneView.duringSceneGui += OnSceneGUI;
+
     }
 
     private void OnDisable()
@@ -74,6 +78,21 @@ public class MapGenerator : EditorWindow
         _tileManager.height = _curHeight;
         EditorUtility.SetDirty(_tileManager);
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        
+        // 이벤트 핸들러 제거
+        SceneView.duringSceneGui -= OnSceneGUI;
+    }
+    
+    void OnSceneGUI(SceneView sceneView)
+    {
+        // 마우스 클릭 감지
+        Event e = Event.current;
+        if (e.type == EventType.MouseDown && e.button == 0) // 마우스 왼쪽 버튼 클릭
+        {
+            DrawTile(e.mousePosition);
+            e.Use(); // 이벤트 처리 완료 표시
+        }
+        
     }
 
     private void OnGUI()
@@ -253,6 +272,26 @@ public class MapGenerator : EditorWindow
             {
                 _tileManager.tileEntries.Remove(entry);
             }
+        }
+    }
+    
+    //타일 브러쉬,지우개 함수
+    void DrawTile(Vector2 mousePos)
+    {
+        //레이 생성
+        Ray ray = HandleUtility.GUIPointToWorldRay(mousePos);
+        RaycastHit hit;
+
+        //레이캐스트 수행
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log("Hit object: " + hit.collider.name);
+            // 오브젝트를 선택 상태로 표시
+            Selection.activeGameObject = hit.collider.gameObject;
+        }
+        else
+        {
+            Debug.Log("No object hit.");
         }
     }
 }
