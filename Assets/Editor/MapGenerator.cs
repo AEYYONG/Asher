@@ -27,6 +27,16 @@ public class MapGenerator : EditorWindow
     //타일 매니저 스크립트
     private TileManager _tileManager;
     
+    //타일 그리기
+    private enum Mode
+    {
+        DEFAULT,
+        BRUSH,
+        ERASER
+    };
+    private Mode _currentMode;
+    private GameObject _selectedTile;
+    
     //윈도우 메뉴에 "Map Generator"
     [MenuItem("Window/Map Generator")]
     public static void ShowWindow()
@@ -67,6 +77,9 @@ public class MapGenerator : EditorWindow
 
         // 씬 뷰에서 이벤트를 수신하기 위해 duringSceneGui 이벤트에 핸들러 추가
         SceneView.duringSceneGui += OnSceneGUI;
+
+        //타일 영역 모드 디폴트 값으로 설정
+        _currentMode = Mode.DEFAULT;
 
     }
 
@@ -119,6 +132,30 @@ public class MapGenerator : EditorWindow
         _tilePrefab = (GameObject)EditorGUILayout.ObjectField("tile", _tilePrefab, typeof(GameObject),false);
         _tileParent = (GameObject)EditorGUILayout.ObjectField("tile parent", _tileParent, typeof(GameObject), true);
         EditorGUILayout.Space();
+        
+        //타일 그리기 부분
+        GUILayout.BeginHorizontal();
+        _selectedTile = (GameObject)EditorGUILayout.ObjectField("selected tile", _selectedTile, typeof(GameObject),false);
+        if (GUILayout.Button("Brush"))
+        {
+            //모드 변경
+            _currentMode = Mode.BRUSH;
+            Debug.Log("MODE : BRUSH");
+        }
+        if (GUILayout.Button("Eraser"))
+        {
+            //모드 변경
+            _currentMode = Mode.ERASER;
+            Debug.Log("MODE : ERASER");
+        }
+        GUILayout.EndHorizontal();
+        
+        //선택한 타일 미리보기
+        if (_selectedTile != null)
+        {
+            Texture2D previewTexture = AssetPreview.GetAssetPreview(_selectedTile);
+            GUILayout.Box(previewTexture,GUILayout.Width(position.width-8));
+        }
         
         //타일의 이전 너비/높이와 현재 너비/높이가 달라졌을 경우 타일 생성/삭제 함수 호출
         if (_prevWidth != _curWidth)
@@ -288,6 +325,37 @@ public class MapGenerator : EditorWindow
             Debug.Log("Hit object: " + hit.collider.name);
             // 오브젝트를 선택 상태로 표시
             Selection.activeGameObject = hit.collider.gameObject;
+            
+            if (hit.collider.CompareTag("MapGrid") && _currentMode == Mode.BRUSH)
+            {
+                //선택한 오브젝트가 grid 이면서 brush 모드이면 해당 자리에 타일 생성
+                int x = (int)hit.transform.position.x;
+                int z = (int)hit.transform.position.z;
+                Vector2Int pos = new Vector2Int(x, z);
+                TileEntry entry = new TileEntry();
+                entry.position = pos;
+                entry.tile = PrefabUtility.InstantiatePrefab(_selectedTile,_tileParent.transform) as GameObject;
+                entry.tile.name = $"Tile({x},{z})";
+                entry.tile.transform.position = new Vector3(x, 0, z);
+                _tileManager.tileEntries.Add(entry);
+            }
+            else if (hit.collider.name.Substring(0,4) == "Tile" &&  _currentMode == Mode.ERASER)
+            {
+                //선택한 오브젝트가 tile 이면서 eraser 모드이면 해당 자리의 타일을 삭제
+                int x = (int)hit.transform.position.x;
+                int z = (int)hit.transform.position.z;
+                Vector2Int pos = new Vector2Int(x, z);
+                TileEntry remove = new TileEntry();
+                foreach (var entry in _tileManager.tileEntries)
+                {
+                    if (entry.position == pos)
+                    {
+                        DestroyImmediate(entry.tile);
+                        remove = entry;
+                    }
+                }
+                _tileManager.tileEntries.Remove(remove);
+            }
         }
         else
         {
