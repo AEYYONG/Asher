@@ -9,6 +9,13 @@ using UnityEngine.SceneManagement;
 
 public class MapGenerator : EditorWindow
 {
+    //Grid 생성
+    private int _gridWidth;
+    private int _gridHeight;
+    private GameObject _gridPrefab;
+    private GameObject _gridParent;
+    private List<GameObject> _gridList = new List<GameObject>();
+    
     //타일 생성
     private int _prevWidth;
     private int _prevHeight;
@@ -35,6 +42,9 @@ public class MapGenerator : EditorWindow
         _prevWidth = _tileManager.width;
         _curHeight = _prevHeight;
         _curWidth = _prevWidth;
+        
+        //grid prefab 초기화
+        _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Grid.prefab");
         
         //초기화 확인
         if (_tilePrefab == null)
@@ -66,6 +76,19 @@ public class MapGenerator : EditorWindow
 
     private void OnGUI()
     {
+        GUILayout.Label("Generate Grid",EditorStyles.largeLabel);
+        _gridWidth = EditorGUILayout.IntField("grid width", _gridWidth);
+        _gridHeight = EditorGUILayout.IntField("grid height", _gridHeight);
+        if (GUILayout.Button("Generate Grid"))
+        {
+            GenerateGrid(_gridWidth,_gridHeight);
+        }
+
+        if (GUILayout.Button("Destroy Grid"))
+        {
+            DestroyGrid();
+        }
+        EditorGUILayout.Space(10);
         GUILayout.Label("Generate Tile",EditorStyles.largeLabel);
         _curWidth = EditorGUILayout.IntSlider("width",_curWidth,0,20);
         _curHeight = EditorGUILayout.IntSlider("height",_curHeight,0,20);
@@ -87,6 +110,34 @@ public class MapGenerator : EditorWindow
         }
     }
 
+    //Grid Map 생성하기
+    void GenerateGrid(int w, int h)
+    {
+        _gridParent = new GameObject();
+        _gridParent.name = "Grid Parent";
+        for (int i = 0; i < h; i++)
+        {
+            for (int j = 0; j < w; j++)
+            {
+                GameObject grid = PrefabUtility.InstantiatePrefab(_gridPrefab, _gridParent.transform) as GameObject;
+                grid.transform.position = new Vector3(j, -0.1f, i);
+                _gridList.Add(grid);
+            }
+        }
+    }
+    //Grid Map 삭제하기
+    void DestroyGrid()
+    {
+        GameObject gridParent = GameObject.Find("Grid Parent");
+        if (gridParent == null)
+        {
+            Debug.Log("Grid Parent가 없습니다");
+        }
+        else
+        {
+            DestroyImmediate(gridParent);   
+        }
+    }
     void GenerateTile()
     {
         if (_curWidth > _prevWidth)
@@ -99,7 +150,6 @@ public class MapGenerator : EditorWindow
                     int x = _prevWidth + j;
                     int z = i;
                     Vector2Int pos = new Vector2Int(x, z);
-                    Debug.Log(pos+"추가");
                     TileEntry entry = new TileEntry();
                     entry.position = pos;
                     entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
@@ -120,12 +170,10 @@ public class MapGenerator : EditorWindow
                     int x = _prevWidth -1 - j;
                     int z = i;
                     Vector2Int pos = new Vector2Int(x, z);
-                    Debug.Log(pos+"감소");
                     foreach (var entry in _tileManager.tileEntries)
                     {
                         if (entry.position == pos)
                         {
-                            Debug.Log(pos+"제거");
                             DestroyImmediate(entry.tile);
                             removeEntries.Add(entry);
                         }
@@ -136,7 +184,6 @@ public class MapGenerator : EditorWindow
             foreach (var entry in removeEntries)
             {
                 _tileManager.tileEntries.Remove(entry);
-                Debug.Log("리무브 엔트리?");
             }
         }
         if (_curHeight > _prevHeight)
@@ -149,7 +196,6 @@ public class MapGenerator : EditorWindow
                     int x = j;
                     int z = _prevHeight + i;
                     Vector2Int pos = new Vector2Int(x, z);
-                    Debug.Log(pos+"추가");
                     TileEntry entry = new TileEntry();
                     entry.position = pos;
                     entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
@@ -170,12 +216,10 @@ public class MapGenerator : EditorWindow
                     int x = j;
                     int z = _prevHeight -1 - i;
                     Vector2Int pos = new Vector2Int(x, z);
-                    Debug.Log(pos+"감소");
                     foreach (var entry in _tileManager.tileEntries)
                     {
                         if (entry.position == pos)
                         {
-                            Debug.Log(pos+"제거");
                             DestroyImmediate(entry.tile);
                             removeEntries.Add(entry);
                         }
@@ -185,7 +229,6 @@ public class MapGenerator : EditorWindow
             foreach (var entry in removeEntries)
             {
                 _tileManager.tileEntries.Remove(entry);
-                Debug.Log("리무브 엔트리?");
             }
         }
     }
