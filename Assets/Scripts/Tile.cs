@@ -8,6 +8,8 @@ public class Tile : MonoBehaviour
 {
     //타일 x값, z 값
     private int _x, _z;
+    //타일 영역
+    public int tileType;
     //타일 아이디
     private char _tileID;
     //타일이 선택되었는지
@@ -43,6 +45,7 @@ public class Tile : MonoBehaviour
     {
         _x = x;
         _z = z;
+        tileType = 1;
     }
     //타일을 클릭하였을 때
     void OnMouseDown()
@@ -83,5 +86,10 @@ public class Tile : MonoBehaviour
         //yield return new WaitForSeconds(0.2f);
         //PlayerInteract 값 초기화
         _playerInteract.InitValue();
+    }
+
+    public Vector2Int ReturnPos()
+    {
+        return new Vector2Int(_x, _z);
     }
 }

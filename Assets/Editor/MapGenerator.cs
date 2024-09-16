@@ -7,6 +7,11 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+public struct TexEntry
+{
+    public Vector2Int pos;
+    public GameObject tex;
+}
 public class MapGenerator : EditorWindow
 {
     //Grid 생성
@@ -28,14 +33,31 @@ public class MapGenerator : EditorWindow
     private TileManager _tileManager;
     
     //타일 그리기
-    private enum Mode
+    private enum DrawMode
     {
         DEFAULT,
         BRUSH,
-        ERASER
+        ERASER,
+        SELECT,
+        DISSELECT
     };
-    private Mode _currentMode;
+    private DrawMode _curDrawMode;
     private GameObject _selectedTile;
+    
+    //타일 영역 지정
+    private enum TypeMode
+    {
+        DEFAULT,
+        AVAIL,
+        NOTAVAIL,
+        EVENT
+    }
+    private TypeMode _curTypeMode;
+    private GameObject _notAvail;
+    private GameObject _event;
+    private List<TexEntry> _texList = new List<TexEntry>();
+    private GameObject _texParent;
+    
     
     //윈도우 메뉴에 "Map Generator"
     [MenuItem("Window/Map Generator")]
@@ -78,9 +100,18 @@ public class MapGenerator : EditorWindow
         // 씬 뷰에서 이벤트를 수신하기 위해 duringSceneGui 이벤트에 핸들러 추가
         SceneView.duringSceneGui += OnSceneGUI;
 
+        //타일 그리기 모드 디폴트 값으로 설정
+        _curDrawMode = DrawMode.DEFAULT;
+        
         //타일 영역 모드 디폴트 값으로 설정
-        _currentMode = Mode.DEFAULT;
-
+        _curTypeMode = TypeMode.DEFAULT;
+        _curDrawMode = DrawMode.DEFAULT;
+        
+        //타일 타입 텍스쳐 불러오기
+        _notAvail = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sprites/Map/CustomEditor/TileType/NotAvail.prefab");
+        _event = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sprites/Map/CustomEditor/TileType/Event.prefab");
+        _texParent = new GameObject();
+        _texParent.name = "Tex Parent";
     }
 
     private void OnDisable()
@@ -89,11 +120,15 @@ public class MapGenerator : EditorWindow
         //타일 매니저에 해당 타일의 정보 저장
         _tileManager.width = _curWidth;
         _tileManager.height = _curHeight;
-        EditorUtility.SetDirty(_tileManager);
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         
         // 이벤트 핸들러 제거
         SceneView.duringSceneGui -= OnSceneGUI;
+        
+        DestroyImmediate(_texParent);
+        
+        EditorUtility.SetDirty(_tileManager);
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        
     }
     
     void OnSceneGUI(SceneView sceneView)
@@ -102,7 +137,15 @@ public class MapGenerator : EditorWindow
         Event e = Event.current;
         if (e.type == EventType.MouseDown && e.button == 0) // 마우스 왼쪽 버튼 클릭
         {
-            DrawTile(e.mousePosition);
+            if (_curDrawMode != DrawMode.DEFAULT)
+            {
+                DrawTile(e.mousePosition);
+            }
+
+            if (_curTypeMode != TypeMode.DEFAULT)
+            {
+                SetTileType(e.mousePosition);
+            }
             e.Use(); // 이벤트 처리 완료 표시
         }
         
@@ -133,30 +176,6 @@ public class MapGenerator : EditorWindow
         _tileParent = (GameObject)EditorGUILayout.ObjectField("tile parent", _tileParent, typeof(GameObject), true);
         EditorGUILayout.Space();
         
-        //타일 그리기 부분
-        GUILayout.BeginHorizontal();
-        _selectedTile = (GameObject)EditorGUILayout.ObjectField("selected tile", _selectedTile, typeof(GameObject),false);
-        if (GUILayout.Button("Brush"))
-        {
-            //모드 변경
-            _currentMode = Mode.BRUSH;
-            Debug.Log("MODE : BRUSH");
-        }
-        if (GUILayout.Button("Eraser"))
-        {
-            //모드 변경
-            _currentMode = Mode.ERASER;
-            Debug.Log("MODE : ERASER");
-        }
-        GUILayout.EndHorizontal();
-        
-        //선택한 타일 미리보기
-        if (_selectedTile != null)
-        {
-            Texture2D previewTexture = AssetPreview.GetAssetPreview(_selectedTile);
-            GUILayout.Box(previewTexture,GUILayout.Width(position.width-8));
-        }
-        
         //타일의 이전 너비/높이와 현재 너비/높이가 달라졌을 경우 타일 생성/삭제 함수 호출
         if (_prevWidth != _curWidth)
         {
@@ -170,6 +189,79 @@ public class MapGenerator : EditorWindow
             GenerateTile();
             _prevHeight = _curHeight;
         }
+        
+        //타일 그리기 부분
+        GUILayout.BeginHorizontal();
+        _selectedTile = (GameObject)EditorGUILayout.ObjectField("selected tile", _selectedTile, typeof(GameObject),false);
+        if (GUILayout.Button("Brush"))
+        {
+            //모드 변경
+            _curDrawMode = DrawMode.BRUSH;
+            Debug.Log("MODE : BRUSH");
+        }
+        if (GUILayout.Button("Eraser"))
+        {
+            //모드 변경
+            _curDrawMode = DrawMode.ERASER;
+            Debug.Log("MODE : ERASER");
+        }
+        GUILayout.EndHorizontal();
+        
+        //선택한 타일 미리보기
+        if (_selectedTile != null)
+        {
+            Texture2D previewTexture = AssetPreview.GetAssetPreview(_selectedTile);
+            GUILayout.Box(previewTexture,GUILayout.Width(position.width-8));
+        }
+        
+        //타일 영역 지정
+        EditorGUILayout.Space(10);
+        //타일 생성 부분
+        GUILayout.Label("Tile Type",EditorStyles.largeLabel);
+        GUILayout.BeginHorizontal();
+        GUILayout.FlexibleSpace();
+        
+        GUILayout.BeginVertical();
+        Texture2D notAvailTex = AssetPreview.GetAssetPreview(_notAvail);
+        GUILayout.Label(notAvailTex, GUILayout.Width(100), GUILayout.Height(100));
+        GUILayout.Label("타일 불가능 영역");
+        if (GUILayout.Button("Select"))
+        {
+            _curDrawMode = DrawMode.SELECT;
+            _curTypeMode = TypeMode.NOTAVAIL;
+            Debug.Log("MODE : SELECT, NOTAVAIL");
+        }
+        if (GUILayout.Button("DisSelect"))
+        {
+            _curDrawMode = DrawMode.DISSELECT;
+            _curTypeMode = TypeMode.AVAIL;
+            Debug.Log("MODE : DISSELECT, AVAIL");
+        }
+        GUILayout.EndVertical();
+        
+        GUILayout.FlexibleSpace();
+        
+        GUILayout.BeginVertical();
+        Texture2D eventTex = AssetPreview.GetAssetPreview(_event);
+        GUILayout.Label(eventTex, GUILayout.Width(100), GUILayout.Height(100));
+        GUILayout.Label("이벤트 타일 영역");
+        if (GUILayout.Button("Select"))
+        {
+            _curDrawMode = DrawMode.SELECT;
+            _curTypeMode = TypeMode.EVENT;
+            Debug.Log("MODE : SELECT, EVENT");
+        }
+        if (GUILayout.Button("DisSelect"))
+        {
+            _curDrawMode = DrawMode.DISSELECT;
+            _curTypeMode = TypeMode.AVAIL;
+            Debug.Log("MODE : DISSELECT, AVAIL");
+        }
+        GUILayout.EndVertical();
+        
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+        
     }
 
     //Grid Map 생성하기
@@ -228,6 +320,7 @@ public class MapGenerator : EditorWindow
                     entry.position = pos;
                     entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
                     entry.tile.name = $"Tile({x},{z})";
+                    entry.tile.GetComponent<Tile>().InitTile(x,z);
                     entry.tile.transform.position = new Vector3(x, 0, z);
                     _tileManager.tileEntries.Add(entry);
                 }
@@ -279,6 +372,7 @@ public class MapGenerator : EditorWindow
                     entry.position = pos;
                     entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
                     entry.tile.name = $"Tile({x},{z})";
+                    entry.tile.GetComponent<Tile>().InitTile(x,z);
                     entry.tile.transform.position = new Vector3(x, 0, z);
                     _tileManager.tileEntries.Add(entry);
                 }
@@ -326,7 +420,7 @@ public class MapGenerator : EditorWindow
             // 오브젝트를 선택 상태로 표시
             Selection.activeGameObject = hit.collider.gameObject;
             
-            if (hit.collider.CompareTag("MapGrid") && _currentMode == Mode.BRUSH)
+            if (hit.collider.CompareTag("MapGrid") && _curDrawMode == DrawMode.BRUSH)
             {
                 //선택한 오브젝트가 grid 이면서 brush 모드이면 해당 자리에 타일 생성
                 int x = (int)hit.transform.position.x;
@@ -336,10 +430,11 @@ public class MapGenerator : EditorWindow
                 entry.position = pos;
                 entry.tile = PrefabUtility.InstantiatePrefab(_selectedTile,_tileParent.transform) as GameObject;
                 entry.tile.name = $"Tile({x},{z})";
+                entry.tile.GetComponent<Tile>().InitTile(x,z);
                 entry.tile.transform.position = new Vector3(x, 0, z);
                 _tileManager.tileEntries.Add(entry);
             }
-            else if (hit.collider.name.Substring(0,4) == "Tile" &&  _currentMode == Mode.ERASER)
+            else if (hit.collider.name.Substring(0,4) == "Tile" &&  _curDrawMode == DrawMode.ERASER)
             {
                 //선택한 오브젝트가 tile 이면서 eraser 모드이면 해당 자리의 타일을 삭제
                 int x = (int)hit.transform.position.x;
@@ -356,6 +451,80 @@ public class MapGenerator : EditorWindow
                 }
                 _tileManager.tileEntries.Remove(remove);
             }
+        }
+        else
+        {
+            Debug.Log("No object hit.");
+        }
+    }
+    
+    //타일 영역 지정
+    void SetTileType(Vector2 mousePos)
+    {
+        //레이 생성
+        Ray ray = HandleUtility.GUIPointToWorldRay(mousePos);
+        RaycastHit hit;
+
+        //레이캐스트 수행
+        if (Physics.Raycast(ray, out hit))
+        {
+            Debug.Log("Hit object: " + hit.collider.name);
+            // 오브젝트를 선택 상태로 표시
+            Selection.activeGameObject = hit.collider.gameObject;
+            //레이캐스트에 감지된 타일 오브젝트
+            GameObject tile = hit.collider.gameObject;
+            //사용할 텍스쳐 오브젝트
+            GameObject texType;
+            //선택된 텍스쳐 오브젝트
+            GameObject target = null;
+            //타일 컴포넌트 할당
+            Tile t = tile.GetComponent<Tile>();
+            //삭제할 TexEntry 할당
+            TexEntry remove = new TexEntry();
+            
+            //타일을 선택한다면
+            if (hit.collider.name.Substring(0,4) == "Tile" && _curDrawMode == DrawMode.SELECT )
+            {
+                if (t.tileType != 1)
+                {
+                    return;
+                }
+                
+                if (_curTypeMode == TypeMode.NOTAVAIL)
+                {
+                    target = _notAvail;
+                }
+                else if(_curTypeMode == TypeMode.EVENT)
+                {
+                    target = _event;
+                }
+                
+                t.tileType = (int)_curTypeMode;
+                tile.GetComponent<Tile>().tileType = (int)_curTypeMode;
+                texType = PrefabUtility.InstantiatePrefab(target,_texParent.transform) as GameObject;
+                texType.transform.position = new Vector3(tile.transform.position.x,0.1f,tile.transform.position.z);
+                
+                //tex list에 추가하기
+                TexEntry entry = new TexEntry();
+                entry.pos = t.ReturnPos();
+                entry.tex = texType;
+                _texList.Add(entry);
+            }
+            else if (t.tileType != 1 && _curDrawMode == DrawMode.DISSELECT)
+            {
+                foreach (var entry in _texList)
+                {
+                    if (entry.pos == t.ReturnPos())
+                    {
+                        t.tileType = (int)TypeMode.AVAIL;
+                        DestroyImmediate(entry.tex);
+                        remove = entry;
+                    }
+                }
+                _texList.Remove(remove);
+            }
+            //Tile의 Tile 컴포넌트에 tile type 값 수정 반영하기
+            EditorUtility.SetDirty(t);
         }
         else
         {
