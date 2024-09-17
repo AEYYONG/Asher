@@ -62,6 +62,7 @@ public class MapGenerator : EditorWindow
     private GameObject _texParent;
     
     //타일 종류
+    private int _totalTileCnt;
     private bool _buffItemStatus;
     private bool _debuffItemStatus;
     private bool _etcItemStatus;
@@ -276,8 +277,7 @@ public class MapGenerator : EditorWindow
         //타일 종류
         EditorGUILayout.Space(10);
         GUILayout.Label("Tile Type",EditorStyles.largeLabel);
-        int tileNum = _tileManager.tileEntries.Count;
-        GUILayout.Label("Current Tiles : " + tileNum);
+        GUILayout.Label("Current Tiles : " + CalculateTileCnt());
         
         //기타 아이템 추가
         _etcItemStatus = EditorGUILayout.Foldout(_etcItemStatus, "Etc Items");
@@ -384,7 +384,14 @@ public class MapGenerator : EditorWindow
                 GUILayout.EndHorizontal();
             }
         }
+        EditorGUILayout.Space(10);
         
+        //카메라 지정
+        GUILayout.Label("Camera Setting",EditorStyles.largeLabel);
+        if (GUILayout.Button("Setting"))
+        {
+            SetCameraPos();
+        }
         EditorGUILayout.EndScrollView();
     }
 
@@ -395,6 +402,30 @@ public class MapGenerator : EditorWindow
         type.tilePrefab = prefab;
         type.count = 0;
         _curTileTypeList.Add(type);
+    }
+
+    //카메라 위치 설정
+    void SetCameraPos()
+    {
+        
+    }
+    
+    //총 타일 수 계산
+    int CalculateTileCnt()
+    {
+        _totalTileCnt = 0;
+        foreach (var entry in _tileManager.tileEntries)
+        {
+            int type = entry.tile.GetComponent<Tile>().tileType;
+
+            //타일 배치 가능
+            if (type == 1)
+            {
+                _totalTileCnt += 1;
+            }
+        }
+
+        return _totalTileCnt;
     }
     
 
@@ -456,6 +487,7 @@ public class MapGenerator : EditorWindow
                     entry.tile.name = $"Tile({x},{z})";
                     entry.tile.GetComponent<Tile>().InitTile(x,z);
                     entry.tile.transform.position = new Vector3(x, 0, z);
+                    EditorUtility.SetDirty(entry.tile);
                     _tileManager.tileEntries.Add(entry);
                 }
             }
@@ -508,6 +540,7 @@ public class MapGenerator : EditorWindow
                     entry.tile.name = $"Tile({x},{z})";
                     entry.tile.GetComponent<Tile>().InitTile(x,z);
                     entry.tile.transform.position = new Vector3(x, 0, z);
+                    EditorUtility.SetDirty(entry.tile);
                     _tileManager.tileEntries.Add(entry);
                 }
             }
@@ -566,6 +599,7 @@ public class MapGenerator : EditorWindow
                 entry.tile.name = $"Tile({x},{z})";
                 entry.tile.GetComponent<Tile>().InitTile(x,z);
                 entry.tile.transform.position = new Vector3(x, 0, z);
+                EditorUtility.SetDirty(entry.tile);
                 _tileManager.tileEntries.Add(entry);
             }
             else if (hit.collider.name.Substring(0,4) == "Tile" &&  _curDrawMode == DrawMode.ERASER)

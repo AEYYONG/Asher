@@ -7,7 +7,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     //타일 x값, z 값
-    private int _x, _z;
+    public int _x, _z;
     //타일 영역
     public int tileType;
     //타일 아이디

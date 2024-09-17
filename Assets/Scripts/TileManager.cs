@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -39,73 +40,53 @@ public class TileManager : MonoBehaviour
     public List<TileTypeStruct> buffItemTypes = new List<TileTypeStruct>();
     public List<TileTypeStruct> debuffItemTypes = new List<TileTypeStruct>();
     public List<TileTypeStruct> etcItemTypes = new List<TileTypeStruct>();
+    
     //타일 셔플을 위한 임시 리스트
     private List<GameObject> _tileShuffleList = new List<GameObject>();
     //타일 딕셔너리
     public Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>(); //실제 사용 딕셔너리
     public List<TileEntry> tileEntries = new List<TileEntry>(); //직렬화 가능한 리스트
     
-    void Awake()
-    {
-        //CheckError();
-    }
-
+    //이벤트 타일 프리팹
+    private GameObject _eventPrefab;
+    
     void Start()
     {
-        //InitTileList();
+        _eventPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/Tile3.prefab");
+        _tiles.Clear();
+        Debug.Log(_tiles.Count);
+        InitTileList();
     }
-
-    //오류 검증
-    /*
-    void CheckError()
-    {
-        //필요 변수 할당하였는지
-        if (width == 0 || height == 0 || tileSpacing == 0f || tileReturnTime == 0f)
-        {
-            Debug.Log("타일 너비/높이/간격/시간 이(가) 할당되지 않음");
-        }
-        //필요 오브젝트 할당하였는지
-        if (cam == null || tileParent == null || tileTypes.Count == 0)
-        {
-            Debug.Log("오브젝트가 TileManager에 할당되지 않음");
-        }
-        //타일 수가 짝수인지(짝 맞춰야하니)
-        for (int i = 0; i < tileTypes[i].count; i++)
-        {
-            if (tileTypes[i].count % 2 != 0)
-            {
-                Debug.Log("타일 짝이 맞지 않음");
-            }
-        }
-        //각 타일에 설정한 할당량의 합이 총 타일 수와 맞는지
-        int tileSum = 0;
-        for (int i = 0; i < tileTypes.Count; i++)
-        {
-            tileSum += tileTypes[i].count;
-        }
-        if (tileSum != width * height)
-        {
-            Debug.Log("타일 프리팹 할당 타일 수가 부족함");
-        }
-        
-    }
-    */
-    /*
+    
+    
     //타일 종류와 빈도에 따라 Tiles 딕셔너리에
     void InitTileList()
     {
         //타일 리스트에 타일 종류 순서 및 개수대로 넣기
-        for (int type = 0; type < tileTypes.Count; type++)
+        for (int type = 0; type < etcItemTypes.Count; type++)
         {
-            for (int count = 0; count < tileTypes[type].count; count++)
+            for (int count = 0; count < etcItemTypes[type].count; count++)
             {
-                _tileShuffleList.Add(tileTypes[type].tilePrefab);
+                _tileShuffleList.Add(etcItemTypes[type].tilePrefab);
+            }
+        }
+        for (int type = 0; type < buffItemTypes.Count; type++)
+        {
+            for (int count = 0; count < buffItemTypes[type].count; count++)
+            {
+                _tileShuffleList.Add(buffItemTypes[type].tilePrefab);
+            }
+        }
+        for (int type = 0; type < debuffItemTypes.Count; type++)
+        {
+            for (int count = 0; count < debuffItemTypes[type].count; count++)
+            {
+                _tileShuffleList.Add(debuffItemTypes[type].tilePrefab);
             }
         }
         //타일 리스트 섞기
         ShuffleTileList(_tileShuffleList);
     }
-    */
 
     //타일 리스트 섞는 함수
     //Fisher-Yates Shuffle 알고리즘
@@ -124,23 +105,41 @@ public class TileManager : MonoBehaviour
     //보드에 타일 배치하기
     void ArrangeTilesOnBoard(List<GameObject> tileList)
     {
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
+        int flag = 0;
+        //맵에 배치된 타일이 저장된 tileEntries 리스트에서 타일의 설정된 아이디에 따라 프리팹, 태그 변경
+        foreach (var entry in tileEntries)
+        { 
+            Tile tile = entry.tile.GetComponent<Tile>();
+            Vector2Int pos = tile.ReturnPos();
+            
+            //타일 타입이 1(타일 배치 가능)
+            if (tile.tileType == 1)
             {
-                //타일 오브젝트 생성
-                GameObject tile = Instantiate(tileList[x * height + z], new Vector3(x*tileSpacing,0,z*tileSpacing),
-                    tileList[x * height + z].transform.rotation);
-                //타일부모의 자식으로 오브젝트 설정
-                tile.transform.SetParent(tileParent.transform);
-                //타일 프리팹 이름 배열 값으로 가져오기
-                string prefabName = tileList[x * height + z].ToString();
+                Debug.Log("타입 1 " + entry.tile);
+                Destroy(entry.tile);
+                GameObject prefab = tileList[flag++];
+                GameObject newTile = Instantiate(prefab, new Vector3(pos.x, 0, pos.y),
+                    prefab.transform.rotation);
+                newTile.transform.SetParent(tileParent.transform);
+                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
                 //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
-                tile.name = $"Tile{prefabName[4]}({x},{z})";
-                //타일 컴포넌트 가져와, 타일 정보 초기화
-                tile.GetComponent<Tile>().InitTile(x,z,prefabName);
-                //타일 딕셔너리에 타일 오브젝트 추가
-                _tiles.Add(new Vector2Int(x,z),tile);
+                newTile.name = $"Tile{pos} : {newTile.name}";
+                
+            }
+            else if (tile.tileType == 2)
+            {
+                Debug.Log("타입 2" + entry.tile);
+            }
+            else if (tile.tileType == 3) //타일 타입이 3(이벤트 타일)
+            {
+                Debug.Log("타입 3 " + entry.tile);
+                Destroy(entry.tile);
+                GameObject newTile = Instantiate(_eventPrefab, new Vector3(pos.x, 0, pos.y),
+                    _eventPrefab.transform.rotation);
+                newTile.transform.SetParent(tileParent.transform);
+                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
+                //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
+                newTile.name = $"Tile{pos} : {newTile.name}";
             }
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
@@ -151,23 +150,5 @@ public class TileManager : MonoBehaviour
     {
         StartCoroutine(_tiles[pos1].GetComponent<Tile>().ReturnTile());
         StartCoroutine(_tiles[pos2].GetComponent<Tile>().ReturnTile());
-    }
-    
-    public void AddTile(Vector2Int position, GameObject tile)
-    {
-        TileEntry entry = new TileEntry();
-        entry.position = position;
-        entry.tile = tile;
-        
-        tileEntries.Add(entry); // 리스트에 데이터 저장
-        _tiles.Add(position, tile); // 딕셔너리에도 저장
-    }
-
-    public void RemoveTile(Vector2Int position)
-    {
-        // 리스트에서 타일 제거
-        tileEntries.RemoveAll(entry => entry.position == position);
-        // 딕셔너리에서 타일 제거
-        _tiles.Remove(position);
     }
 }

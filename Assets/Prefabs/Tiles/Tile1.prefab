@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a500d9937784cf782ac6f874bcd7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileType: 0
   isSelected: 0
   _animator: {fileID: 0}
 --- !u!65 &3727475528650527641
