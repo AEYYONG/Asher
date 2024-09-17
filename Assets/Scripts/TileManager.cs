@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 
 //한 스테이지에 사용할 타일 종류와 개수 구조체
 [System.Serializable]
-public struct TileTypeStruct
+public class TileTypeStruct
 {
     //타일 프리팹
     public GameObject tilePrefab;
@@ -36,7 +36,9 @@ public class TileManager : MonoBehaviour
     
     
     //타일 종류(프리팹, 개수) 리스트
-    [SerializeField] private List<TileTypeStruct> tileTypes = new List<TileTypeStruct>();
+    public List<TileTypeStruct> buffItemTypes = new List<TileTypeStruct>();
+    public List<TileTypeStruct> debuffItemTypes = new List<TileTypeStruct>();
+    public List<TileTypeStruct> etcItemTypes = new List<TileTypeStruct>();
     //타일 셔플을 위한 임시 리스트
     private List<GameObject> _tileShuffleList = new List<GameObject>();
     //타일 딕셔너리
@@ -45,15 +47,16 @@ public class TileManager : MonoBehaviour
     
     void Awake()
     {
-        CheckError();
+        //CheckError();
     }
 
     void Start()
     {
-        InitTileList();
+        //InitTileList();
     }
 
     //오류 검증
+    /*
     void CheckError()
     {
         //필요 변수 할당하였는지
@@ -86,6 +89,8 @@ public class TileManager : MonoBehaviour
         }
         
     }
+    */
+    /*
     //타일 종류와 빈도에 따라 Tiles 딕셔너리에
     void InitTileList()
     {
@@ -100,6 +105,7 @@ public class TileManager : MonoBehaviour
         //타일 리스트 섞기
         ShuffleTileList(_tileShuffleList);
     }
+    */
 
     //타일 리스트 섞는 함수
     //Fisher-Yates Shuffle 알고리즘

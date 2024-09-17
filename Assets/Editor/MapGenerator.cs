@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -14,6 +15,8 @@ public struct TexEntry
 }
 public class MapGenerator : EditorWindow
 {
+    private Vector2 scrollPos;
+    
     //Grid 생성
     private int _gridWidth; //grid 가로 개수
     private int _gridHeight; //grid 세로 개수 
@@ -58,6 +61,12 @@ public class MapGenerator : EditorWindow
     private List<TexEntry> _texList = new List<TexEntry>();
     private GameObject _texParent;
     
+    //타일 종류
+    private bool _buffItemStatus;
+    private bool _debuffItemStatus;
+    private bool _etcItemStatus;
+    private List<TileTypeStruct> _curTileTypeList;
+    
     
     //윈도우 메뉴에 "Map Generator"
     [MenuItem("Window/Map Generator")]
@@ -76,7 +85,7 @@ public class MapGenerator : EditorWindow
         _curWidth = _prevWidth;
         
         //grid prefab 초기화
-        _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Grid.prefab");
+        _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CustomEditor/Grid.prefab");
         
         //초기화 확인
         if (_tilePrefab == null)
@@ -108,8 +117,8 @@ public class MapGenerator : EditorWindow
         _curDrawMode = DrawMode.DEFAULT;
         
         //타일 타입 텍스쳐 불러오기
-        _notAvail = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sprites/Map/CustomEditor/TileType/NotAvail.prefab");
-        _event = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Sprites/Map/CustomEditor/TileType/Event.prefab");
+        _notAvail = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CustomEditor/NotAvail.prefab");
+        _event = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CustomEditor/Event.prefab");
         _texParent = new GameObject();
         _texParent.name = "Tex Parent";
     }
@@ -153,6 +162,8 @@ public class MapGenerator : EditorWindow
 
     private void OnGUI()
     {
+        //스크롤 포지션 할당
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
         //grid 생성 부분
         GUILayout.Label("Generate Grid",EditorStyles.largeLabel);
         _gridWidth = EditorGUILayout.IntField("grid width", _gridWidth);
@@ -217,7 +228,7 @@ public class MapGenerator : EditorWindow
         //타일 영역 지정
         EditorGUILayout.Space(10);
         //타일 생성 부분
-        GUILayout.Label("Tile Type",EditorStyles.largeLabel);
+        GUILayout.Label("Tile Area",EditorStyles.largeLabel);
         GUILayout.BeginHorizontal();
         GUILayout.FlexibleSpace();
         
@@ -262,7 +273,130 @@ public class MapGenerator : EditorWindow
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
         
+        //타일 종류
+        EditorGUILayout.Space(10);
+        GUILayout.Label("Tile Type",EditorStyles.largeLabel);
+        int tileNum = _tileManager.tileEntries.Count;
+        GUILayout.Label("Current Tiles : " + tileNum);
+        
+        //기타 아이템 추가
+        _etcItemStatus = EditorGUILayout.Foldout(_etcItemStatus, "Etc Items");
+        if (_etcItemStatus)
+        {
+            if (GUILayout.Button("+",GUILayout.Width(20),GUILayout.Height(20)))
+            {
+                _curTileTypeList = _tileManager.etcItemTypes;
+                TileSelectWindow.ShowWindow(this);
+            }
+            //디버프 아이템 리스트 순회
+            for(int i=0; i<_tileManager.etcItemTypes.Count; i++)
+            {
+                TileTypeStruct item = _tileManager.etcItemTypes[i];
+                GUILayout.BeginHorizontal();
+                //타일 프리팹이 있으면 미리보기 제공
+                if (item.tilePrefab != null)
+                {
+                    Texture2D itemTex = AssetPreview.GetAssetPreview(item.tilePrefab);
+                    GUILayout.Label(itemTex, GUILayout.Width(100), GUILayout.Height(100));   
+                }
+                GUILayout.BeginVertical();
+                GUILayout.Label(item.tilePrefab.name);
+                item.count = EditorGUILayout.IntField("count", item.count);
+                GUILayout.Space(40);
+                //삭제 함수
+                if (GUILayout.Button("Delete"))
+                {
+                    _tileManager.etcItemTypes.Remove(item);
+                }
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+            }
+        }
+        
+        _buffItemStatus = EditorGUILayout.Foldout(_buffItemStatus, "Buff Items");
+        //버프 아이템 추가
+        if (_buffItemStatus)
+        {
+            //버프 아이템 프리팹 추가 버튼
+            if (GUILayout.Button("+",GUILayout.Width(20),GUILayout.Height(20)))
+            {
+                //현재 타입 리스트를 버프 아이템으로 설정
+                _curTileTypeList = _tileManager.buffItemTypes;
+                //타일 선택 창 열기
+                TileSelectWindow.ShowWindow(this);
+            }
+
+            //버프 아이템 리스트 순회
+            for(int i=0; i<_tileManager.buffItemTypes.Count; i++)
+            {
+                TileTypeStruct item = _tileManager.buffItemTypes[i];
+                GUILayout.BeginHorizontal();
+                //타일 프리팹이 있으면 미리보기 제공
+                if (item.tilePrefab != null)
+                {
+                    Texture2D itemTex = AssetPreview.GetAssetPreview(item.tilePrefab);
+                    GUILayout.Label(itemTex, GUILayout.Width(100), GUILayout.Height(100));   
+                }
+                GUILayout.BeginVertical();
+                GUILayout.Label(item.tilePrefab.name);
+                item.count = EditorGUILayout.IntField("count", item.count);
+                GUILayout.Space(40);
+                //삭제 함수
+                if (GUILayout.Button("Delete"))
+                {
+                    _tileManager.buffItemTypes.Remove(item);
+                }
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+            }
+        }
+        
+        //디버프 아이템 추가
+        _debuffItemStatus = EditorGUILayout.Foldout(_debuffItemStatus, "DeBuff Items");
+        if (_debuffItemStatus)
+        {
+            if (GUILayout.Button("+",GUILayout.Width(20),GUILayout.Height(20)))
+            {
+                _curTileTypeList = _tileManager.debuffItemTypes;
+                TileSelectWindow.ShowWindow(this);
+            }
+            //디버프 아이템 리스트 순회
+            for(int i=0; i<_tileManager.debuffItemTypes.Count; i++)
+            {
+                TileTypeStruct item = _tileManager.debuffItemTypes[i];
+                GUILayout.BeginHorizontal();
+                //타일 프리팹이 있으면 미리보기 제공
+                if (item.tilePrefab != null)
+                {
+                    Texture2D itemTex = AssetPreview.GetAssetPreview(item.tilePrefab);
+                    GUILayout.Label(itemTex, GUILayout.Width(100), GUILayout.Height(100));   
+                }
+                GUILayout.BeginVertical();
+                GUILayout.Label(item.tilePrefab.name);
+                item.count = EditorGUILayout.IntField("count", item.count);
+                GUILayout.Space(40);
+                //삭제 함수
+                if (GUILayout.Button("Delete"))
+                {
+                    _tileManager.debuffItemTypes.Remove(item);
+                }
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+            }
+        }
+        
+        EditorGUILayout.EndScrollView();
     }
+
+    //타일 타입 추가
+    public void AddTileType(GameObject prefab)
+    {
+        TileTypeStruct type = new TileTypeStruct();
+        type.tilePrefab = prefab;
+        type.count = 0;
+        _curTileTypeList.Add(type);
+    }
+    
 
     //Grid Map 생성하기
     void GenerateGrid(int w, int h)
