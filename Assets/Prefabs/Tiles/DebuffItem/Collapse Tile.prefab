@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5849744628971715894}
   - component: {fileID: 3727475528650527641}
   - component: {fileID: 8530089656418707141}
+  - component: {fileID: 7426039501745922123}
   m_Layer: 0
   m_Name: Collapse Tile
   m_TagString: Untagged
@@ -146,3 +147,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7426039501745922123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9077985435522536941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6edfb56c0ec554b8c804324d05412693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

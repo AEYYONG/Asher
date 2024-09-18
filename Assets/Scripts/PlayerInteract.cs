@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public struct TileInfo
@@ -57,23 +59,33 @@ public class PlayerInteract : MonoBehaviour
                 //현재까지 선택된 타일이 모두 이벤트 타일들이 아니라면
                 if (_tileInfos[0].tileID != TileID.Event)
                 {
-                    //습득 아이템인 경우
-                    //인벤토리의 slot1이 비어있다면
-                    if (!_inventory.isFirstSlotFull)
+                    //버프 아이템인 경우 인벤토리에 습득
+                    if (ItemData.instance.buffItems.Contains(_tileInfos[0].tileID))
                     {
-                        //slot1에 해당 아이템 추가
-                        _inventory.AddItem(1,_tileInfos[0].tileID);
+                        //인벤토리의 slot1이 비어있다면
+                        if (!_inventory.isFirstSlotFull)
+                        {
+                            //slot1에 해당 아이템 추가
+                            _inventory.AddItem(1,_tileInfos[0]);
+                        }
+                        else
+                        {
+                            _inventory.AddItem(2,_tileInfos[0]);
+                        }
                     }
-                    else
+                    else if (ItemData.instance.debuffItems.Contains(_tileInfos[0].tileID))
                     {
-                        _inventory.AddItem(2,_tileInfos[0].tileID);
+                        //디버프 아이템인 경우, 인벤토리에 저장 없이 바로 실행
+                        Item item = _tileManager._tiles[_tileInfos[0].tilePos].GetComponent<Item>();
+                        Debug.Log(item);
+                        item.Use(gameObject,_inventory);
                     }
-                    
                     //이벤트 타일이 아니면서 타일이 서로 같으면 아이템 획득 후, 값 초기화(다시 타일 선택할 수 있도록)
                     InitValue();
                 }
                 else
                 {
+                    //선택된 타일이 모두 이벤트 타일이라면
                     canInteract = true;
                 }
             }
