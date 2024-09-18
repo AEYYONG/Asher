@@ -2,10 +2,7 @@ Shader "Custom/FourSidedTexture" {
     Properties {
         _TopTex ("Top Texture", 2D) = "white" {}
         _BottomTex ("Bottom Texture", 2D) = "white" {}
-        _FrontTex ("Front Texture", 2D) = "white" {}
-        _BackTex ("Back Texture", 2D) = "white" {}
-        _LeftTex ("Left Texture", 2D) = "white" {}
-        _RightTex ("Right Texture", 2D) = "white" {}
+        _SideTex ("Side Texture", 2D) = "white" {}
     }
     SubShader {
         Tags { "RenderType"="Opaque" }
@@ -18,10 +15,7 @@ Shader "Custom/FourSidedTexture" {
 
             sampler2D _TopTex;
             sampler2D _BottomTex;
-            sampler2D _FrontTex;
-            sampler2D _BackTex;
-            sampler2D _LeftTex;
-            sampler2D _RightTex;
+            sampler2D _SideTex;
 
             struct appdata_t {
                 float4 vertex : POSITION;
@@ -48,16 +42,9 @@ Shader "Custom/FourSidedTexture" {
                     return tex2D(_TopTex, i.uv); // 윗면 텍스처
                 } else if (i.normal.y < -0.5) {
                     return tex2D(_BottomTex, i.uv); // 아랫면 텍스처
-                } else if (i.normal.z > 0.5) {
-                    return tex2D(_FrontTex, i.uv); // 앞면 텍스처
-                } else if (i.normal.z < -0.5) {
-                    return tex2D(_BackTex, i.uv); // 뒷면 텍스처
-                } else if (i.normal.x > 0.5) {
-                    return tex2D(_RightTex, i.uv); // 오른쪽 텍스처
-                } else if (i.normal.x < -0.5) {
-                    return tex2D(_LeftTex, i.uv); // 왼쪽 텍스처
+                } else {
+                    return tex2D(_SideTex, i.uv); // 사이드 텍스처
                 }
-                return fixed4(1, 1, 1, 1); // 기본 텍스처 (없을 경우)
             }
             ENDCG
         }

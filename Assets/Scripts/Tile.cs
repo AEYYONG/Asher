@@ -4,6 +4,26 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+public enum TileID
+{
+    General,
+    Event,
+    RedJoker,
+    BlackJoker,
+    Memory,
+    HairBall,
+    Shield,
+    DoubleTile,
+    FeverTime,
+    Banana,
+    Turtle,
+    Aggro,
+    Fog,
+    Collapse,
+    Inverse,
+    BlackHole,
+    TimeBomb
+}
 public class Tile : MonoBehaviour
 {
     //타일 x값, z 값
@@ -11,7 +31,7 @@ public class Tile : MonoBehaviour
     //타일 영역
     public int tileType;
     //타일 아이디
-    private char _tileID;
+    public TileID tileID;
     //타일이 선택되었는지
     public bool isSelected;
     //타일 애니메이터
@@ -34,12 +54,11 @@ public class Tile : MonoBehaviour
     }
 
     //타일 초기화
-    public void InitTile(int x, int z, string tileType)
+    public void InitTile(int x, int z, TileID id)
     {
         _x = x;
         _z = z;
-        _tileID = tileType[4];
-
+        tileID = id;
     }
     public void InitTile(int x, int z)
     {
@@ -51,9 +70,9 @@ public class Tile : MonoBehaviour
     void OnMouseDown()
     {
         //선택되지 않은 타일이라면 && 상호작용 가능하다면
-        if (!isSelected && _playerInteract.canInteract)
+        if (!isSelected && _playerInteract.canInteract && tileType!=2)
         {
-            Debug.Log($"({_x},{_z}) Tile{_tileID} Clicked");
+            Debug.Log($"({_x},{_z}) Tile{tileID} Clicked");
             
             //타일 선택 횟수 하나 증가
             _playerInteract.IncSelectCnt();
@@ -63,14 +82,7 @@ public class Tile : MonoBehaviour
             _animator.SetTrigger("Select");
             
             //타일 아이디 값 저장
-            if (_playerInteract.GetCurSelectCnt() == 1)
-            {
-                _playerInteract.SetTile1(_tileID, new Vector2Int(_x,_z));
-            }
-            else if(_playerInteract.GetCurSelectCnt() == 2)
-            {
-                _playerInteract.SetTile2(_tileID, new Vector2Int(_x,_z));
-            }
+            _playerInteract.AddTile(tileID, new Vector2Int(_x,_z));
             
         }
     }

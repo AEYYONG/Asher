@@ -25,8 +25,6 @@ public class TileManager : MonoBehaviour
 {
     //타일 가로, 세로 개수
     public int width, height;
-    //타일 간격
-    public float tileSpacing = 1.0f;
     //타일이 다시 뒤집어지는 시간
     [SerializeField] public float tileReturnTime;
     
@@ -49,10 +47,11 @@ public class TileManager : MonoBehaviour
     
     //이벤트 타일 프리팹
     private GameObject _eventPrefab;
+    public int eventTileCnt = 0;
     
     void Start()
     {
-        _eventPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/Tile3.prefab");
+        _eventPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/EtcItem/Event Tile.prefab");
         _tiles.Clear();
         Debug.Log(_tiles.Count);
         InitTileList();
@@ -111,6 +110,7 @@ public class TileManager : MonoBehaviour
         { 
             Tile tile = entry.tile.GetComponent<Tile>();
             Vector2Int pos = tile.ReturnPos();
+            Debug.Log(tileList.Count);
             
             //타일 타입이 1(타일 배치 가능)
             if (tile.tileType == 1)
@@ -121,34 +121,41 @@ public class TileManager : MonoBehaviour
                 GameObject newTile = Instantiate(prefab, new Vector3(pos.x, 0, pos.y),
                     prefab.transform.rotation);
                 newTile.transform.SetParent(tileParent.transform);
-                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
+                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y,prefab.GetComponent<Tile>().tileID);
+                _tiles.Add(pos,newTile);
                 //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
-                newTile.name = $"Tile{pos} : {newTile.name}";
+                newTile.name = $"Tile{pos} : {newTile.name.Substring(0,newTile.name.Length - 7)}";
                 
             }
             else if (tile.tileType == 2)
             {
                 Debug.Log("타입 2" + entry.tile);
+                tile.name = $"Tile{pos} : Furniture Tile";
             }
             else if (tile.tileType == 3) //타일 타입이 3(이벤트 타일)
             {
                 Debug.Log("타입 3 " + entry.tile);
+                eventTileCnt++;
                 Destroy(entry.tile);
                 GameObject newTile = Instantiate(_eventPrefab, new Vector3(pos.x, 0, pos.y),
                     _eventPrefab.transform.rotation);
                 newTile.transform.SetParent(tileParent.transform);
                 newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
+                _tiles.Add(pos,newTile);
                 //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
-                newTile.name = $"Tile{pos} : {newTile.name}";
+                newTile.name = $"Tile{pos} : {newTile.name.Substring(0,newTile.name.Length - 7)}";
             }
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
         //cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
     }
 
-    public void ReturnTile(Vector2Int pos1, Vector2Int pos2)
+    public void ReturnTile(List<TileInfo> tileInfos)
     {
-        StartCoroutine(_tiles[pos1].GetComponent<Tile>().ReturnTile());
-        StartCoroutine(_tiles[pos2].GetComponent<Tile>().ReturnTile());
+        foreach (var info in tileInfos)
+        {
+            Tile tile = _tiles[info.tilePos].GetComponent<Tile>();
+            StartCoroutine(tile.ReturnTile());
+        }
     }
 }
