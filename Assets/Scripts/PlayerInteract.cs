@@ -92,7 +92,7 @@ public class PlayerInteract : MonoBehaviour
         }
         
         //이벤트 타일에 대해 n-1번째 타일을 선택하였을 때(세번째 타일까지 왔다면, 첫번째 두번째 타일은 모두 이벤트 타일인 것.
-        if (_curSelectCnt < _tileManager.eventTileCnt && _curSelectCnt > maxSelectCnt)
+        if (_curSelectCnt < _tileManager.eventTileCnt && _curSelectCnt > maxSelectCnt && _tileManager.eventTileCnt > 0)
         {
             if (_tileInfos[_curSelectCnt-1].tileID != TileID.Event)
             {
@@ -102,7 +102,7 @@ public class PlayerInteract : MonoBehaviour
                 InitValue();
             }
         }
-        else if (_curSelectCnt == _tileManager.eventTileCnt)
+        else if (_curSelectCnt == _tileManager.eventTileCnt && _tileManager.eventTileCnt > 0)
         {
             if (_tileInfos[_curSelectCnt-1].tileID != TileID.Event)
             {
