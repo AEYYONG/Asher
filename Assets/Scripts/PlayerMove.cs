@@ -4,126 +4,109 @@ using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
 {
-    public float jumpForce = 5f; // Á¡ÇÁÀÇ Èû
-    public float inputCooldown = 0.3f; // ÀÔ·Â Äğ´Ù¿î ½Ã°£
-    private bool isGrounded = true;
-    private float nextInputTime = 0f; // ´ÙÀ½ ÀÔ·ÂÀ» ¹ŞÀ» ¼ö ÀÖ´Â ½Ã°£
-    private Rigidbody rb;
+    public float moveSpeed = 5f;  // ì´ë™ ì†ë„
+    public float moveDuration = 0.3f;  // ê° ë°©í–¥ìœ¼ë¡œ ì´ë™í•˜ëŠ” ì‹œê°„ (0.3ì´ˆ)
+    private bool isMoving = false;  // í˜„ì¬ ì´ë™ ì¤‘ì¸ì§€ ì—¬ë¶€
+    private Vector3 targetPosition;
+    private Vector3 startPosition;
+    private float moveStartTime;  // ì´ë™ ì‹œì‘ ì‹œê°„
 
-    Animator animator;
-    string animState = "Move";
+    private string currentAnimaton;
+    private Animator animator;
 
-    // ¾Ö´Ï¸ŞÀÌ¼Ç »óÅÂ
-    enum States
-    {
-        idle = 0,
-        right = 1,
-        left = 2,
-        up = 3,
-        down = 4,
-        jump = 5
-    }
+    const string PLAYER_IDLE = "idle";
+    const string PLAYER_RIGJHT = "right";
+    const string PLAYER_LEFT = "left";
+    const string PLAYER_UP = "up";
+    const string PLAYER_DOWN = "down";
+   // const string PLAYER_JUMP = "jump";
 
     void Start()
     {
-        // rb = GetComponent<Rigidbody>();
+        targetPosition = SnapToGrid(transform.position);  // ì‹œì‘ ì‹œ í˜„ì¬ ìœ„ì¹˜ë¥¼ ëª©í‘œ ìœ„ì¹˜ë¡œ ìŠ¤ëƒ…
+        startPosition = targetPosition;
         animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        UpdateState();
+        if (!isMoving)
+        {
+            HandleMovement();  // ì´ë™ ì¤‘ì´ ì•„ë‹ ë•Œë§Œ ì…ë ¥ì„ ì²˜ë¦¬
+        }
+        MovePlayer();  // ì´ë™ ì²˜ë¦¬
     }
 
-    void FixedUpdate()
+    void HandleMovement()
     {
-        // Äğ´Ù¿îÀÌ ³¡³ªÁö ¾Ê¾ÒÀ¸¸é ÀÔ·ÂÀ» ¹«½Ã
-        if (Time.time < nextInputTime)
-            return;
+        Vector3 movement = Vector3.zero;
 
-        // Á¡ÇÁ Ã³¸®
-        if (Input.GetKey(KeyCode.Space) && isGrounded)
+        // WASD ì…ë ¥ì— ë”°ë¼ ëª©í‘œ ìœ„ì¹˜ ì„¤ì • (ê° ë°©í–¥ìœ¼ë¡œ 1ë§Œí¼ ì´ë™)
+        if (Input.GetKey(KeyCode.D))
         {
-
-            isGrounded = false;
-            Debug.Log("Á¡ÇÁºÒ°¡: " + isGrounded);
-            // animator.SetInteger(animState, (int)States.jump);
-            nextInputTime = Time.time + inputCooldown; // Äğ´Ù¿î ¼³Á¤
-        }
-
-        // WASD ÀÌµ¿ Ã³¸® (1¾¿ ÀÌµ¿, ¿ùµå ÁÂÇ¥°è ±âÁØ)
-        else if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(Vector3.right, Space.World); // ¿ùµå ÁÂÇ¥°è ±âÁØ ¿À¸¥ÂÊÀ¸·Î 1 ´ÜÀ§ ÀÌµ¿
-            Debug.Log("ÇöÀç À§Ä¡: " + transform.position);
-            nextInputTime = Time.time + inputCooldown; // Äğ´Ù¿î ¼³Á¤
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            transform.Translate(Vector3.forward, Space.World); // ¿ùµå ÁÂÇ¥°è ±âÁØ ¾ÕÀ¸·Î 1 ´ÜÀ§ ÀÌµ¿ (ZÃà)
-            Debug.Log("ÇöÀç À§Ä¡: " + transform.position);
-            nextInputTime = Time.time + inputCooldown; // Äğ´Ù¿î ¼³Á¤
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            transform.Translate(Vector3.back, Space.World); // ¿ùµå ÁÂÇ¥°è ±âÁØ µÚ·Î 1 ´ÜÀ§ ÀÌµ¿
-            Debug.Log("ÇöÀç À§Ä¡: " + transform.position);
-            //animator.SetInteger(animState, (int)States.down);
-            nextInputTime = Time.time + inputCooldown; // Äğ´Ù¿î ¼³Á¤
+            movement = Vector3.right;
+            ChangeAnimationState(PLAYER_RIGJHT);
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left, Space.World); // ¿ùµå ÁÂÇ¥°è ±âÁØ ¿ŞÂÊÀ¸·Î 1 ´ÜÀ§ ÀÌµ¿
-            Debug.Log("ÇöÀç À§Ä¡: " + transform.position);
-            nextInputTime = Time.time + inputCooldown; // Äğ´Ù¿î ¼³Á¤
+            movement = Vector3.left;
+            ChangeAnimationState(PLAYER_LEFT);
+        }
+        else if (Input.GetKey(KeyCode.W))
+        {
+            movement = Vector3.forward;
+            ChangeAnimationState(PLAYER_UP);
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            movement = Vector3.back; // ìŒì˜ Zì¶•ìœ¼ë¡œ ì´ë™
+            ChangeAnimationState(PLAYER_DOWN);
         }
 
         else
         {
-            animator.SetInteger(animState, (int)States.idle);
+            ChangeAnimationState(PLAYER_IDLE);
+        }
+
+        if (movement != Vector3.zero)
+        {
+            // í˜„ì¬ ìœ„ì¹˜ì™€ ëª©í‘œ ìœ„ì¹˜ ì‚¬ì´ì˜ ê±°ë¦¬ê°€ ì¼ì • ì´ìƒì¼ ë•Œë§Œ ì´ë™ ì‹œì‘
+            startPosition = transform.position;  // í˜„ì¬ ìœ„ì¹˜ ì €ì¥
+            targetPosition = SnapToGrid(transform.position + movement);  // ëª©í‘œ ìœ„ì¹˜ ê³„ì‚°
+            moveStartTime = Time.time;  // ì´ë™ ì‹œì‘ ì‹œê°„ ê¸°ë¡
+            isMoving = true;  // ì´ë™ ì¤‘ ìƒíƒœë¡œ ë³€ê²½
         }
     }
 
-    private void UpdateState()
+    void MovePlayer()
     {
-        if (Input.GetKey(KeyCode.D))
+        if (isMoving)
         {
-            animator.SetInteger(animState, (int)States.right);
-        }
+            // ì´ë™ ì§„í–‰ ë¹„ìœ¨ ê³„ì‚° (0.3ì´ˆ ë™ì•ˆ ì´ë™)
+            float t = (Time.time - moveStartTime) / moveDuration;
+            transform.position = Vector3.Lerp(startPosition, targetPosition, t);
 
-        else if (Input.GetKey(KeyCode.A))
-        {
-            animator.SetInteger(animState, (int)States.left);
+            // ì´ë™ì´ ì™„ë£Œë˜ì—ˆì„ ë•Œ ì²˜ë¦¬
+            if (t >= 1f)
+            {
+                isMoving = false;  // ì´ë™ ì¢…ë£Œ
+                transform.position = targetPosition;  // ìµœì¢… ìœ„ì¹˜ ì„¤ì •
+            }
         }
-
-        else if (Input.GetKey(KeyCode.W))
-        {
-            animator.SetInteger(animState, (int)States.up);
-        }
-
-        else if (Input.GetKey(KeyCode.S))
-        {
-            animator.SetInteger(animState, (int)States.down);
-        }
-
-        else if (Input.GetKey(KeyCode.Space))
-        {
-            animator.SetInteger(animState, (int)States.jump);
-        }
-
     }
 
-    void State_Idle()
+    // ëª©í‘œ ì¢Œí‘œë¥¼ ì •ìˆ˜ ì¢Œí‘œë¡œ ìŠ¤ëƒ…í•˜ë©´ì„œ Zì¶•ì„ í•­ìƒ .5ë¡œ ë§ì¶”ëŠ” í•¨ìˆ˜
+    Vector3 SnapToGrid(Vector3 position)
     {
-        animator.SetInteger(animState, (int)States.idle);
-        Debug.Log("idle·Î");
+        // Xì¶•ì€ ë°˜ì˜¬ë¦¼, Zì¶•ì€ ì •ìˆ˜ë¡œ ë§Œë“¤ê³  + 0.5fë¡œ í•­ìƒ .5 ìœ ì§€
+        return new Vector3(Mathf.Round(position.x), position.y, Mathf.Floor(position.z) + 0.5f);
     }
-    void OnCollisionEnter(Collision collision)
+
+    void ChangeAnimationState(string newAnimation)
     {
-        if (collision.gameObject.CompareTag("Ground")) // ¹Ù´Ú°ú ´êÀ¸¸é Á¡ÇÁ °¡´É
-        {
-            isGrounded = true;
-            Debug.Log("IsGrounded: " + isGrounded);
-        }
+        if (currentAnimaton == newAnimation) return;
+
+        animator.Play(newAnimation);
+        currentAnimaton = newAnimation;
     }
 }

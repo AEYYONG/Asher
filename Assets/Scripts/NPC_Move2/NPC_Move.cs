@@ -40,8 +40,18 @@ public class NPC_Move : MonoBehaviour
 
     void DetectInFront()
     {
-        // NPC의 정면 방향으로 레이캐스트
-        Ray ray = new Ray(transform.position, transform.forward);
+        Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);  // NPC의 아래쪽에서 레이캐스트 시작
+
+        // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+        Vector3 rayDirection = agent.velocity.normalized;
+
+        // velocity가 0일 때를 대비한 기본값
+        if (rayDirection == Vector3.zero)
+        {
+            rayDirection = transform.forward; // 기본적으로 정면으로 설정
+        }
+
+        Ray ray = new Ray(rayOrigin, rayDirection);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, detectionRange))
@@ -60,6 +70,8 @@ public class NPC_Move : MonoBehaviour
         }
     }
 
+
+
     void SetDestination(Vector3 destination)
     {
         targetPosition = destination;
@@ -70,11 +82,21 @@ public class NPC_Move : MonoBehaviour
     // OnDrawGizmos를 사용하여 레이캐스트 경로를 Scene에 시각적으로 표시
     private void OnDrawGizmos()
     {
-        // Gizmos가 그려지지 않으면, 이 부분이 호출되지 않을 수 있으므로 Scene View에서 확인하세요.
-        Gizmos.color = Color.red; // 레이의 색상 설정
-        Vector3 rayOrigin = transform.position;
-        Vector3 rayDirection = transform.forward * detectionRange; // 감지 범위만큼의 방향 설정
-        Gizmos.DrawRay(rayOrigin, rayDirection); // Gizmo에 레이 그리기
+        Gizmos.color = Color.red; // 레이의 색상을 빨간색으로 설정
+
+        Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);
+
+        // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+        Vector3 rayDirection = agent.velocity.normalized;
+
+        // velocity가 0일 때를 대비한 기본값
+        if (rayDirection == Vector3.zero)
+        {
+            rayDirection = transform.forward; // 기본적으로 정면으로 설정
+        }
+
+        // 레이캐스트의 방향으로 감지 범위만큼 Gizmos로 레이 그리기
+        Gizmos.DrawRay(rayOrigin, rayDirection * detectionRange);
     }
 
     // 랜덤한 목적지를 설정하고 스냅하는 함수
@@ -89,7 +111,7 @@ public class NPC_Move : MonoBehaviour
 
         // 랜덤 좌표를 그리드에 스냅
         targetPosition = SnapToGrid(randomPosition);
-        Debug.Log("위치:" + targetPosition);
+      //  Debug.Log("위치:" + targetPosition);
 
         // 목적지 설정
         agent.SetDestination(targetPosition);
