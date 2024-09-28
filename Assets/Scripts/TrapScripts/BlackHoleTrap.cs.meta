@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 206a28d1169434df0872c452c0197586
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tileSO: {instanceID: 0}
+  - _animator: {instanceID: 0}
+  - trapSO: {fileID: 11400000, guid: 0a23da5fbb8a148ac9d3c6fcff1e2433, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

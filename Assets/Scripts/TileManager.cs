@@ -113,28 +113,26 @@ public class TileManager : MonoBehaviour
             Debug.Log(tileList.Count);
             
             //타일 타입이 1(타일 배치 가능)
-            if (tile.tileType == 1)
+            if (tile.tileType == TileType.RandomAvail)
             {
-                Debug.Log("타입 1 " + entry.tile);
+                //Debug.Log("타입 1 " + entry.tile);
                 Destroy(entry.tile);
                 GameObject prefab = tileList[flag++];
                 GameObject newTile = Instantiate(prefab, new Vector3(pos.x, 0, pos.y),
                     prefab.transform.rotation);
                 newTile.transform.SetParent(tileParent.transform);
-                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y,prefab.GetComponent<Tile>().tileID);
+                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
                 _tiles.Add(pos,newTile);
                 //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
                 newTile.name = $"Tile{pos} : {newTile.name.Substring(0,newTile.name.Length - 7)}";
                 
             }
-            else if (tile.tileType == 2)
+            else if (tile.tileType == TileType.RandomNotAvail)
             {
-                Debug.Log("타입 2" + entry.tile);
+                //Debug.Log("타입 2" + entry.tile);
                 tile.name = $"Tile{pos} : Furniture Tile";
-            }
-            else if (tile.tileType == 3) //타일 타입이 3(이벤트 타일)
-            {
-                Debug.Log("타입 3 " + entry.tile);
+                //추가적으로 이벤트 타일 문 확인 작성해줘야 함.
+                //Debug.Log("타입 3 " + entry.tile);
                 eventTileCnt++;
                 Destroy(entry.tile);
                 GameObject newTile = Instantiate(_eventPrefab, new Vector3(pos.x, 0, pos.y),
@@ -150,11 +148,10 @@ public class TileManager : MonoBehaviour
         //cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
     }
 
-    public void ReturnTile(List<TileInfo> tileInfos)
+    public void ReturnTile(List<Tile> tiles)
     {
-        foreach (var info in tileInfos)
+        foreach (var tile in tiles)
         {
-            Tile tile = _tiles[info.tilePos].GetComponent<Tile>();
             StartCoroutine(tile.ReturnTile());
         }
     }

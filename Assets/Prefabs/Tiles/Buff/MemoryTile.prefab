@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3299938877987277406}
   - component: {fileID: 6620057068993517578}
   - component: {fileID: 1617044052681711701}
-  - component: {fileID: 3333316692948346135}
   - component: {fileID: 3761349924235490333}
+  - component: {fileID: 1904463522039586686}
   m_Layer: 0
   m_Name: MemoryTile
   m_TagString: Ground
@@ -107,24 +107,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3333316692948346135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6389873552652161418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a500d9937784cf782ac6f874bcd7d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _x: 0
-  _z: 0
-  tileType: 1
-  tileID: 4
-  isSelected: 0
-  _animator: {fileID: 3761349924235490333}
 --- !u!95 &3761349924235490333
 Animator:
   serializedVersion: 5
@@ -146,3 +128,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1904463522039586686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6389873552652161418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e0ecc27d962f46e6a90294fb02615ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSO: {fileID: 11400000, guid: 408e625e1b48e40b4867e4ea9aeae43c, type: 2}
+  _x: 0
+  _z: 0
+  isSelected: 0
+  _animator: {fileID: 3761349924235490333}
+  tileType: 0
+  itemSO: {fileID: 11400000, guid: 70be679bd0ecb49ffb8ff468aa2f62dd, type: 2}

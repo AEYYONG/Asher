@@ -119,12 +119,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a500d9937784cf782ac6f874bcd7d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileSO: {fileID: 11400000, guid: 69712be53972348fa86fed9cf8f62c69, type: 2}
   _x: 0
   _z: 0
-  tileType: 1
-  tileID: 0
   isSelected: 0
   _animator: {fileID: 3761349924235490333}
+  tileType: 0
 --- !u!95 &3761349924235490333
 Animator:
   serializedVersion: 5

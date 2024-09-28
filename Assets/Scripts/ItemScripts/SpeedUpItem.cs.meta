@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d1206dc762d284352b3fd0a61d005b78
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - tileSO: {fileID: 11400000, guid: 408e625e1b48e40b4867e4ea9aeae43c, type: 2}
+  - _animator: {instanceID: 0}
+  - itemSO: {fileID: 11400000, guid: 9ed11166ff3d74f5f8c146ad69eed7c1, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

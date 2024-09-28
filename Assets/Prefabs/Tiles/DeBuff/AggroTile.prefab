@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3299938877987277406}
   - component: {fileID: 6620057068993517578}
   - component: {fileID: 1617044052681711701}
-  - component: {fileID: 3333316692948346135}
   - component: {fileID: 3761349924235490333}
+  - component: {fileID: 189887260433250925}
   m_Layer: 0
   m_Name: AggroTile
   m_TagString: Ground
@@ -107,24 +107,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3333316692948346135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6389873552652161418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a500d9937784cf782ac6f874bcd7d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _x: 0
-  _z: 0
-  tileType: 1
-  tileID: 11
-  isSelected: 0
-  _animator: {fileID: 3761349924235490333}
 --- !u!95 &3761349924235490333
 Animator:
   serializedVersion: 5
@@ -146,3 +128,22 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &189887260433250925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6389873552652161418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f48e0547207b4257be23c2822026ac6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSO: {fileID: 11400000, guid: 3ce131f449139487d9adc21b339264fb, type: 2}
+  _x: 0
+  _z: 0
+  isSelected: 0
+  _animator: {fileID: 3761349924235490333}
+  tileType: 0
+  trapSO: {fileID: 11400000, guid: 2d1db7e97225b42a1b6f0ed63c14fe10, type: 2}

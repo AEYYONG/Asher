@@ -415,11 +415,11 @@ public class MapGenerator : EditorWindow
     {
         _totalTileCnt = 0;
         foreach (var entry in _tileManager.tileEntries)
-        {
-            int type = entry.tile.GetComponent<Tile>().tileType;
+        {  
+            TileType type = entry.tile.GetComponent<Tile>().tileType;
 
             //타일 배치 가능
-            if (type == 1)
+            if (type == TileType.RandomAvail)
             {
                 _totalTileCnt += 1;
             }
@@ -653,7 +653,7 @@ public class MapGenerator : EditorWindow
             //타일을 선택한다면
             if (hit.collider.name.Substring(0,4) == "Tile" && _curDrawMode == DrawMode.SELECT )
             {
-                if (t.tileType != 1)
+                if (t.tileType != TileType.RandomAvail)
                 {
                     return;
                 }
@@ -667,8 +667,8 @@ public class MapGenerator : EditorWindow
                     target = _event;
                 }
                 
-                t.tileType = (int)_curTypeMode;
-                tile.GetComponent<Tile>().tileType = (int)_curTypeMode;
+                t.tileType = (TileType)_curTypeMode;
+                tile.GetComponent<Tile>().tileType = (TileType)_curTypeMode;
                 texType = PrefabUtility.InstantiatePrefab(target,_texParent.transform) as GameObject;
                 texType.transform.position = new Vector3(tile.transform.position.x,0.1f,tile.transform.position.z);
                 
@@ -678,13 +678,13 @@ public class MapGenerator : EditorWindow
                 entry.tex = texType;
                 _texList.Add(entry);
             }
-            else if (t.tileType != 1 && _curDrawMode == DrawMode.DISSELECT)
+            else if (t.tileType != TileType.RandomAvail && _curDrawMode == DrawMode.DISSELECT)
             {
                 foreach (var entry in _texList)
                 {
                     if (entry.pos == t.ReturnPos())
                     {
-                        t.tileType = (int)TypeMode.AVAIL;
+                        t.tileType = (TileType)TypeMode.AVAIL;
                         DestroyImmediate(entry.tex);
                         remove = entry;
                     }
