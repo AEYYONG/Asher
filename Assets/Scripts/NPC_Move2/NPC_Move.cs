@@ -41,9 +41,13 @@ public class NPC_Move : MonoBehaviour
     {
         Vector3 currentPosition = transform.position;
 
-        // X축과 Z축 좌표가 목표 지점과 정확히 일치하는지 확인
-        return Mathf.Approximately(currentPosition.x, targetPosition.x) &&
-               Mathf.Approximately(currentPosition.z, targetPosition.z);
+        // X축과 Z축 좌표가 목표 지점과 일정 범위 내에 있는지 확인
+        float threshold = 0.1f;  // 허용 오차 범위
+
+        bool isXCloseEnough = Mathf.Abs(currentPosition.x - targetPosition.x) < threshold;
+        bool isZCloseEnough = Mathf.Abs(currentPosition.z - targetPosition.z) < threshold;
+
+        return isXCloseEnough && isZCloseEnough;
     }
 
     void DetectInFront()
@@ -80,9 +84,25 @@ public class NPC_Move : MonoBehaviour
 
     void SetDestination(Vector3 destination)
     {
-        targetPosition = destination;
-        agent.SetDestination(targetPosition);
-        Debug.Log("Asher의 위치로 이동: " + targetPosition);
+        NavMeshHit hit;
+
+        // Z축이 0인 경우를 특별히 처리
+        if (Mathf.Approximately(destination.z, 0))
+        {
+            destination.z = 0.1f; // Z축이 0일 때 약간의 값을 추가해 문제를 피함
+        }
+
+        // NavMesh 상에서 유효한 좌표를 찾기
+        if (NavMesh.SamplePosition(destination, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            targetPosition = hit.position;
+            agent.SetDestination(targetPosition);
+            Debug.Log("목표 지점 설정: " + targetPosition);
+        }
+        else
+        {
+            Debug.LogWarning("NavMesh 상에서 유효하지 않은 위치입니다.");
+        }
     }
 
     // OnDrawGizmos를 사용하여 레이캐스트 경로를 Scene에 시각적으로 표시
