@@ -10,10 +10,9 @@ public class NPC_Move : MonoBehaviour
     private bool moveInXAxis = true;
     public float detectionRange = 2.0f;
 
-
-    // ÀÌµ¿ °¡´ÉÇÑ ¹üÀ§ ¼³Á¤
-    public Vector3 minRange = new Vector3(0, 0, 0);  // ÃÖ¼Ò ÁÂÇ¥
-    public Vector3 maxRange = new Vector3(12, 0, 8); // ÃÖ´ë ÁÂÇ¥
+    // ì´ë™ ê°€ëŠ¥í•œ ë²”ìœ„ ì„¤ì •
+    public Vector3 minRange = new Vector3(0, 0, 0);  // ìµœì†Œ ì¢Œí‘œ
+    public Vector3 maxRange = new Vector3(12, 0, 8); // ìµœëŒ€ ì¢Œí‘œ
 
     // Start is called before the first frame update
     void Start()
@@ -26,9 +25,9 @@ public class NPC_Move : MonoBehaviour
     void Update()
     {
         DetectInFront();
-        if (agent.remainingDistance < 0.1f && !agent.pathPending)
+        if (HasReachedDestination())
         {
-            // ¸ñÇ¥ ÁöÁ¡¿¡ µµ´ŞÇÏ¸é »õ·Î¿î ·£´ı ¸ñÀûÁö¸¦ ¼³Á¤
+            // ëª©í‘œ ì§€ì ì— ì •í™•íˆ ë„ë‹¬í•˜ë©´ ìƒˆë¡œìš´ ëœë¤ ëª©ì ì§€ë¥¼ ì„¤ì •
             SetRandomDestination();
         }
         else
@@ -37,18 +36,27 @@ public class NPC_Move : MonoBehaviour
         }
     }
 
+    // ëª©í‘œ ì§€ì ì— ì •í™•íˆ ë„ë‹¬í–ˆëŠ”ì§€ í™•ì¸í•˜ëŠ” í•¨ìˆ˜
+    bool HasReachedDestination()
+    {
+        Vector3 currentPosition = transform.position;
+
+        // Xì¶•ê³¼ Zì¶• ì¢Œí‘œê°€ ëª©í‘œ ì§€ì ê³¼ ì •í™•íˆ ì¼ì¹˜í•˜ëŠ”ì§€ í™•ì¸
+        return Mathf.Approximately(currentPosition.x, targetPosition.x) &&
+               Mathf.Approximately(currentPosition.z, targetPosition.z);
+    }
 
     void DetectInFront()
     {
-        Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);  // NPCÀÇ ¾Æ·¡ÂÊ¿¡¼­ ·¹ÀÌÄ³½ºÆ® ½ÃÀÛ
+        Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);  // NPCì˜ ì•„ë˜ìª½ì—ì„œ ë ˆì´ìºìŠ¤íŠ¸ ì‹œì‘
 
-        // NPCÀÇ ÇöÀç ÀÌµ¿ ¹æÇâ¿¡ µû¶ó ·¹ÀÌÄ³½ºÆ® ¹æÇâÀ» ¼³Á¤
+        // NPCì˜ í˜„ì¬ ì´ë™ ë°©í–¥ì— ë”°ë¼ ë ˆì´ìºìŠ¤íŠ¸ ë°©í–¥ì„ ì„¤ì •
         Vector3 rayDirection = agent.velocity.normalized;
 
-        // velocity°¡ 0ÀÏ ¶§¸¦ ´ëºñÇÑ ±âº»°ª
+        // velocityê°€ 0ì¼ ë•Œë¥¼ ëŒ€ë¹„í•œ ê¸°ë³¸ê°’
         if (rayDirection == Vector3.zero)
         {
-            rayDirection = transform.forward; // ±âº»ÀûÀ¸·Î Á¤¸éÀ¸·Î ¼³Á¤
+            rayDirection = transform.forward; // ê¸°ë³¸ì ìœ¼ë¡œ ì •ë©´ìœ¼ë¡œ ì„¤ì •
         }
 
         Ray ray = new Ray(rayOrigin, rayDirection);
@@ -56,100 +64,103 @@ public class NPC_Move : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, detectionRange))
         {
-            // °¨ÁöµÈ ¹°Ã¼ÀÇ ÀÌ¸§ÀÌ "Asher"¶ó¸é
+            // ê°ì§€ëœ ë¬¼ì²´ì˜ ì´ë¦„ì´ "Asher"ë¼ë©´
             if (hit.collider.name == "Asher")
             {
-                Debug.Log("Asher °¨ÁöµÊ: " + hit.collider.name);
+                Debug.Log("Asher ê°ì§€ë¨: " + hit.collider.name);
 
-                // AsherÀÇ À§Ä¡ ÁÂÇ¥¸¦ ±×¸®µå¿¡ ½º³À
+                // Asherì˜ ìœ„ì¹˜ ì¢Œí‘œë¥¼ ê·¸ë¦¬ë“œì— ìŠ¤ëƒ…
                 Vector3 asherPosition = SnapToGrid(hit.transform.position);
 
-                // ½º³ÀµÈ ÁÂÇ¥¸¦ ¸ñÇ¥ ÁöÁ¡À¸·Î ¼³Á¤
+                // ìŠ¤ëƒ…ëœ ì¢Œí‘œë¥¼ ëª©í‘œ ì§€ì ìœ¼ë¡œ ì„¤ì •
                 SetDestination(asherPosition);
             }
         }
     }
 
-
-
     void SetDestination(Vector3 destination)
     {
         targetPosition = destination;
         agent.SetDestination(targetPosition);
-        Debug.Log("AsherÀÇ À§Ä¡·Î ÀÌµ¿: " + targetPosition);
+        Debug.Log("Asherì˜ ìœ„ì¹˜ë¡œ ì´ë™: " + targetPosition);
     }
 
-    // OnDrawGizmos¸¦ »ç¿ëÇÏ¿© ·¹ÀÌÄ³½ºÆ® °æ·Î¸¦ Scene¿¡ ½Ã°¢ÀûÀ¸·Î Ç¥½Ã
+    // OnDrawGizmosë¥¼ ì‚¬ìš©í•˜ì—¬ ë ˆì´ìºìŠ¤íŠ¸ ê²½ë¡œë¥¼ Sceneì— ì‹œê°ì ìœ¼ë¡œ í‘œì‹œ
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red; // ·¹ÀÌÀÇ »ö»óÀ» »¡°£»öÀ¸·Î ¼³Á¤
+        Gizmos.color = Color.red; // ë ˆì´ì˜ ìƒ‰ìƒì„ ë¹¨ê°„ìƒ‰ìœ¼ë¡œ ì„¤ì •
 
         Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);
 
-        // NPCÀÇ ÇöÀç ÀÌµ¿ ¹æÇâ¿¡ µû¶ó ·¹ÀÌÄ³½ºÆ® ¹æÇâÀ» ¼³Á¤
+        // NPCì˜ í˜„ì¬ ì´ë™ ë°©í–¥ì— ë”°ë¼ ë ˆì´ìºìŠ¤íŠ¸ ë°©í–¥ì„ ì„¤ì •
         Vector3 rayDirection = agent.velocity.normalized;
 
-        // velocity°¡ 0ÀÏ ¶§¸¦ ´ëºñÇÑ ±âº»°ª
+        // velocityê°€ 0ì¼ ë•Œë¥¼ ëŒ€ë¹„í•œ ê¸°ë³¸ê°’
         if (rayDirection == Vector3.zero)
         {
-            rayDirection = transform.forward; // ±âº»ÀûÀ¸·Î Á¤¸éÀ¸·Î ¼³Á¤
+            rayDirection = transform.forward; // ê¸°ë³¸ì ìœ¼ë¡œ ì •ë©´ìœ¼ë¡œ ì„¤ì •
         }
 
-        // ·¹ÀÌÄ³½ºÆ®ÀÇ ¹æÇâÀ¸·Î °¨Áö ¹üÀ§¸¸Å­ Gizmos·Î ·¹ÀÌ ±×¸®±â
+        // ë ˆì´ìºìŠ¤íŠ¸ì˜ ë°©í–¥ìœ¼ë¡œ ê°ì§€ ë²”ìœ„ë§Œí¼ Gizmosë¡œ ë ˆì´ ê·¸ë¦¬ê¸°
         Gizmos.DrawRay(rayOrigin, rayDirection * detectionRange);
     }
 
-    // ·£´ıÇÑ ¸ñÀûÁö¸¦ ¼³Á¤ÇÏ°í ½º³ÀÇÏ´Â ÇÔ¼ö
+    // ëœë¤í•œ ëª©ì ì§€ë¥¼ ì„¤ì •í•˜ê³  ìŠ¤ëƒ…í•˜ëŠ” í•¨ìˆ˜
     void SetRandomDestination()
     {
-        // minRange¿Í maxRange »çÀÌ¿¡¼­ ·£´ıÇÑ À§Ä¡ ¼±ÅÃ
+        // minRangeì™€ maxRange ì‚¬ì´ì—ì„œ ëœë¤í•œ ìœ„ì¹˜ ì„ íƒ
         Vector3 randomPosition = new Vector3(
             Random.Range(minRange.x, maxRange.x),
-            0,  // Y´Â Ç×»ó 0
+            0,  // YëŠ” í•­ìƒ 0
             Random.Range(minRange.z, maxRange.z)
         );
 
-        // ·£´ı ÁÂÇ¥¸¦ ±×¸®µå¿¡ ½º³À
+        // ëœë¤ ì¢Œí‘œë¥¼ ê·¸ë¦¬ë“œì— ìŠ¤ëƒ…
         targetPosition = SnapToGrid(randomPosition);
-      //  Debug.Log("À§Ä¡:" + targetPosition);
+        Debug.Log("ë‹¤ìŒ ìœ„ì¹˜: " + targetPosition);
 
-        // ¸ñÀûÁö ¼³Á¤
-        agent.SetDestination(targetPosition);
+        // ëª©ì ì§€ ì„¤ì •
+        SetDestination(targetPosition);
     }
 
-    // Á¤¼ö ÁÂÇ¥·Î ½º³ÀÇÏ´Â ÇÔ¼ö
+    // ì •ìˆ˜ ì¢Œí‘œë¡œ ìŠ¤ëƒ…í•˜ëŠ” í•¨ìˆ˜
     Vector3 SnapToGrid(Vector3 position)
     {
         return new Vector3(Mathf.Round(position.x), position.y, Mathf.Round(position.z));
     }
 
-    // ±×¸®µå »ó¿¡¼­ XÃà°ú ZÃàÀ¸·Î¸¸ ÀÌµ¿ÇÏ´Â ÇÔ¼ö
+    Vector3 SnapZToGrid(Vector3 position)
+    {
+        return new Vector3(position.x, position.y, Mathf.Round(position.z));
+    }
+
+    // ê·¸ë¦¬ë“œ ìƒì—ì„œ Xì¶•ê³¼ Zì¶•ìœ¼ë¡œë§Œ ì´ë™í•˜ëŠ” í•¨ìˆ˜
     void MoveInGrid()
     {
         Vector3 currentPosition = transform.position;
 
         if (moveInXAxis)
         {
-            // XÃà ¹æÇâÀ¸·Î ÀÌµ¿
+            // Xì¶• ë°©í–¥ìœ¼ë¡œ ì´ë™
             Vector3 nextPosition = new Vector3(targetPosition.x, currentPosition.y, currentPosition.z);
             agent.SetDestination(nextPosition);
 
-            // XÃà ÀÌµ¿ÀÌ ¿Ï·áµÇ¾ú´ÂÁö È®ÀÎ
-            if (Mathf.Abs(agent.remainingDistance) < 0.1f)
+            // Xì¶• ì´ë™ì´ ì™„ë£Œë˜ì—ˆëŠ”ì§€ í™•ì¸ (ëª©í‘œ ìœ„ì¹˜ì™€ ì¼ì¹˜)
+            if (Mathf.Approximately(currentPosition.x, targetPosition.x))
             {
-                moveInXAxis = false; // ZÃà ÀÌµ¿À¸·Î ÀüÈ¯
+                moveInXAxis = false; // Zì¶• ì´ë™ìœ¼ë¡œ ì „í™˜
             }
         }
         else
         {
-            // ZÃà ¹æÇâÀ¸·Î ÀÌµ¿
-            Vector3 nextPosition = new Vector3(currentPosition.x, currentPosition.y, targetPosition.z);
+            // Zì¶• ë°©í–¥ìœ¼ë¡œ ì´ë™
+            Vector3 nextPosition = SnapZToGrid(new Vector3(currentPosition.x, currentPosition.y, targetPosition.z));
             agent.SetDestination(nextPosition);
 
-            // ZÃà ÀÌµ¿ÀÌ ¿Ï·áµÇ¾ú´ÂÁö È®ÀÎ
-            if (Mathf.Abs(agent.remainingDistance) < 0.1f)
+            // Zì¶• ì´ë™ì´ ì™„ë£Œë˜ì—ˆëŠ”ì§€ í™•ì¸ (ëª©í‘œ ìœ„ì¹˜ì™€ ì¼ì¹˜)
+            if (Mathf.Approximately(currentPosition.z, targetPosition.z))
             {
-                moveInXAxis = true; // XÃà ÀÌµ¿À¸·Î ´Ù½Ã ÀüÈ¯
+                moveInXAxis = true; // Xì¶• ì´ë™ìœ¼ë¡œ ë‹¤ì‹œ ì „í™˜
             }
         }
     }
