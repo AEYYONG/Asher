@@ -34,6 +34,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    
     void OnEnable()
     {
         inventory.OnItemAdd += AddItem;
@@ -94,7 +95,7 @@ public class InventoryManager : MonoBehaviour
         Debug.Log("slot2"+slot2);
         if (slot1.itemData != null)
         {
-            firstSlot.sprite = slot1.itemData.img;
+            //firstSlot.sprite = slot1.itemData.img;
         }
         else
         {
@@ -103,7 +104,7 @@ public class InventoryManager : MonoBehaviour
         
         if (slot2.itemData != null)
         {
-            secondSlot.sprite = slot2.itemData.img;
+            //secondSlot.sprite = slot2.itemData.img;
         }
         else
         {
@@ -121,4 +122,5 @@ public class InventoryManager : MonoBehaviour
             UpdateSlotUI();
         }
     }
+    
 }

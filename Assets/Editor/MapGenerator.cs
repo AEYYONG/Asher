@@ -661,14 +661,14 @@ public class MapGenerator : EditorWindow
                 if (_curTypeMode == TypeMode.NOTAVAIL)
                 {
                     target = _notAvail;
+                    t.tileType = TileType.RandomNotAvail;
                 }
                 else if(_curTypeMode == TypeMode.EVENT)
                 {
                     target = _event;
+                    t.tileType = TileType.Event;
                 }
                 
-                t.tileType = (TileType)_curTypeMode;
-                tile.GetComponent<Tile>().tileType = (TileType)_curTypeMode;
                 texType = PrefabUtility.InstantiatePrefab(target,_texParent.transform) as GameObject;
                 texType.transform.position = new Vector3(tile.transform.position.x,0.1f,tile.transform.position.z);
                 
@@ -684,7 +684,7 @@ public class MapGenerator : EditorWindow
                 {
                     if (entry.pos == t.ReturnPos())
                     {
-                        t.tileType = (TileType)TypeMode.AVAIL;
+                        t.tileType = TileType.RandomAvail;
                         DestroyImmediate(entry.tex);
                         remove = entry;
                     }

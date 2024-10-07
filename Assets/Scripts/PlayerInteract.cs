@@ -24,6 +24,7 @@ public class PlayerInteract : MonoBehaviour
     //아이템 추가 이벤트
     public InventorySO inventory;
     
+    
     void Awake()
     {
         _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
@@ -44,6 +45,14 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
+        //선택한 첫번째 카드가 함정 카드라면
+        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
+        {
+            canInteract = false;
+            _tiles[0].Use();
+            InitValue();
+        }
+        
         //선택 가능한 타일을 모두 선택하였을 때
         if (_curSelectCnt == maxSelectCnt && !_compareStart)
         {
@@ -52,110 +61,103 @@ public class PlayerInteract : MonoBehaviour
             
             //타일 비교
             _compareStart = true;
-            if (!CompareTile(_tiles[0], _tiles[1]))
-            {
-                //타일이 같지 않다면 타일 원상복귀
-                _tileManager.ReturnTile(_tiles);
-            }
-            else
-            {
-                //현재까지 선택된 타일이 모두 이벤트 타일들이 아니라면
-                if (_tiles[0].tileSO.tileID != TileID.Event)
-                {
-                    //버프 아이템인 경우 인벤토리에 습득
-                    if (_tiles[0].tileSO.tileID == TileID.Item)
-                    {
-                        Debug.Log("get item");
-                        ItemTile item = _tiles[0].GetComponent<ItemTile>();
-                        inventory.AddItemEvent(item);
-                    }
-                    else if (_tiles[0].tileSO.tileID == TileID.Trap)
-                    {
-                        //디버프 아이템인 경우, 인벤토리에 저장 없이 바로 실행
-                        TrapTile trap = _tiles[0].GetComponent<TrapTile>();
-                        trap.Use(gameObject);
-                    }
-                    
-                    //이벤트 타일이 아니면서 타일이 서로 같으면 아이템 획득 후, 값 초기화(다시 타일 선택할 수 있도록)
-                    InitValue();
-                }
-                else
-                {
-                    //선택된 타일이 모두 이벤트 타일이라면
-                    canInteract = true;
-                }
-            }
+            CompareTile(_tiles[0], _tiles[1]);
         }
         
         //이벤트 타일에 대해 n-1번째 타일을 선택하였을 때(세번째 타일까지 왔다면, 첫번째 두번째 타일은 모두 이벤트 타일인 것.
-        if (_curSelectCnt < _tileManager.eventTileCnt && _curSelectCnt > maxSelectCnt && _tileManager.eventTileCnt > 0)
+        if (_curSelectCnt <= _tileManager.eventTileCnt && _curSelectCnt > maxSelectCnt && _tileManager.eventTileCnt > 0)
         {
-            /*
-            if (_tileInfos[_curSelectCnt-1].tileID != TileID.Event)
+            if (_tiles[_curSelectCnt-1].tileSO.tileID != TileID.Event)
             {
                 //타일이 같지 않다면 타일 원상복귀
-                Debug.Log("이벤트 타일 debug");
-                _tileManager.ReturnTile(_tileInfos);
+                Debug.Log("Not Event Tile");
+                _tileManager.ReturnTile(_tiles);
                 InitValue();
             }
-            */
-        }
-        else if (_curSelectCnt == _tileManager.eventTileCnt && _tileManager.eventTileCnt > 0)
-        {
-            /*
-            if (_tileInfos[_curSelectCnt-1].tileID != TileID.Event)
-            {
-                //타일이 같지 않다면 타일 원상복귀
-                _tileManager.ReturnTile(_tileInfos);
-                InitValue();
-            }
-            else
+            else if (_curSelectCnt == _tileManager.eventTileCnt &&
+                     _tiles[_curSelectCnt - 1].tileSO.tileID == TileID.Event)
             {
                 //이벤트 타일을 모두 뒤집었다면 실행할 함수
-                
+                _tiles[_curSelectCnt-1].Use();
                 //값 초기화
                 InitValue();
             }
-            */
         }
     }
 
-    bool CompareTile(Tile tile1, Tile tile2)
+    void CompareTile(Tile tile1, Tile tile2)
     {
+        // 서로 다른 타일(일반 타일, 그린존 타일 포함) -> 다시 뒤집기
+        // 서로 같은 아이템 타일 -> 획득
+        // 마음의 조각 타일 -> 획득
+        // 모두 조커 타일 -> 다시 뒤집기
+        // 모두 이벤트 타일 -> 다음 타일들 확인
+        // 아이템 타일과 조커 타일 -> 획득
         TileID id1 = tile1.tileSO.tileID;
         TileID id2 = tile2.tileSO.tileID;
-        //두 타일의 아이디 값이 같다면(같은 타일이라면)
+        //두 타일의 아이디 값이 같다면(같은 타입의 타일이라면)
         if (id1 == id2)
         {
-            if (id1 == TileID.General)
+            switch (id1)
             {
-                Debug.Log("일반적인 타일");
-                return false;
+                case TileID.General:
+                    Debug.Log("General Tile");
+                    _tileManager.ReturnTile(_tiles);
+                    InitValue();
+                    break;
+                case TileID.HeartStone:
+                    Debug.Log("Heart Piece Tile");
+                    InitValue();
+                    break;
+                case TileID.Item:
+                    if (tile1.tileSO.itemID == tile2.tileSO.itemID)
+                    {
+                        Debug.Log("Same Item Tile");
+                        inventory.AddItemEvent(tile1);
+                        InitValue();
+                        break;
+                    }
+                    Debug.Log("Not Same Item Tile"); 
+                    InitValue();
+                    break;
+                case TileID.Joker:
+                    Debug.Log("Red and Black Joker");
+                    _tileManager.ReturnTile(_tiles);
+                    InitValue();
+                    break;
+                case TileID.Event:
+                    Debug.Log("Select Two Event Tile");
+                    canInteract = true; //모두 이벤트 타일이라면, 계속 타일을 선택할 수 있는 기회가 주어짐.
+                    break;
+                default:
+                    _tileManager.ReturnTile(_tiles);
+                    InitValue();
+                    break;
             }
-            if (id1 == TileID.Item)
-            {
-                ItemType i1 = tile1.GetComponent<ItemTile>().itemSO.itemType;
-                ItemType i2 = tile2.GetComponent<ItemTile>().itemSO.itemType;
-
-                if (i1 != i2)
-                {
-                    return false;
-                }
-            }
-            if (id1 == TileID.Trap)
-            {
-                TrapID t1 = tile1.GetComponent<TrapTile>().trapSO.trapID;
-                TrapID t2 = tile2.GetComponent<TrapTile>().trapSO.trapID;
-                
-                if (t1 != t2)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
-        //두 타일의 아이디 값이 같지 않다면
-        return false;
+        else
+        {
+            //두 타일의 타입이 같지 않지만 조커와 아이템의 조합이라면
+            if (id1 == TileID.Joker && id2 == TileID.Item)
+            {
+                Debug.Log("Joker and Item");
+                inventory.AddItemEvent(tile2);
+            }
+            else if (id1 == TileID.Item && id2 == TileID.Joker)
+            {
+                Debug.Log("Joker and Item");
+                inventory.AddItemEvent(tile1);
+            }
+            else if (id2 == TileID.Trap)
+            {
+                tile2.Use();
+            }
+            else
+            {
+                _tileManager.ReturnTile(_tiles);
+            }
+            InitValue();
+        }
     }
     public void IncSelectCnt()
     {
@@ -187,6 +189,6 @@ public class PlayerInteract : MonoBehaviour
 
     public void UseItem(InventorySlot item)
     {
-        item.script.Use(this.gameObject);
+        item.script.Use();
     }
 }

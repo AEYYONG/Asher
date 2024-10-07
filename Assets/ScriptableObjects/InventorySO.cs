@@ -8,19 +8,22 @@ using UnityEngine.Events;
 [System.Serializable]
 public class InventorySlot
 {
-    public ItemSO itemData;
-    public ItemTile script;
+    
+    public TileSO itemData;
+    public Tile script;
 
-    public InventorySlot(ItemTile tile)
+    public InventorySlot(Tile tile)
     {
-        this.itemData = tile.itemSO;
+        this.itemData = tile.tileSO;
         this.script = tile;
     }
+    
 }
 
 [CreateAssetMenu(menuName = "InventorySO",fileName = "InventorySO")]
 public class InventorySO : ScriptableObject
 {
+    
     public List<InventorySlot> InventorySlots = new List<InventorySlot>();
     public delegate void ItemAddedEvent(InventorySlot slot);
     public event ItemAddedEvent OnItemAdd;
@@ -39,7 +42,7 @@ public class InventorySO : ScriptableObject
         InventorySlots.Clear();
     }
 
-    public void AddItemEvent(ItemTile item)
+    public void AddItemEvent(Tile item)
     {
         InventorySlot slot = new InventorySlot(item);
         OnItemAdd?.Invoke(slot);
@@ -49,6 +52,7 @@ public class InventorySO : ScriptableObject
     {
         OnItemUsed?.Invoke(slot);
     }
+    
 }
 
 
