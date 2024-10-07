@@ -14,10 +14,15 @@ public class NPC_Move : MonoBehaviour
     public Vector3 minRange = new Vector3(0, 0, 0);  // 최소 좌표
     public Vector3 maxRange = new Vector3(12, 0, 8); // 최대 좌표
 
+    // 애니메이션
+    public Animator animator;
+    private string currentAnimation;
+
     // Start is called before the first frame update
     void Start()
     {
         agent.updateRotation = false;
+        
         SetRandomDestination();
     }
 
@@ -34,6 +39,10 @@ public class NPC_Move : MonoBehaviour
         {
             MoveInGrid();
         }
+
+        UpdateAnimation();
+        transform.rotation = Quaternion.Euler(70, 0, 0);
+
     }
 
     // 목표 지점에 정확히 도달했는지 확인하는 함수
@@ -78,6 +87,8 @@ public class NPC_Move : MonoBehaviour
 
                 // 스냅된 좌표를 목표 지점으로 설정
                 SetDestination(asherPosition);
+                Debug.Log("asherPosition: " + asherPosition);
+                Debug.Log("애셔 위치: " + targetPosition);
             }
         }
     }
@@ -184,4 +195,46 @@ public class NPC_Move : MonoBehaviour
             }
         }
     }
+
+    // 애니메이션 변경
+    void UpdateAnimation()
+    {
+        Vector3 velocity = agent.velocity;
+        if (Mathf.Abs(velocity.z) > Mathf.Abs(velocity.x))
+        {
+            if (velocity.z > 0 && currentAnimation != "up_npc")
+            {
+                Debug.Log("상");
+                ChangeAnimationState("up_npc");
+            }
+            else if (velocity.z < 0 && currentAnimation != "down_npc")
+            {
+                Debug.Log("하");
+                ChangeAnimationState("down_npc");
+            }
+        }
+
+        else
+        {
+            if (velocity.x > 0 && currentAnimation != "right_npc")
+            {
+                Debug.Log("우");
+                ChangeAnimationState("right_npc");
+            }
+            else if (velocity.x < 0 && currentAnimation != "left_npc")
+            {
+                Debug.Log("좌");
+                ChangeAnimationState("left_npc");
+            }
+        }
+    }
+
+    void ChangeAnimationState(string newAnimation)
+    {
+        if (currentAnimation == newAnimation) return;
+
+        animator.Play(newAnimation); 
+        currentAnimation = newAnimation;
+    }
+
 }
