@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum TileID
@@ -42,6 +44,7 @@ public enum TrapID
     BlackHole,
     TimeBomb
 }
+
 [CreateAssetMenu(menuName = "TileSO",fileName = "TileSO")]
 public class TileSO : ScriptableObject
 {
@@ -49,4 +52,5 @@ public class TileSO : ScriptableObject
     public ItemID itemID;
     public JokerID jokerID;
     public TrapID trapID;
+    public Sprite itemImg;
 }

@@ -54,7 +54,7 @@ public class InventoryManager : MonoBehaviour
 
         if (inventory.InventorySlots[0].itemData == null)
         {
-            Debug.Log("swap debug");
+            //Debug.Log("swap debug");
             isFirstSlotFull = false;
         }
         else
@@ -91,11 +91,11 @@ public class InventoryManager : MonoBehaviour
     {
         InventorySlot slot1 = inventory.InventorySlots[0];
         InventorySlot slot2 = inventory.InventorySlots[1];
-        Debug.Log("slot1" + slot1);
-        Debug.Log("slot2"+slot2);
+        //Debug.Log("slot1" + slot1);
+        //Debug.Log("slot2"+slot2);
         if (slot1.itemData != null)
         {
-            //firstSlot.sprite = slot1.itemData.img;
+            firstSlot.sprite = slot1.itemData.itemImg;
         }
         else
         {
@@ -104,7 +104,7 @@ public class InventoryManager : MonoBehaviour
         
         if (slot2.itemData != null)
         {
-            //secondSlot.sprite = slot2.itemData.img;
+            secondSlot.sprite = slot2.itemData.itemImg;
         }
         else
         {
