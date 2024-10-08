@@ -14,6 +14,7 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] int _curSelectCnt;
     //각 타일의 정보
     private List<Tile> _tiles = new List<Tile>();
+    public int GetSelectedTilesCnt() { return _tiles.Count; }
     //타일을 뒤집을 수 있는지 여부
     public bool canInteract;
     //타일 검사 flag
@@ -63,26 +64,6 @@ public class PlayerInteract : MonoBehaviour
             _compareStart = true;
             CompareTile(_tiles[0], _tiles[1]);
         }
-        
-        //이벤트 타일에 대해 n-1번째 타일을 선택하였을 때(세번째 타일까지 왔다면, 첫번째 두번째 타일은 모두 이벤트 타일인 것.
-        if (_curSelectCnt <= _tileManager.eventTileCnt && _curSelectCnt > maxSelectCnt && _tileManager.eventTileCnt > 0)
-        {
-            if (_tiles[_curSelectCnt-1].tileSO.tileID != TileID.Event)
-            {
-                //타일이 같지 않다면 타일 원상복귀
-                Debug.Log("Not Event Tile");
-                _tileManager.ReturnTile(_tiles);
-                InitValue();
-            }
-            else if (_curSelectCnt == _tileManager.eventTileCnt &&
-                     _tiles[_curSelectCnt - 1].tileSO.tileID == TileID.Event)
-            {
-                //이벤트 타일을 모두 뒤집었다면 실행할 함수
-                _tiles[_curSelectCnt-1].Use();
-                //값 초기화
-                InitValue();
-            }
-        }
     }
 
     void CompareTile(Tile tile1, Tile tile2)
@@ -91,7 +72,6 @@ public class PlayerInteract : MonoBehaviour
         // 서로 같은 아이템 타일 -> 획득
         // 마음의 조각 타일 -> 획득
         // 모두 조커 타일 -> 다시 뒤집기
-        // 모두 이벤트 타일 -> 다음 타일들 확인
         // 아이템 타일과 조커 타일 -> 획득
         TileID id1 = tile1.tileSO.tileID;
         TileID id2 = tile2.tileSO.tileID;
@@ -103,39 +83,30 @@ public class PlayerInteract : MonoBehaviour
                 case TileID.General:
                     Debug.Log("General Tile");
                     _tileManager.ReturnTile(_tiles);
-                    InitValue();
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
                     tile1.Use();
-                    InitValue();
                     break;
                 case TileID.Item:
                     if (tile1.tileSO.itemID == tile2.tileSO.itemID)
                     {
                         Debug.Log("Same Item Tile");
                         inventory.AddItemEvent(tile1);
-                        InitValue();
                         break;
                     }
                     Debug.Log("Not Same Item Tile"); 
                     _tileManager.ReturnTile(_tiles);
-                    InitValue();
                     break;
                 case TileID.Joker:
                     Debug.Log("Red and Black Joker");
                     _tileManager.ReturnTile(_tiles);
-                    InitValue();
-                    break;
-                case TileID.Event:
-                    Debug.Log("Select Two Event Tile");
-                    canInteract = true; //모두 이벤트 타일이라면, 계속 타일을 선택할 수 있는 기회가 주어짐.
                     break;
                 default:
                     _tileManager.ReturnTile(_tiles);
-                    InitValue();
                     break;
             }
+            //InitValue();
         }
         else
         {
@@ -160,7 +131,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 _tileManager.ReturnTile(_tiles);
             }
-            InitValue();
+            //InitValue();
         }
     }
     public void IncSelectCnt()
@@ -190,7 +161,7 @@ public class PlayerInteract : MonoBehaviour
         //선택된 타일 정보가 담긴 리스트 초기화
         _tiles.Clear();
     }
-
+    
     public void UseItem(InventorySlot item)
     {
         item.script.Use();

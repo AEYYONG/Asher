@@ -54,6 +54,7 @@ public class Tile : MonoBehaviour
         {
             //타일 선택 횟수 하나 증가
             _playerInteract.IncSelectCnt();
+            tileSO.selectNum = _playerInteract.GetCurSelectCnt();
             //선택 여부 true로 변경
             isSelected = true;
             //뒤집기 애니메이션 시작
@@ -72,9 +73,6 @@ public class Tile : MonoBehaviour
         _animator.SetTrigger("Return");
         //선택 여부 false로 변경
         isSelected = false;
-        //yield return new WaitForSeconds(0.2f);
-        //PlayerInteract 값 초기화
-        _playerInteract.InitValue();
     }
 
     //타일 위치 반환
@@ -84,9 +82,6 @@ public class Tile : MonoBehaviour
     }
 
     //타일이 사용될 경우 발동되는 가상 함수
-    public virtual void Use()
-    {
-        
-    }
+    public virtual void Use() { }
     
 }
