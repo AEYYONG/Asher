@@ -16,3 +16,4 @@ MonoBehaviour:
   itemID: 3
   jokerID: 0
   trapID: 0
+  itemImg: {fileID: 21300000, guid: 7a3436d5e41e74d24b0d84fec1af5e02, type: 3}

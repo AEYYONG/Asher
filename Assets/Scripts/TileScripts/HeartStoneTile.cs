@@ -6,6 +6,7 @@ public class HeartStoneTile : Tile
 {
     public override void Use()
     {
-        
+        StageUIManager stageUIManager = FindObjectOfType<StageUIManager>();
+        stageUIManager.UpdateHeartStoneUI();
     }
 }

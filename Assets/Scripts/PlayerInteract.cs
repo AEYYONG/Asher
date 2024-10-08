@@ -107,6 +107,7 @@ public class PlayerInteract : MonoBehaviour
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
+                    tile1.Use();
                     InitValue();
                     break;
                 case TileID.Item:

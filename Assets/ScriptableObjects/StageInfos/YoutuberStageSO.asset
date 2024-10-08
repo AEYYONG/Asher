@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17778a9c27ed7446b9e382158b0b5da7, type: 3}
-  m_Name: HairBallSO
+  m_Script: {fileID: 11500000, guid: 3e2e513c59b6f4b9bad6788a6c0c6783, type: 3}
+  m_Name: YoutuberStageSO
   m_EditorClassIdentifier: 
-  tileID: 3
-  itemID: 2
-  jokerID: 0
-  trapID: 0
-  itemImg: {fileID: 21300000, guid: 0986bed9e2e1b4012910e646a46b809c, type: 3}
+  heartStoneTotalCnt: 0
+  limitedTime: 180
+  heartStoneCurCnt: 0
