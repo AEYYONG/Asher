@@ -119,6 +119,7 @@ public class PlayerInteract : MonoBehaviour
                         break;
                     }
                     Debug.Log("Not Same Item Tile"); 
+                    _tileManager.ReturnTile(_tiles);
                     InitValue();
                     break;
                 case TileID.Joker:
@@ -152,6 +153,8 @@ public class PlayerInteract : MonoBehaviour
             else if (id2 == TileID.Trap)
             {
                 tile2.Use();
+                _tiles.Remove(tile2);
+                _tileManager.ReturnTile(_tiles);
             }
             else
             {
