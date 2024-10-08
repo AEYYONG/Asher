@@ -6694,6 +6694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageSO: {fileID: 11400000, guid: c577c60a0c3f14239b5b20ee87c9e340, type: 2}
   heartStonesParent: {fileID: 449452065}
+  _heartStonesList: []
 --- !u!1001 &1013530508
 PrefabInstance:
   m_ObjectHideFlags: 0

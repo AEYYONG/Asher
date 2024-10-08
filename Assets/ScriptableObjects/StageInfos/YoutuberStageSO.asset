@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e2e513c59b6f4b9bad6788a6c0c6783, type: 3}
   m_Name: YoutuberStageSO
   m_EditorClassIdentifier: 
-  heartStoneTotalCnt: 0
+  heartStoneTotalCnt: 7
   limitedTime: 180
   heartStoneCurCnt: 0

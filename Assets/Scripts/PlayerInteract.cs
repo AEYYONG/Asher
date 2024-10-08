@@ -51,7 +51,7 @@ public class PlayerInteract : MonoBehaviour
         {
             canInteract = false;
             _tiles[0].Use();
-            InitValue();
+            StartCoroutine(InvokeInitValue());
         }
         
         //선택 가능한 타일을 모두 선택하였을 때
@@ -87,12 +87,14 @@ public class PlayerInteract : MonoBehaviour
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
                     tile1.Use();
+                    StartCoroutine(InvokeInitValue());
                     break;
                 case TileID.Item:
                     if (tile1.tileSO.itemID == tile2.tileSO.itemID)
                     {
                         Debug.Log("Same Item Tile");
                         inventory.AddItemEvent(tile1);
+                        StartCoroutine(InvokeInitValue());
                         break;
                     }
                     Debug.Log("Not Same Item Tile"); 
@@ -115,11 +117,13 @@ public class PlayerInteract : MonoBehaviour
             {
                 Debug.Log("Joker and Item");
                 inventory.AddItemEvent(tile2);
+                StartCoroutine(InvokeInitValue());
             }
             else if (id1 == TileID.Item && id2 == TileID.Joker)
             {
                 Debug.Log("Joker and Item");
                 inventory.AddItemEvent(tile1);
+                StartCoroutine(InvokeInitValue());
             }
             else if (id2 == TileID.Trap)
             {
@@ -154,6 +158,7 @@ public class PlayerInteract : MonoBehaviour
     }
     public void InitValue()
     {
+        Debug.Log("타일 선택 값 초기화 함수 호출");
         //값 초기화
         _curSelectCnt = 0;
         _compareStart = false;
@@ -165,5 +170,11 @@ public class PlayerInteract : MonoBehaviour
     public void UseItem(InventorySlot item)
     {
         item.script.Use();
+    }
+
+    public IEnumerator InvokeInitValue()
+    {
+        yield return new WaitForSeconds(_tileManager.tileReturnTime);
+        InitValue();
     }
 }
