@@ -22,7 +22,7 @@ public class NPC_Move : MonoBehaviour
     void Start()
     {
         agent.updateRotation = false;
-        
+
         SetRandomDestination();
     }
 
@@ -119,6 +119,20 @@ public class NPC_Move : MonoBehaviour
     // OnDrawGizmos를 사용하여 레이캐스트 경로를 Scene에 시각적으로 표시
     private void OnDrawGizmos()
     {
+        if (Application.isPlaying)
+        {
+            // 현재 위치에서 목표 위치로 레이 캐스트
+            Vector3 from = transform.position;
+            Vector3 to = targetPosition;
+
+            Vector3 direction = (to - from).normalized;
+            float distance = Vector3.Distance(from, to);
+
+            // 장애물이 있는지 감지하는 레이 캐스트를 시각화
+            Gizmos.color = Color.red; // 레이 색상을 빨간색으로 설정
+            Gizmos.DrawRay(from, direction * distance);
+        }
+
         Gizmos.color = Color.red; // 레이의 색상을 빨간색으로 설정
 
         Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);
@@ -139,19 +153,52 @@ public class NPC_Move : MonoBehaviour
     // 랜덤한 목적지를 설정하고 스냅하는 함수
     void SetRandomDestination()
     {
-        // minRange와 maxRange 사이에서 랜덤한 위치 선택
-        Vector3 randomPosition = new Vector3(
-            Random.Range(minRange.x, maxRange.x),
-            0,  // Y는 항상 0
-            Random.Range(minRange.z, maxRange.z)
-        );
+        bool validPositionFound = false;
 
-        // 랜덤 좌표를 그리드에 스냅
-        targetPosition = SnapToGrid(randomPosition);
-        Debug.Log("다음 위치: " + targetPosition);
+        while (!validPositionFound)
+        {
+            // minRange와 maxRange 사이에서 랜덤한 위치 선택
+            Vector3 randomPosition = new Vector3(
+                Random.Range(minRange.x, maxRange.x),
+                0,  // Y는 항상 0
+                Random.Range(minRange.z, maxRange.z)
+            );
 
-        // 목적지 설정
-        SetDestination(targetPosition);
+            // 랜덤 좌표를 그리드에 스냅
+            targetPosition = SnapToGrid(randomPosition);
+            Debug.Log("다음 위치: " + targetPosition);
+
+            NavMeshHit hit;
+
+            if (!IsPositionTaggedAsObstacle(targetPosition))
+            {
+                // 유효한 위치를 찾으면 목표 지점 설정
+                SetDestination(targetPosition);
+                validPositionFound = true;
+            }
+            else
+            {
+                SetRandomDestination();
+                Debug.Log("유효 위치 재탐색");
+            }
+        }
+    }
+
+    bool IsPositionTaggedAsObstacle(Vector3 position)
+    {
+        // 반경 0.1의 구 모양으로 해당 위치의 충돌체를 감지
+        Collider[] hitColliders = Physics.OverlapSphere(position, 0.1f);
+
+        foreach (var collider in hitColliders)
+        {
+            // 태그가 "Obstacle"인 콜라이더가 있는지 확인
+            if (collider.CompareTag("Obstacle"))
+            {
+                return true; // 장애물이 있음
+            }
+        }
+
+        return false; // 장애물이 없음
     }
 
     // 정수 좌표로 스냅하는 함수
@@ -172,29 +219,67 @@ public class NPC_Move : MonoBehaviour
 
         if (moveInXAxis)
         {
-            // X축 방향으로 이동
+            // X축 방향으로 이동 시도
             Vector3 nextPosition = new Vector3(targetPosition.x, currentPosition.y, currentPosition.z);
-            agent.SetDestination(nextPosition);
 
-            // X축 이동이 완료되었는지 확인 (목표 위치와 일치)
-            if (Mathf.Approximately(currentPosition.x, targetPosition.x))
+            // X축 이동 시 장애물 확인
+            if (IsPathBlocked(currentPosition, nextPosition))
             {
-                moveInXAxis = false; // Z축 이동으로 전환
+                Debug.Log("X축에 장애물 감지");
+                // X축 경로가 막혀있으면 Z축을 먼저 이동
+                moveInXAxis = false;
+            }
+            else
+            {
+                agent.SetDestination(nextPosition);
+                if (Mathf.Abs(currentPosition.x - targetPosition.x) < 0.1f)
+                {
+                    moveInXAxis = false; // X축 이동 완료 후 Z축 이동으로 전환
+                }
             }
         }
         else
         {
-            // Z축 방향으로 이동
-            Vector3 nextPosition = SnapZToGrid(new Vector3(currentPosition.x, currentPosition.y, targetPosition.z));
-            agent.SetDestination(nextPosition);
+            // Z축 방향으로 이동 시도
+            Vector3 nextPosition = new Vector3(currentPosition.x, currentPosition.y, targetPosition.z);
 
-            // Z축 이동이 완료되었는지 확인 (목표 위치와 일치)
-            if (Mathf.Approximately(currentPosition.z, targetPosition.z))
+            // Z축 이동 시 장애물 확인
+            if (IsPathBlocked(currentPosition, nextPosition))
             {
-                moveInXAxis = true; // X축 이동으로 다시 전환
+                Debug.Log("Z축에 장애물 감지");
+                // Z축 경로가 막혀있으면 다시 X축을 시도하거나 다른 처리
+                moveInXAxis = true;
+                SetRandomDestination();
+            }
+            else
+            {
+                agent.SetDestination(nextPosition);
+                if (Mathf.Abs(currentPosition.z - targetPosition.z) < 0.1f)
+                {
+                    moveInXAxis = true; // Z축 이동 완료 후 다시 X축 이동으로 전환
+                }
             }
         }
     }
+
+    // 경로 상에 장애물이 있는지 확인하는 함수
+    bool IsPathBlocked(Vector3 from, Vector3 to)
+    {
+        RaycastHit hit;
+        Vector3 direction = (to - from).normalized;
+        float distance = Vector3.Distance(from, to);
+
+        if (Physics.Raycast(from, direction, out hit, distance))
+        {
+            if (hit.collider.CompareTag("Obstacle"))
+            {
+                return true; // 장애물이 경로 상에 있음
+            }
+        }
+        return false; // 장애물 없음
+    }
+
+
 
     // 애니메이션 변경
     void UpdateAnimation()
@@ -233,7 +318,7 @@ public class NPC_Move : MonoBehaviour
     {
         if (currentAnimation == newAnimation) return;
 
-        animator.Play(newAnimation); 
+        animator.Play(newAnimation);
         currentAnimation = newAnimation;
     }
 

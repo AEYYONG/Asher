@@ -23,6 +23,21 @@ public class TileEntry
 }
 public class TileManager : MonoBehaviour
 {
+
+    public List<Tile> allTiles;
+
+    public List<Tile> GetAllTiles()
+    {
+        return allTiles;
+    }
+
+    // 특정 좌표의 타일을 가져오는 메서드
+    public Tile GetTile(int x, int z)
+    {
+        return allTiles.Find(t => t._x == x && t._z == z);
+    }
+
+
     //타일 가로, 세로 개수
     public int width, height;
     //타일이 다시 뒤집어지는 시간
