@@ -28,6 +28,10 @@ public class Player_Move_anim : MonoBehaviour
     private bool isJump = false;
     private Rigidbody body;
 
+
+    // 충돌 상태를 저장하는 변수
+    private bool isColliding = false;
+
     void Start()
     {
         targetPosition = SnapToGrid(transform.position);  // 시작 시 현재 위치를 목표 위치로 스냅
@@ -61,29 +65,71 @@ public class Player_Move_anim : MonoBehaviour
 
         MovePlayer();  // 이동 처리
     }
+    bool IsObstacleInDirection(Vector3 localDirection)
+    {
+        RaycastHit hit;
+        Vector3 rayOrigin = transform.position; // 레이의 시작점
+        rayOrigin.y -= 0.2f;
+        rayOrigin.z -= 0.5f;
+        float rayDistance = 0.9f; // 레이 거리
+        Vector3 rayDirection = transform.TransformDirection(localDirection);
+
+        // 레이를 쏴서 해당 방향에 장애물이 있는지 확인
+        if (Physics.Raycast(rayOrigin, localDirection, out hit, rayDistance))
+        {
+            if (hit.collider.CompareTag("Obstacle"))
+            {
+                Debug.Log("장애물 감지: " + hit.collider.name);
+                isColliding = true;
+        
+                return true; // 장애물이 있을 때
+            }
+        }
+        isColliding = false;
+        return false; // 장애물이 없을 때
+    }
 
     void HandleMovement()
     {
         Vector3 movement = Vector3.zero;
         if (Input.GetKey(KeyCode.D))
         {
-            movement = Vector3.right;
+            if (!IsObstacleInDirection(Vector3.right)) 
+            {
+                movement = Vector3.right;
+                
+            }
             ChangeAnimationState(PLAYER_RIGHT);
+
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            movement = Vector3.left;
+            if (!IsObstacleInDirection(Vector3.left)) 
+            {
+                movement = Vector3.left;
+            }
             ChangeAnimationState(PLAYER_LEFT);
+
         }
         else if (Input.GetKey(KeyCode.W))
         {
-            movement = Vector3.forward;
+            if (!IsObstacleInDirection(Vector3.forward)) 
+            {
+                movement = Vector3.forward;
+                
+            }
+
             ChangeAnimationState(PLAYER_UP);
+
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            movement = Vector3.back; // 음의 Z축으로 이동
+            if (!IsObstacleInDirection(Vector3.back)) 
+            {
+                movement = Vector3.back; // 음의 Z축으로 이동
+            }
             ChangeAnimationState(PLAYER_DOWN);
+
         }
 
         else if (Input.GetKey(KeyCode.Space) && isGrounded && body != null)
@@ -103,7 +149,33 @@ public class Player_Move_anim : MonoBehaviour
             isMoving = true;  // 이동 중 상태로 변경
         }
     }
+    void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            // 레이 시작점과 방향
+            Vector3 rayOrigin = transform.position;
 
+            // 오른쪽으로 레이 그리기
+            DrawRay(rayOrigin, Vector3.right, 0.9f);
+
+            // 왼쪽으로 레이 그리기
+            DrawRay(rayOrigin, Vector3.left, 0.9f);
+
+            // 앞쪽으로 레이 그리기 (위쪽)
+            DrawRay(rayOrigin, Vector3.forward, 0.9f);
+
+            // 뒤쪽으로 레이 그리기 (아래쪽)
+            DrawRay(rayOrigin, Vector3.back, 0.9f);
+        }
+    }
+
+    // 주어진 방향으로 레이를 그리는 함수
+    void DrawRay(Vector3 origin, Vector3 direction, float distance)
+    {
+        Gizmos.color = Color.red; // 레이 색상을 빨간색으로 설정
+        Gizmos.DrawRay(origin, direction * distance); // 레이를 그립니다
+    }
     void MovePlayer()
     {
         if (isMoving)
@@ -175,7 +247,9 @@ public class Player_Move_anim : MonoBehaviour
             Vector3 currentPosition = transform.position;
             currentPosition.z = Mathf.Floor(currentPosition.z) + 0.5f;
             transform.position = currentPosition;
-            Debug.Log("땅에 닿음");
         }
+
+
     }
+
 }
