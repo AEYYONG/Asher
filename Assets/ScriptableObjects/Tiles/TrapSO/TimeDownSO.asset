@@ -15,4 +15,6 @@ MonoBehaviour:
   tileID: 4
   itemID: 0
   jokerID: 0
-  trapID: 5
+  trapID: 7
+  itemImg: {fileID: 0}
+  selectNum: 0

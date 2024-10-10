@@ -35,14 +35,14 @@ public enum ItemID
 public enum TrapID
 {
     Default,
-    Banana,
-    Turtle,
     Aggro,
-    Fog,
-    TimeDown,
-    Inverse,
+    Banana,
     BlackHole,
-    TimeBomb
+    Fog,
+    Inverse,
+    TimeBomb,
+    TimeDown,
+    Turtle,
 }
 
 [CreateAssetMenu(menuName = "TileSO",fileName = "TileSO")]
