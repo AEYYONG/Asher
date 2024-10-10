@@ -1646,7 +1646,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7210d182a5dfb4f9f99739ca7ddb7ad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curItem: {fileID: 0}
 --- !u!1001 &315274868
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3749,7 +3748,7 @@ GameObject:
   - component: {fileID: 709086790}
   m_Layer: 0
   m_Name: Left
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3815,7 +3814,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1001 &713838157
 PrefabInstance:
@@ -4674,7 +4673,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &849911447
 BoxCollider:
@@ -5046,41 +5045,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7818a7c19f5ea4b67bd6aa9fb3f421d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemDatas:
-  - id: 2
-    img: {fileID: 21300000, guid: 2e4282e8af6f146b7a14da0764994797, type: 3}
-  - id: 3
-    img: {fileID: 21300000, guid: d7bdb5ef1db1f4d478d292d5ad0fb6c1, type: 3}
-  - id: 4
-    img: {fileID: 21300000, guid: f3ecf75aaa0854007b9ef6cffb7559e8, type: 3}
-  - id: 5
-    img: {fileID: 21300000, guid: 6042becfc2df447e79e47831f11c89af, type: 3}
-  - id: 6
-    img: {fileID: 21300000, guid: 715affac3389d43a3a472a75785858ed, type: 3}
-  - id: 7
-    img: {fileID: 21300000, guid: 0c9fd8dfa61cf4500ade8bf47fa598ba, type: 3}
-  - id: 8
-    img: {fileID: 21300000, guid: 99daf0d59980b43e5a1ffd235764a47a, type: 3}
-  - id: 9
-    img: {fileID: 21300000, guid: 6e00f4cb2611846f4a4e8e032b45dffe, type: 3}
-  - id: 10
-    img: {fileID: 21300000, guid: f35b3c9fecbe54b288c32c197886aee4, type: 3}
-  - id: 11
-    img: {fileID: 21300000, guid: 345470c2ade5d4839bcc93a71f613a37, type: 3}
-  - id: 12
-    img: {fileID: 21300000, guid: 10c8ae8b7ffaa48caa8c7b47e6805282, type: 3}
-  - id: 13
-    img: {fileID: 21300000, guid: e0e02ba220e34423cb2a70a767499329, type: 3}
-  - id: 14
-    img: {fileID: 21300000, guid: f4bec549a9cb74fa4a9f497f228d94a5, type: 3}
-  - id: 15
-    img: {fileID: 21300000, guid: 7fb6559daac06497da38348b83a6c134, type: 3}
-  - id: 16
-    img: {fileID: 21300000, guid: 54542bf0ae89c42d3a6e72fe8c066f88, type: 3}
-  - id: 0
-    img: {fileID: 21300000, guid: 112a474246af745a8a25be16f6685e40, type: 3}
-  buffItems: 0400000005000000060000000700000008000000
-  debuffItems: 090000000a0000000b0000000c0000000d0000000e0000000f00000010000000
 --- !u!4 &893136243
 Transform:
   m_ObjectHideFlags: 0
@@ -7796,7 +7760,7 @@ GameObject:
   - component: {fileID: 1343821867}
   m_Layer: 0
   m_Name: Bottom
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7841,7 +7805,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &1343821868
 BoxCollider:
@@ -12545,7 +12509,7 @@ GameObject:
   - component: {fileID: 1970878612}
   m_Layer: 0
   m_Name: Top
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12611,7 +12575,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!1001 &1971111395
 PrefabInstance:
@@ -13657,6 +13621,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 688912158137700741, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_Name
       value: Asher

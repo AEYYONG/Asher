@@ -264,7 +264,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &31079002
 BoxCollider:
@@ -418,9 +418,9 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5, y: 1.5, z: 0.2}
+  m_Size: {x: 1.5, y: 1.5, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &39579928
 NavMeshObstacle:
@@ -836,7 +836,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5, y: 1.5, z: 0.2}
+  m_Size: {x: 1.5, y: 1.5, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!208 &106887318
 NavMeshObstacle:
@@ -1275,7 +1275,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &151226124
 BoxCollider:
@@ -1728,7 +1728,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &211332217
 BoxCollider:
@@ -5673,10 +5673,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.7999997, y: 2.8, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0.000000059604645}
+  m_Size: {x: 1.5, y: 1.5, z: 2}
+  m_Center: {x: 0, y: -0.1, z: 0.000000059604645}
 --- !u!1 &544396844
 GameObject:
   m_ObjectHideFlags: 0
@@ -9279,10 +9279,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.72, y: 3.72, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.6, y: 1, z: 2}
+  m_Center: {x: 0.7, y: -1.4, z: 0}
 --- !u!208 &940079795
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -12037,10 +12037,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.7999997, y: 2.8, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 2.25, z: 2}
+  m_Center: {x: -0.2, y: 0, z: 0}
 --- !u!1001 &1176798470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13093,10 +13093,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.72, y: 3.72, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.72, y: 2.5, z: 2}
+  m_Center: {x: 0, y: 0.48, z: 0}
 --- !u!1 &1308583857
 GameObject:
   m_ObjectHideFlags: 0
@@ -13670,10 +13670,10 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.7999997, y: 2.8, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2.7999997, y: 2.8, z: 2}
+  m_Center: {x: 0.23, y: 0, z: 0}
 --- !u!1001 &1355452603
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19542,7 +19542,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!65 &2024639259
 BoxCollider:
@@ -19892,9 +19892,9 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.8, y: 3.6000004, z: 0.2000001}
+  m_Size: {x: 3.8, y: 3, z: 2}
   m_Center: {x: 0.2, y: 0, z: 0}
 --- !u!1001 &2075714080
 PrefabInstance:
