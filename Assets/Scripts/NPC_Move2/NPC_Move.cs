@@ -228,6 +228,7 @@ public class NPC_Move : MonoBehaviour
                 Debug.Log("X축에 장애물 감지");
                 // X축 경로가 막혀있으면 Z축을 먼저 이동
                 moveInXAxis = false;
+                SetRandomDestination();
             }
             else
             {
