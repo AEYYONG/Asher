@@ -8,8 +8,6 @@ public class StageUIManager : MonoBehaviour
     public StageInfoSO stageSO;
     [SerializeField] private GameObject heartStonesParent;
     [SerializeField] private List<Image> _heartStonesList = new List<Image>();
-    [SerializeField] private GameObject _sideCutSceneUI;
-    [SerializeField] private Animator _sideCutSceneImgAnimator;
     
     void Awake()
     {
@@ -29,20 +27,8 @@ public class StageUIManager : MonoBehaviour
         _heartStonesList.Clear();
         for (int i = 0; i < stageSO.heartStoneTotalCnt; i++)
         {
-            Image heartStone = heartStonesParent.transform.GetChild(i).GetComponent<Image>();
+            Image heartStone = heartStonesParent.transform.GetChild(i + 1).GetComponent<Image>();
             _heartStonesList.Add(heartStone);
         }
-    }
-
-    public void ActiveSideCutSceneUI()
-    {
-        _sideCutSceneUI.SetActive(true);
-    }
-
-    public void SetSideCutSceneUIImg(TrapID id)
-    {
-        int _id = (int)id;
-        Debug.Log("trap id : "+ _id);
-        _sideCutSceneImgAnimator.SetInteger("TrapId",_id);
     }
 }

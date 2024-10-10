@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class TimeDownTrap : Tile
 {
-    public override void TrapUse(StageUIManager uiManager)
+    public override void Use()
     {
-        base.TrapUse(uiManager);
         Debug.Log("시간 감소 아이템 사용");
     }
 }

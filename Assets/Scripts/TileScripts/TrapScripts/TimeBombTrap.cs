@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class TimeBombTrap : Tile
 {
-    public override void TrapUse(StageUIManager uiManager)
+    public override void Use()
     {
-        base.TrapUse(uiManager);
         Debug.Log("시한폭탄 아이템 사용");
     }
 }

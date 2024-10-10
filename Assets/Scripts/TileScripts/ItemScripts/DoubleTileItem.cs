@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DoubleTileItem : Tile
 {
-    public override void ItemUse()
+    public override void Use()
     {
         
     }

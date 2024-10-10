@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FeverItem : Tile
 {
-    public override void ItemUse()
+    public override void Use()
     {
         Debug.Log("피버타임 아이템 사용");
     }

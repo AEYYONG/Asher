@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class InverseTrap : Tile
 {
-    public override void TrapUse(StageUIManager uiManager)
+    public override void Use()
     {
-        base.TrapUse(uiManager);
         Debug.Log("역방향 아이템 사용");
     }
 }
