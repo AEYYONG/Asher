@@ -27,7 +27,7 @@ public class StageUIManager : MonoBehaviour
         _heartStonesList.Clear();
         for (int i = 0; i < stageSO.heartStoneTotalCnt; i++)
         {
-            Image heartStone = heartStonesParent.transform.GetChild(i + 1).GetComponent<Image>();
+            Image heartStone = heartStonesParent.transform.GetChild(i).GetComponent<Image>();
             _heartStonesList.Add(heartStone);
         }
     }
