@@ -5,7 +5,7 @@ using UnityEngine;
 public class MemoryItem : Tile
 {
     
-    public override void Use()
+    public override void ItemUse()
     {
         Debug.Log("기억복원 아이템 사용");
     }

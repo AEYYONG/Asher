@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class FogTrap : Tile
 {
-    public override void Use()
+    public override void TrapUse(StageUIManager uiManager)
     {
+        base.TrapUse(uiManager);
         Debug.Log("안개 아이템 사용");
     }
 }

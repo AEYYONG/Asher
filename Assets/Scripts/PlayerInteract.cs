@@ -25,6 +25,9 @@ public class PlayerInteract : MonoBehaviour
     //아이템 추가 이벤트
     public InventorySO inventory;
     
+    //Stage UI Manager
+    [SerializeField] private StageUIManager _stageUIManager;
+    
     
     void Awake()
     {
@@ -50,7 +53,7 @@ public class PlayerInteract : MonoBehaviour
         if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
         {
             canInteract = false;
-            _tiles[0].Use();
+            _tiles[0].TrapUse(_stageUIManager);
             StartCoroutine(InvokeInitValue());
         }
         
@@ -127,7 +130,7 @@ public class PlayerInteract : MonoBehaviour
             }
             else if (id2 == TileID.Trap)
             {
-                tile2.Use();
+                tile2.TrapUse(_stageUIManager);
                 _tiles.Remove(tile2);
                 _tileManager.ReturnTile(_tiles);
             }
@@ -169,7 +172,7 @@ public class PlayerInteract : MonoBehaviour
     
     public void UseItem(InventorySlot item)
     {
-        item.script.Use();
+        item.script.ItemUse();
     }
 
     public IEnumerator InvokeInitValue()
