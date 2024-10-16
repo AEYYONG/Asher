@@ -239,9 +239,9 @@ public class NPC_Move : MonoBehaviour
             // X축 방향으로 이동 시도
             Vector3 nextPosition = new Vector3(targetPosition.x, currentPosition.y, currentPosition.z);
 
-            //!! x축 이동 방향 레이 0.9하는데 그 앞에 장애물 있으면 SetRandomDestination다시 호출 또는 레이를 반원모양으로
-            //만들어서 그 반원 안의 랜덤 위치를 set 이 때 진행 방향
-            //아니면 이 때만 a*알고리즘?
+            //z축 스냅
+            currentPosition.z = Mathf.Round(currentPosition.z);
+            transform.position = currentPosition;
 
             // X축 이동 시 장애물 확인
             if (IsPathBlocked(currentPosition, nextPosition))
@@ -275,7 +275,9 @@ public class NPC_Move : MonoBehaviour
         {
             // Z축 방향으로 이동 시도
             Vector3 nextPosition = new Vector3(currentPosition.x, currentPosition.y, targetPosition.z);
-            //!! z축 이동 방향 레이 0.9하는데 그 앞에 장애물 있으면 SetRandomDestination다시 호출
+            // X축 좌표를 정수로 스냅
+            currentPosition.x = Mathf.Round(currentPosition.x);
+            transform.position = currentPosition;
             // Z축 이동 시 장애물 확인
             if (IsPathBlocked(currentPosition, nextPosition))
             {
