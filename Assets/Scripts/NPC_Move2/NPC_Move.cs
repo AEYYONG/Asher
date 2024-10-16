@@ -482,13 +482,19 @@ public class NPC_Move : MonoBehaviour
         if (asher.GetComponent<Player_Move_anim>().isAttacked)
         {
             Debug.Log("죽음");
+            agent.isStopped = false;
         }
         else
         {
             Debug.Log("생존");
+            Invoke("WakeUp", 1f);
         }
-        agent.isStopped = false;
+        
     }
 
-
+    void WakeUp()
+    {
+        Debug.Log("깨어나다");
+        agent.isStopped = false;
+    }
 }
