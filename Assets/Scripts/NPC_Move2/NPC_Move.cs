@@ -8,7 +8,7 @@ public class NPC_Move : MonoBehaviour
     public NavMeshAgent agent;
     private Vector3 targetPosition;
     private bool moveInXAxis = true;
-    public float detectionRange = 2.0f;
+    public float detectionRange = 3.0f;
 
     // 이동 가능한 범위 설정
     public Vector3 minRange = new Vector3(0, 0, 0);  // 최소 좌표
@@ -22,12 +22,18 @@ public class NPC_Move : MonoBehaviour
     public bool isChasing = false;
     public bool isBlocked = false;
 
+    // 공격, 회피 관련
+    private GameObject asher;
+    public float attackRange = 1.0f;     // 공격 레이캐스트 범위
+    public float attackDistance = 2.0f;  // 공격 감지 거리
+    public bool isAttack = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         agent.updateRotation = false;
-
+        asher = GameObject.Find("Asher");
         SetRandomDestination();
     }
 
@@ -37,7 +43,7 @@ public class NPC_Move : MonoBehaviour
         DetectInFront();
         if (isChasing)
         {
-            GameObject asher = GameObject.Find("Asher");
+
             if (!isBlocked)
             {
                 SetDestination(SnapToGrid(asher.transform.position));
@@ -52,6 +58,8 @@ public class NPC_Move : MonoBehaviour
         {
             MoveInGrid();
         }
+
+        
 
         UpdateAnimation();
         transform.rotation = Quaternion.Euler(70, 0, 0);
@@ -74,7 +82,7 @@ public class NPC_Move : MonoBehaviour
 
     void DetectInFront()
     {
-        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);  // NPC의 아래쪽에서 레이캐스트 시작
+        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0); 
 
         // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
         Vector3 rayDirection = agent.velocity.normalized;
@@ -84,7 +92,7 @@ public class NPC_Move : MonoBehaviour
         {
             rayDirection = transform.forward; // 기본적으로 정면으로 설정
         }
-
+        // 감지 레이 범위
         Ray ray = new Ray(rayOrigin, rayDirection);
         RaycastHit hit;
 
@@ -94,7 +102,7 @@ public class NPC_Move : MonoBehaviour
             if (hit.collider.name == "Asher")
             {
                 // Debug.Log("Asher 감지됨: " + hit.collider.name);
-
+              
                 // Asher의 위치 좌표를 그리드에 스냅
                 Vector3 asherPosition = SnapToGrid(hit.transform.position);
 
@@ -103,6 +111,25 @@ public class NPC_Move : MonoBehaviour
                 isChasing = true;
                 //   Debug.Log("asherPosition: " + asherPosition);
                 //   Debug.Log("애셔 위치: " + targetPosition);
+            }
+        }
+
+        // 공격 레이
+        Ray attackRay = new Ray(rayOrigin, rayDirection);
+        RaycastHit attackHit;
+
+        // 1f 거리 안에 Asher가 있는지 확인
+        if (Physics.Raycast(attackRay, out attackHit, 1.0f))
+        {
+            if (attackHit.collider.name == "Asher")
+            {
+                Debug.Log("Asher 감지됨! 공격 애니메이션 실행");
+                // 공격 애니메이션 실행
+                ChangeAnimationState("attack");
+                isAttack = true;
+                // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+                agent.isStopped = true;
+
             }
         }
     }
@@ -147,7 +174,7 @@ public class NPC_Move : MonoBehaviour
             Gizmos.DrawRay(from, direction * distance);
 
             // 2. NPC의 이동 방향으로 1f 거리의 검은색 레이 추가
-            Vector3 rayOrigin = transform.position + new Vector3(0, -0.3f, 0);  // NPC의 아래에서 레이 시작
+            Vector3 rayOrigin = transform.position + new Vector3(0,0, 0); 
             Vector3 rayDirection = agent.velocity.normalized;
 
             // velocity가 0일 때 대비한 기본값
@@ -158,12 +185,12 @@ public class NPC_Move : MonoBehaviour
 
             // 검은색 레이로 1f 거리까지 시각화
             Gizmos.color = Color.black;
-            float rayDistance = 1f;  // 1f 거리 설정
-            Gizmos.DrawRay(rayOrigin, rayDirection * rayDistance);
+            Gizmos.DrawRay(rayOrigin, rayDirection * attackDistance);
 
+            Vector3 rayOrigi2n = transform.position + new Vector3(0, 0, 0);
             // 3. 이동 방향으로 감지 범위만큼의 레이 캐스트 (빨간색)
             Gizmos.color = Color.red;  // 색상 다시 빨간색으로 설정
-            Gizmos.DrawRay(rayOrigin, rayDirection * detectionRange);
+          Gizmos.DrawRay(rayOrigi2n, rayDirection * detectionRange);
         }
     }
 
@@ -246,18 +273,18 @@ public class NPC_Move : MonoBehaviour
             // X축 이동 시 장애물 확인
             if (IsPathBlocked(currentPosition, nextPosition))
             {
-                Debug.Log("X축에 장애물 감지");
+               // Debug.Log("X축에 장애물 감지");
                 // X축 경로가 막혀있으면 Z축을 먼저 이동
                 if (isChasing)
                 {
                     isBlocked = true;
                 }
-                GameObject asher = GameObject.Find("Asher");
+               
                 Vector3 randomPosition = FindRandomPositionInSemiCircle();
-                Debug.Log("플레이어 위치" + SnapToGrid(asher.transform.position));
-                Debug.Log("랜덤 위치" + randomPosition);
+            //    Debug.Log("플레이어 위치" + SnapToGrid(asher.transform.position));
+             //   Debug.Log("랜덤 위치" + randomPosition);
                 SetDestination(SnapToGrid(randomPosition));
-                Debug.Log("재정의된 위치: " + SnapToGrid(randomPosition));
+          //      Debug.Log("재정의된 위치: " + SnapToGrid(randomPosition));
                 moveInXAxis = false;
 
             }
@@ -281,17 +308,17 @@ public class NPC_Move : MonoBehaviour
             // Z축 이동 시 장애물 확인
             if (IsPathBlocked(currentPosition, nextPosition))
             {
-                Debug.Log("Z축에 장애물 감지");
+             //   Debug.Log("Z축에 장애물 감지");
                 if (isChasing)
                 {
                     isBlocked = true;
                 }
 
                 Vector3 randomPosition = FindRandomPositionInSemiCircle();
-                Debug.Log("플레이어 위치" + randomPosition);
-                Debug.Log("랜덤 위치" + randomPosition);
+             //   Debug.Log("플레이어 위치" + randomPosition);
+            //    Debug.Log("랜덤 위치" + randomPosition);
                 SetDestination(SnapToGrid(randomPosition));
-                Debug.Log("재정의된 위치" + randomPosition);
+         //       Debug.Log("재정의된 위치" + randomPosition);
                 // Z축 경로가 막혀있으면 다시 X축을 시도하거나 다른 처리
 
                 moveInXAxis = true;
@@ -364,7 +391,12 @@ public class NPC_Move : MonoBehaviour
     void UpdateAnimation()
     {
         Vector3 velocity = agent.velocity;
-        if (Mathf.Abs(velocity.z) > Mathf.Abs(velocity.x))
+        if(isAttack)
+        {
+            ChangeAnimationState("attack");
+        }
+
+        if (!isAttack && (Mathf.Abs(velocity.z) > Mathf.Abs(velocity.x)))
         {
             if (velocity.z > 0 && currentAnimation != "up_npc")
             {
@@ -390,6 +422,8 @@ public class NPC_Move : MonoBehaviour
                 ChangeAnimationState("left_npc");
             }
         }
+
+        
     }
 
     void ChangeAnimationState(string newAnimation)
@@ -399,5 +433,62 @@ public class NPC_Move : MonoBehaviour
         animator.Play(newAnimation);
         currentAnimation = newAnimation;
     }
+
+    //공격 애니메이션 진입
+   /* bool DetectForAttack()
+    {
+        // 레이캐스트 원점 (NPC 위치)
+        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
+
+        // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+        Vector3 rayDirection = agent.velocity.normalized;
+
+        if (rayDirection == Vector3.zero)
+        {
+            rayDirection = transform.forward; // 기본적으로 정면으로 설정
+        }
+
+        Ray ray = new Ray(rayOrigin, rayDirection);
+        RaycastHit hit;
+
+        // 1f 거리 안에 Asher가 있는지 확인
+        if (Physics.Raycast(ray, out hit, attackDistance))
+        {
+            if (hit.collider.name == "Asher")
+            {
+                Debug.Log("Asher 감지됨! 공격 애니메이션 실행");
+                ChangeAnimationState("attack");
+                agent.isStopped = true;
+                return true;
+            }
+        }
+        return false;
+    }*/
+
+
+    // 회피 관련
+   public void IsAttackdeOn()
+    {
+        asher.GetComponent<Player_Move_anim>().isAttacked = true;
+    }
+
+   public void IsAttackClear()
+    {
+        ChangeAnimationState("up_npc");
+        Debug.Log("실행");
+        isAttack = false;
+        //플레이어가 영역 안에 존재하면 죽음
+        
+        if (asher.GetComponent<Player_Move_anim>().isAttacked)
+        {
+            Debug.Log("죽음");
+        }
+        else
+        {
+            Debug.Log("생존");
+        }
+        agent.isStopped = false;
+    }
+
 
 }

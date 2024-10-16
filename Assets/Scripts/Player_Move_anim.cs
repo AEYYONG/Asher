@@ -32,6 +32,9 @@ public class Player_Move_anim : MonoBehaviour
     // 충돌 상태를 저장하는 변수
     private bool isColliding = false;
 
+    //회피 관련
+    public bool isAttacked = false;
+ 
     void Start()
     {
         targetPosition = SnapToGrid(transform.position);  // 시작 시 현재 위치를 목표 위치로 스냅
@@ -132,12 +135,19 @@ public class Player_Move_anim : MonoBehaviour
 
         }
 
-        else if (Input.GetKey(KeyCode.Space) && isGrounded && body != null)
+        else if (Input.GetKey(KeyCode.Space) && !isAttacked && isGrounded && body != null)
         {
             isGrounded = false;
             Debug.Log("점프 대기 중: " + isGrounded);
             ChangeAnimationState(PLAYER_JUMP);
 
+        }
+
+        else if (Input.GetKey(KeyCode.Space) && isAttacked)
+        {
+            ChangeAnimationState(PLAYER_LEFT);
+            Debug.Log("회피!");
+            isAttacked = false;
         }
 
         if (movement != Vector3.zero)
@@ -243,7 +253,7 @@ public class Player_Move_anim : MonoBehaviour
             isGrounded = true;
             isJump = false;
             body.velocity = new Vector3(0, 0, 0);
-
+            Debug.Log("점프 가능" + isGrounded);
             Vector3 currentPosition = transform.position;
             currentPosition.z = Mathf.Floor(currentPosition.z) + 0.5f;
             transform.position = currentPosition;
@@ -251,5 +261,6 @@ public class Player_Move_anim : MonoBehaviour
 
 
     }
+    //회피 기능 관련
 
 }
