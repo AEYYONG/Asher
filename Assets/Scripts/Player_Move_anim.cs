@@ -20,12 +20,6 @@ public class Player_Move_anim : MonoBehaviour
     const string PLAYER_DOWN = "down";
     const string PLAYER_JUMP = "jump";
 
-    public float gravity = 9.8f; // 중력 가속도 크기
-    private Vector3 gravityDirection;
-
-    public float jumpForce = 2f;
-    private bool isGrounded = true;
-    private bool isJump = false;
     private Rigidbody body;
 
 
@@ -48,8 +42,7 @@ public class Player_Move_anim : MonoBehaviour
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody>();
 
-        // 중력 방향
-        gravityDirection = Quaternion.Euler(60, 0, 0) * Vector3.down;
+
 
         // Rigidbody 또는 Animator가 없을 경우 경고 로그 출력
         if (animator == null)
@@ -85,7 +78,6 @@ public class Player_Move_anim : MonoBehaviour
         {
             Debug.Log("flase 스타트 점프 : " + startJump);
             Debug.Log(" flase 어택당했는지 : " + isAttacked);
-            Debug.Log("true 땅에 닿았는지: " + isGrounded);
         }
 
 
@@ -157,10 +149,9 @@ public class Player_Move_anim : MonoBehaviour
             ChangeAnimationState(PLAYER_DOWN);
 
         }
-        else if (Input.GetKey(KeyCode.Space) && !isAttacked && isGrounded && body != null)
+        else if (Input.GetKey(KeyCode.Space) && !isAttacked)
         {
             startJump = true;
-            Debug.Log("점프!: " + isGrounded);
             ChangeAnimationState(PLAYER_JUMP);  // 점프 애니메이션 실행
         }
 
@@ -170,11 +161,11 @@ public class Player_Move_anim : MonoBehaviour
             Debug.Log("회피!");
             isAttacked = false;
         }
-        else if (Input.GetKey(KeyCode.None) && !startJump)
-        {
-            Debug.Log("아이들로 가야하는데");
-            ChangeAnimationState(PLAYER_IDLE);
-        }
+        /*  else if (Input.GetKey(KeyCode.None)  &&!startJump ) // &&!startJump 가 언제 false가 될지..
+          {
+              Debug.Log("아이들로 가야하는데");
+              ChangeAnimationState(PLAYER_IDLE);
+          }*/
 
         if (movement != Vector3.zero)
         {
@@ -234,10 +225,7 @@ public class Player_Move_anim : MonoBehaviour
             }
 
         }
-        if (!isGrounded)
-        {
-            body.AddForce(gravityDirection * gravity, ForceMode.Acceleration);
-        }
+      
 
     }
 
@@ -259,10 +247,6 @@ public class Player_Move_anim : MonoBehaviour
     // 애니메이션 이벤트에 의해 호출되는 함수
     public void Jump()
     {
-        Vector3 jumpDirection = Quaternion.Euler(60, 0, 0) * Vector3.up;
-        body.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);  // 60도 각도로 점프
-        isJump = true;
-        isGrounded = false;
         Debug.Log("애니메이션 이벤트로 점프");
     }
 
@@ -272,18 +256,18 @@ public class Player_Move_anim : MonoBehaviour
         Debug.Log("아이들로");
     }
 
+    //점프 중력 관련 보류
     void OnCollisionEnter(Collision collision)
+        //점프 가능 판정(땅에 닿음) 어떻게 짤건지? -> 땅에 닿으면 startJump false로 변경해야 함(애니메이션 제어용)
     {
-        if (collision.gameObject.CompareTag("Ground")) // 바닥과 닿으면 점프 가능
+     /*   if (collision.gameObject.CompareTag("Ground")) // 바닥과 닿으면 점프 가능
         {
-            isGrounded = true;
-            isJump = false;
             startJump = false;
             body.velocity = new Vector3(0, 0, 0);
             Vector3 currentPosition = transform.position;
             currentPosition.z = Mathf.Floor(currentPosition.z) + 0.5f;
             transform.position = currentPosition;
-        }
+        }*/
 
 
     }
