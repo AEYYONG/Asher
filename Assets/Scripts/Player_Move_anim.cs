@@ -159,18 +159,21 @@ public class Player_Move_anim : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.Space) && !isAttacked && isGrounded && body != null)
         {
-
+            startJump = true;
             Debug.Log("점프!: " + isGrounded);
             ChangeAnimationState(PLAYER_JUMP);  // 점프 애니메이션 실행
         }
-
-
 
         else if (Input.GetKey(KeyCode.Space) && isAttacked)
         {
             ChangeAnimationState(PLAYER_LEFT);
             Debug.Log("회피!");
             isAttacked = false;
+        }
+        else if (Input.GetKey(KeyCode.None) && !startJump)
+        {
+            Debug.Log("아이들로 가야하는데");
+            ChangeAnimationState(PLAYER_IDLE);
         }
 
         if (movement != Vector3.zero)
