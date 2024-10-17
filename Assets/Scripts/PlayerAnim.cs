@@ -10,7 +10,7 @@ public class PlayerAnim : MonoBehaviour
     private Vector3 startPosition;
     private float moveStartTime;  // 이동 시작 시간
 
-    private string currentAnimation;
+    private string currentAnimaton;
     private Animator animator;
 
     const string PLAYER_IDLE = "idle";
@@ -19,8 +19,7 @@ public class PlayerAnim : MonoBehaviour
     const string PLAYER_UP = "up_ready";
     const string PLAYER_DOWN = "down";
     const string PLAYER_JUMP = "jump";
-    const string PLAYER_UP_GO = "up_go";
-    const string PLAYER_UP_STOP = "up_stop";  
+    const string PLAYER_UP_GO = "up_go";  // up_go 애니메이션 상수 추가
 
     private bool isGo = false;
 
@@ -47,12 +46,16 @@ public class PlayerAnim : MonoBehaviour
 
     void Update()
     {
-        if (!isMoving && !IsPlayingAnimation(PLAYER_UP_GO))
+        if (!isMoving)
         {
             HandleMovement();  // 이동 중이 아닐 때만 입력을 처리
         }
 
-        MovePlayer();
+        // up_go 애니메이션이 재생 중일 때만 이동
+        if (IsPlayingAnimation(PLAYER_UP_GO))
+        {
+            MovePlayer();  // 이동 처리
+        }
     }
 
     void HandleMovement()
@@ -93,6 +96,21 @@ public class PlayerAnim : MonoBehaviour
         }
     }
 
+    void Go()
+    {
+        isGo = true;
+        ChangeAnimationState(PLAYER_UP_GO);  // up_go 애니메이션으로 변경
+    }
+
+    void Stop()
+    {
+        if (!Input.GetKey(KeyCode.W))
+        {
+            isGo = false;
+            ChangeAnimationState(PLAYER_IDLE);  // idle 애니메이션으로 변경
+        }
+    }
+
     void MovePlayer()
     {
         if (isMoving)
@@ -122,46 +140,17 @@ public class PlayerAnim : MonoBehaviour
 
     void ChangeAnimationState(string newAnimation)
     {
-        if (currentAnimation == newAnimation) return;
+        if (currentAnimaton == newAnimation) return;
 
         animator.Play(newAnimation, -1, 0f);
-        currentAnimation = newAnimation;
+        currentAnimaton = newAnimation;
     }
 
-
-    void Go()
+    public void Jump()
     {
-        isGo = true;
-        ChangeAnimationState(PLAYER_UP_GO);  // up_go 애니메이션으로 변경
-
-        // 목표 위치 설정 후 이동
-        startPosition = transform.position;
-        targetPosition = SnapToGrid(transform.position + Vector3.forward);  // W 방향으로 이동
-        moveStartTime = Time.time;
-        isMoving = true;
-        Debug.Log("이동 안함");
-    }
-
-    void Stop()
-    {
-        if (Input.GetKey(KeyCode.W))
-        {
-            ChangeAnimationState(PLAYER_UP_GO);
-            Debug.Log("멈춤1");
-        }
-        else
-        {
-            ChangeAnimationState(PLAYER_UP_STOP);
-            isGo = false;
-            Debug.Log("멈춤2");
-
-        }
-        
-    }
-
-    void Idle()
-    {
-        ChangeAnimationState(PLAYER_IDLE);
+        Vector3 jumpDirection = Quaternion.Euler(60, 0, 0) * Vector3.up;
+        body.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);
+        isJump = true;
     }
 
     void OnCollisionEnter(Collision collision)
