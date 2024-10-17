@@ -9,16 +9,16 @@ public class Timer : MonoBehaviour
 {
     //타이머 값
     [SerializeField] private float timer;
-    
-    private int _min; //분
-    private int _sec; //초
+    private float _time;
     
     //UI 연결
-    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private Image timeBar;
+    [SerializeField] private Image timeBarBorder;
 
     void Start()
     {
-        StartCoroutine(TimerStart(timer));
+        _time = timer;
+        StartCoroutine(TimerStart(_time));
     }
 
     IEnumerator TimerStart(float time)
@@ -26,24 +26,16 @@ public class Timer : MonoBehaviour
         while (time > 0)
         {
             time -= Time.deltaTime;
-            //분:초 형식으로 나타내기
-            if (time / 60 != 0)
+            timeBar.fillAmount = time / timer;
+            timeBarBorder.fillAmount = timeBar.fillAmount;
+
+            if (time < 11)
             {
-                _min = (int)(time / 60);
-                _sec = (int)(time % 60);
+                timeBar.color = Color.red;
             }
-            else
-            {
-                _min = 0;
-                _sec = (int)(time % 60);
-            }
-            
-            //time.Tostring("D2")는 두자리 정수
-            timeText.text = "Time : " + _min.ToString("D2") + ":" + _sec.ToString("D2");
             yield return null;
         }
         time = 0;
-        timeText.text = "Time : 00:00";
-        Debug.Log("Stage Over");
+        Debug.Log("Time Over");
     }
 }
