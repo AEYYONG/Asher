@@ -86,8 +86,7 @@ public class Tile : MonoBehaviour
 
     public virtual void TrapUse(StageUIManager uiManager)
     {
-        uiManager.ActiveSideCutSceneUI();
-        uiManager.SetSideCutSceneUIImg(tileSO.trapID);
+        uiManager.ActiveSideCutSceneUI(tileSO);
     }
     
     public virtual void Use(){}

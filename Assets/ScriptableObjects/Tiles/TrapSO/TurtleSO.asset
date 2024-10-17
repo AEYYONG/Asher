@@ -17,4 +17,5 @@ MonoBehaviour:
   jokerID: 0
   trapID: 8
   itemImg: {fileID: 0}
+  sideCutSceneImg: {fileID: 21300000, guid: a99a87ff9e3fc492d93a6cf6ecff7e1e, type: 3}
   selectNum: 0

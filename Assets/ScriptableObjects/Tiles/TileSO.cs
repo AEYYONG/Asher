@@ -53,5 +53,6 @@ public class TileSO : ScriptableObject
     public JokerID jokerID;
     public TrapID trapID;
     public Sprite itemImg;
+    public Sprite sideCutSceneImg;
     public int selectNum;
 }

@@ -6,10 +6,18 @@ using UnityEngine.UI;
 public class StageUIManager : MonoBehaviour
 {
     public StageInfoSO stageSO;
+    private int _curImgId = 0;
+    private string _triggerName = "";
     [SerializeField] private GameObject heartStonesParent;
     [SerializeField] private List<Image> _heartStonesList = new List<Image>();
     [SerializeField] private GameObject _sideCutSceneUI;
+    [SerializeField] private Image _sideCutSceneImg;
     [SerializeField] private Animator _sideCutSceneImgAnimator;
+    [SerializeField] private Image _sideCutSceneFrameTop;
+    [SerializeField] private Image _sideCutSceneFrameBottom;
+    [SerializeField] private List<Sprite> _sideCutSceneFrameTopList;
+    [SerializeField] private List<Sprite> _sideCutSceneFrameBottomList;
+    //0: 함정, 1: 아이템, 2: 마음의 조각, 3: 조커, 4: 그린존, 5: 타이머
     
     void Awake()
     {
@@ -34,15 +42,36 @@ public class StageUIManager : MonoBehaviour
         }
     }
 
-    public void ActiveSideCutSceneUI()
+    public void ActiveSideCutSceneUI(TileSO tileSO)
     {
+        _sideCutSceneImg.sprite = tileSO.sideCutSceneImg;
+        switch (tileSO.tileID)
+        {
+            case TileID.Item:
+                _curImgId = (int)tileSO.itemID;
+                _triggerName = "ItemId";
+                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[1];
+                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[1];
+                break;
+            case TileID.Joker:
+                break;
+            case TileID.Trap:
+                _curImgId = (int)tileSO.trapID;
+                _triggerName = "TrapId";
+                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[0];
+                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[0];
+                break;
+            case TileID.HeartStone:
+                break;
+        }
         _sideCutSceneUI.SetActive(true);
+        StartCoroutine(SetSideCutSceneUIImg(_triggerName, _curImgId));
     }
 
-    public void SetSideCutSceneUIImg(TrapID id)
+    IEnumerator SetSideCutSceneUIImg(string name, int id)
     {
-        int _id = (int)id;
-        Debug.Log("trap id : "+ _id);
-        _sideCutSceneImgAnimator.SetInteger("TrapId",_id);
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log("애니메이션 트리거 변수 셋");
+        _sideCutSceneImgAnimator.SetInteger(name,id);
     }
 }
