@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3897806926975662045}
   - component: {fileID: 2791380705674465803}
-  - component: {fileID: 7661026305608884829}
   - component: {fileID: 688912158137700741}
   - component: {fileID: 5942560119042791849}
   - component: {fileID: 182253446604268967}
+  - component: {fileID: 6913778308079264940}
   m_Layer: 0
   m_Name: Asher
   m_TagString: Untagged
@@ -88,29 +88,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &7661026305608884829
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.75
-  m_Height: 3.1
-  m_Direction: 1
-  m_Center: {x: 0, y: -2, z: 0}
 --- !u!54 &688912158137700741
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,7 +130,9 @@ MonoBehaviour:
   moveSpeed: 5
   moveDuration: 0.3
   gravity: 9.8
-  jumpForce: 3.5
+  jumpForce: 2
+  isAttacked: 0
+  startJump: 0
 --- !u!95 &182253446604268967
 Animator:
   serializedVersion: 5
@@ -175,3 +154,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!135 &6913778308079264940
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2982884133803568182}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.5019442
+  m_Center: {x: 0, y: -2.5, z: 0}

@@ -281,7 +281,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -416,7 +416,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -698,7 +698,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1036,7 +1036,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1465,7 +1465,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -4250,11 +4250,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.7, y: 0.225, z: 1}
+  m_Extents: {x: 0.7, y: 0.225, z: 0.8}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0
-  m_Center: {x: -0.1, y: -0.05, z: 0}
+  m_Center: {x: -0.18, y: -0.03, z: 0.03}
   m_TimeToStationary: 0.5
 --- !u!54 &537281856
 Rigidbody:
@@ -4298,7 +4298,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -6897,7 +6897,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -8986,7 +8986,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -9162,14 +9162,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
-    - target: {fileID: 1714532621553600730, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: maxRange.x
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1714532621553600730, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: maxRange.z
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
@@ -9209,18 +9201,6 @@ PrefabInstance:
     - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3569308853951841298, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: m_AutoRepath
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3569308853951841298, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: m_AutoBraking
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3569308853951841298, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: m_Acceleration
-      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9684,7 +9664,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -10068,7 +10048,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -14784,7 +14764,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -15131,7 +15111,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -15382,17 +15362,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 688912158137700741, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_Name
       value: Asher
-      objectReference: {fileID: 0}
-    - target: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
-      propertyPath: m_TagString
-      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3897806926975662045, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15437,33 +15409,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2117134285}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
---- !u!1 &2117134284 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
-  m_PrefabInstance: {fileID: 2117134283}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2117134285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117134284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c654dd3c18e64e638a228757a7a0d1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSelectCnt: 2
-  _curSelectCnt: 0
-  canInteract: 1
-  inventory: {fileID: 11400000, guid: 958853fc61e5547d78c0114aca406fa5, type: 2}
-  _stageUIManager: {fileID: 1006040431}
 --- !u!1 &2131788370
 GameObject:
   m_ObjectHideFlags: 0
