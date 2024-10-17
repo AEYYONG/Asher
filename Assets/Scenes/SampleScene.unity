@@ -13504,25 +13504,11 @@ MonoBehaviour:
   cam: {fileID: 963194227}
   tileParent: {fileID: 1135192898}
   buffItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
-    count: 8
-  debuffItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: f2f51a2ad95804c51b00a7a038adaeb8, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: c434de3bac5a248bdb90447f8168d604, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: 67319481a678c4abfa6b38740ab443bf, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: 0157fdf4d3e21402da38d6c36bf6e304, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: 4c6c1b72b58dd48e9999d2b35e3f3650, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: c2949e42b637b405ebfadd3dbe97e6fe, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: 2ddeb229a9226427d90e29e33c3112e1, type: 3}
-    count: 12
-  - tilePrefab: {fileID: 6389873552652161418, guid: c7ee8752f85794cd3a032d22bfac1fab, type: 3}
-    count: 12
+  - tilePrefab: {fileID: 6389873552652161418, guid: 901194a5965c94a5a819245d8ff94a40, type: 3}
+    count: 52
+  - tilePrefab: {fileID: 6389873552652161418, guid: 1513a6b1414da42efa03a07287afd77a, type: 3}
+    count: 52
+  debuffItemTypes: []
   etcItemTypes: []
   tileEntries:
   - position: {x: 0, y: 0}
