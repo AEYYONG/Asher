@@ -24,8 +24,8 @@ public class NPC_Move : MonoBehaviour
 
     // 공격, 회피 관련
     private GameObject asher;
-    public float attackRange = 1.0f;     // 공격 레이캐스트 범위
-    public float attackDistance = 2.0f;  // 공격 감지 거리
+    public float attackRange = 1.5f;     // 공격 레이캐스트 범위
+    public float attackDistance = 1.0f;  // 공격 감지 거리
     public bool isAttack = false;
 
 
@@ -82,18 +82,36 @@ public class NPC_Move : MonoBehaviour
 
     void DetectInFront()
     {
-        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0); 
+        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
 
         // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
         Vector3 rayDirection = agent.velocity.normalized;
-
         // velocity가 0일 때를 대비한 기본값
         if (rayDirection == Vector3.zero)
         {
             rayDirection = transform.forward; // 기본적으로 정면으로 설정
         }
-        // 감지 레이 범위
-        Ray ray = new Ray(rayOrigin, rayDirection);
+
+        Ray attackRay = new Ray(rayOrigin, rayDirection);
+        RaycastHit attackHit;
+
+        if (Physics.Raycast(attackRay, out attackHit, attackDistance))
+        {
+            // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
+            if (attackHit.collider.name == "Asher")
+            {
+                Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
+                isAttack = true;
+
+                // 공격 애니메이션 실행 (필요시)
+                ChangeAnimationState("attack");
+
+                // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+                agent.isStopped = true;
+            }
+        }
+                // 감지 레이 범위
+                Ray ray = new Ray(rayOrigin, rayDirection);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, detectionRange))
@@ -114,24 +132,8 @@ public class NPC_Move : MonoBehaviour
             }
         }
 
-        // 공격 레이
-        Ray attackRay = new Ray(rayOrigin, rayDirection);
-        RaycastHit attackHit;
-
-        // 1f 거리 안에 Asher가 있는지 확인
-        if (Physics.Raycast(attackRay, out attackHit, 1.0f))
-        {
-            if (attackHit.collider.name == "Asher")
-            {
-                Debug.Log("Asher 감지됨! 공격 애니메이션 실행");
-                // 공격 애니메이션 실행
-                ChangeAnimationState("attack");
-                isAttack = true;
-                // NPC를 멈추게 하려면 NavMeshAgent 멈춤
-                agent.isStopped = true;
-
-            }
-        }
+       
+       
     }
 
     void SetDestination(Vector3 destination)
@@ -174,7 +176,7 @@ public class NPC_Move : MonoBehaviour
             Gizmos.DrawRay(from, direction * distance);
 
             // 2. NPC의 이동 방향으로 1f 거리의 검은색 레이 추가
-            Vector3 rayOrigin = transform.position + new Vector3(0,0, 0); 
+            Vector3 rayOrigin = transform.position + new Vector3(0,0.1f, 0); 
             Vector3 rayDirection = agent.velocity.normalized;
 
             // velocity가 0일 때 대비한 기본값
@@ -183,13 +185,13 @@ public class NPC_Move : MonoBehaviour
                 rayDirection = transform.forward;
             }
 
-            // 검은색 레이로 1f 거리까지 시각화
-            Gizmos.color = Color.black;
+            // 파란 레이로 1f 거리까지 시각화
+            Gizmos.color = Color.blue;
             Gizmos.DrawRay(rayOrigin, rayDirection * attackDistance);
 
-            Vector3 rayOrigi2n = transform.position + new Vector3(0, 0, 0);
+           Vector3 rayOrigi2n = transform.position + new Vector3(0, 0, 0);
             // 3. 이동 방향으로 감지 범위만큼의 레이 캐스트 (빨간색)
-            Gizmos.color = Color.red;  // 색상 다시 빨간색으로 설정
+          Gizmos.color = Color.red;  // 색상 다시 빨간색으로 설정
           Gizmos.DrawRay(rayOrigi2n, rayDirection * detectionRange);
         }
     }
@@ -210,7 +212,7 @@ public class NPC_Move : MonoBehaviour
 
             // 랜덤 좌표를 그리드에 스냅
             targetPosition = SnapToGrid(randomPosition);
-            Debug.Log("다음 위치: " + targetPosition);
+         //   Debug.Log("다음 위치: " + targetPosition);
 
             NavMeshHit hit;
 
@@ -223,7 +225,7 @@ public class NPC_Move : MonoBehaviour
             else
             {
                 SetRandomDestination();
-                Debug.Log("유효 위치 재탐색");
+            //    Debug.Log("유효 위치 재탐색");
             }
         }
     }
@@ -248,7 +250,7 @@ public class NPC_Move : MonoBehaviour
     // 정수 좌표로 스냅하는 함수
     Vector3 SnapToGrid(Vector3 position)
     {
-        return new Vector3(Mathf.Round(position.x), position.y, Mathf.Round(position.z));
+        return new Vector3(Mathf.Round(position.x), position.y, Mathf.Floor(position.z));
     }
 
     Vector3 SnapZToGrid(Vector3 position)
@@ -372,7 +374,7 @@ public class NPC_Move : MonoBehaviour
         Vector3 direction = (to - from).normalized;
         float distance = 0.4f;
 
-        Debug.DrawRay(from, direction * distance, Color.black, 0.1f); // 0.1초 동안 검은색 레이 표시
+       // Debug.DrawRay(from, direction * distance, Color.black, 0.1f); // 0.1초 동안 검은색 레이 표시
 
 
         if (Physics.Raycast(from, direction, out hit, distance))
@@ -475,18 +477,20 @@ public class NPC_Move : MonoBehaviour
    public void IsAttackClear()
     {
         ChangeAnimationState("up_npc");
-        Debug.Log("실행");
+   //     Debug.Log("실행");
         isAttack = false;
         //플레이어가 영역 안에 존재하면 죽음
         
         if (asher.GetComponent<Player_Move_anim>().isAttacked)
         {
-            Debug.Log("죽음");
+         //   Debug.Log("죽음");
             agent.isStopped = false;
+            asher.GetComponent<Player_Move_anim>().isAttacked = false;
         }
         else
         {
-            Debug.Log("생존");
+        //    Debug.Log("생존");
+            asher.GetComponent<Player_Move_anim>().isAttacked = false;
             Invoke("WakeUp", 1f);
         }
         

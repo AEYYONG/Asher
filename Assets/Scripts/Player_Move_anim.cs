@@ -34,7 +34,11 @@ public class Player_Move_anim : MonoBehaviour
 
     //회피 관련
     public bool isAttacked = false;
- 
+
+    //점프 시작했는지
+    public bool startJump = false;
+
+
     void Start()
     {
         targetPosition = SnapToGrid(transform.position);  // 시작 시 현재 위치를 목표 위치로 스냅
@@ -67,6 +71,24 @@ public class Player_Move_anim : MonoBehaviour
         }
 
         MovePlayer();  // 이동 처리
+
+        SpaceInput();
+
+    }
+
+
+
+
+    void SpaceInput()
+    {
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Debug.Log("flase 스타트 점프 : " + startJump);
+            Debug.Log(" flase 어택당했는지 : " + isAttacked);
+            Debug.Log("true 땅에 닿았는지: " + isGrounded);
+        }
+
+
     }
     bool IsObstacleInDirection(Vector3 localDirection)
     {
@@ -84,7 +106,7 @@ public class Player_Move_anim : MonoBehaviour
             {
                 Debug.Log("장애물 감지: " + hit.collider.name);
                 isColliding = true;
-        
+
                 return true; // 장애물이 있을 때
             }
         }
@@ -95,19 +117,20 @@ public class Player_Move_anim : MonoBehaviour
     void HandleMovement()
     {
         Vector3 movement = Vector3.zero;
+
         if (Input.GetKey(KeyCode.D))
         {
-            if (!IsObstacleInDirection(Vector3.right)) 
+            if (!IsObstacleInDirection(Vector3.right))
             {
                 movement = Vector3.right;
-                
+
             }
             ChangeAnimationState(PLAYER_RIGHT);
 
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            if (!IsObstacleInDirection(Vector3.left)) 
+            if (!IsObstacleInDirection(Vector3.left))
             {
                 movement = Vector3.left;
             }
@@ -116,10 +139,10 @@ public class Player_Move_anim : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.W))
         {
-            if (!IsObstacleInDirection(Vector3.forward)) 
+            if (!IsObstacleInDirection(Vector3.forward))
             {
                 movement = Vector3.forward;
-                
+
             }
 
             ChangeAnimationState(PLAYER_UP);
@@ -127,21 +150,21 @@ public class Player_Move_anim : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            if (!IsObstacleInDirection(Vector3.back)) 
+            if (!IsObstacleInDirection(Vector3.back))
             {
                 movement = Vector3.back; // 음의 Z축으로 이동
             }
             ChangeAnimationState(PLAYER_DOWN);
 
         }
-
         else if (Input.GetKey(KeyCode.Space) && !isAttacked && isGrounded && body != null)
         {
-            isGrounded = false;
-            Debug.Log("점프 대기 중: " + isGrounded);
-            ChangeAnimationState(PLAYER_JUMP);
 
+            Debug.Log("점프!: " + isGrounded);
+            ChangeAnimationState(PLAYER_JUMP);  // 점프 애니메이션 실행
         }
+
+
 
         else if (Input.GetKey(KeyCode.Space) && isAttacked)
         {
@@ -208,12 +231,11 @@ public class Player_Move_anim : MonoBehaviour
             }
 
         }
-
-        if (!isGrounded && isJump)
+        if (!isGrounded)
         {
-            // 중력 적용
             body.AddForce(gravityDirection * gravity, ForceMode.Acceleration);
         }
+
     }
 
     // 목표 좌표를 정수 좌표로 스냅하면서 Z축을 항상 .5로 맞추는 함수
@@ -237,10 +259,11 @@ public class Player_Move_anim : MonoBehaviour
         Vector3 jumpDirection = Quaternion.Euler(60, 0, 0) * Vector3.up;
         body.AddForce(jumpDirection * jumpForce, ForceMode.Impulse);  // 60도 각도로 점프
         isJump = true;
+        isGrounded = false;
         Debug.Log("애니메이션 이벤트로 점프");
     }
 
-    void Idle()
+    public void Idle()
     {
         ChangeAnimationState(PLAYER_IDLE);
         Debug.Log("아이들로");
@@ -252,8 +275,8 @@ public class Player_Move_anim : MonoBehaviour
         {
             isGrounded = true;
             isJump = false;
+            startJump = false;
             body.velocity = new Vector3(0, 0, 0);
-            Debug.Log("점프 가능" + isGrounded);
             Vector3 currentPosition = transform.position;
             currentPosition.z = Mathf.Floor(currentPosition.z) + 0.5f;
             transform.position = currentPosition;
@@ -261,6 +284,5 @@ public class Player_Move_anim : MonoBehaviour
 
 
     }
-    //회피 기능 관련
 
 }
