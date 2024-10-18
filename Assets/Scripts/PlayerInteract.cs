@@ -29,7 +29,8 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private StageUIManager _stageUIManager;
     
     //타일을 뒤집기 위한 레이캐스트
-    private RaycastHit hit;
+    private RaycastHit _hit;
+    private Vector3 _rayPos;
     
     
     void Awake()
@@ -70,14 +71,15 @@ public class PlayerInteract : MonoBehaviour
             _compareStart = true;
             CompareTile(_tiles[0], _tiles[1]);
         }
-        
+
+        _rayPos = new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.5f);
+        Debug.DrawRay(_rayPos,Vector3.down * 1f, Color.red);
         //플레이어가 타일 뒤집기(space)를 클릭한다면
         if (Input.GetButtonUp("FlipTile"))
         {
-            Debug.DrawRay(transform.position,Vector3.down * 2f, Color.red);
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, 2f)){}
+            if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f)){}
             {
-                Tile curTile = hit.collider.GetComponent<Tile>();
+                Tile curTile = _hit.collider.GetComponent<Tile>();
                 //선택되지 않은 타일이라면 && 상호작용 가능하다면
                 if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
                 {
