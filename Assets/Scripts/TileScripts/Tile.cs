@@ -64,7 +64,10 @@ public class Tile : MonoBehaviour
     }
 
     //타일이 사용될 경우 발동되는 가상 함수
-    public virtual void ItemUse(){}
+    public virtual void ItemUse(StageUIManager uiManager)
+    {
+        uiManager.ActiveSideCutSceneUI(tileSO);
+    }
 
     public virtual void TrapUse(StageUIManager uiManager)
     {

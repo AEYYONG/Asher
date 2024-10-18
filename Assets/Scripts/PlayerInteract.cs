@@ -182,7 +182,7 @@ public class PlayerInteract : MonoBehaviour
     
     public void UseItem(InventorySlot item)
     {
-        item.script.ItemUse();
+        item.script.ItemUse(_stageUIManager);
     }
 
     public IEnumerator InvokeInitValue()
