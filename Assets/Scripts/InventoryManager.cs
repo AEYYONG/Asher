@@ -16,7 +16,20 @@ public class InventoryManager : MonoBehaviour
 
     public InventorySO inventory;
 
-    public Sprite emptyImg;
+    public TileSO emptyItemSO;
+
+    private InventorySlot emptySlot;
+
+    void Awake()
+    {
+        emptySlot = new InventorySlot(emptyItemSO); 
+    }
+    void Start()
+    {
+        inventory.InventorySlots[0] = emptySlot;
+        inventory.InventorySlots[1] = emptySlot;
+    }
+    
     
     void Update()
     {
@@ -52,7 +65,7 @@ public class InventoryManager : MonoBehaviour
         (inventory.InventorySlots[0], inventory.InventorySlots[1]) =
             (inventory.InventorySlots[1], inventory.InventorySlots[0]);
 
-        if (inventory.InventorySlots[0].itemData == null)
+        if (inventory.InventorySlots[0].itemData == emptyItemSO)
         {
             //Debug.Log("swap debug");
             isFirstSlotFull = false;
@@ -82,7 +95,7 @@ public class InventoryManager : MonoBehaviour
     //아이템 사용 시, 슬롯 비우기
     public void ClearItem()
     {
-        inventory.InventorySlots[0].itemData = null;
+        inventory.InventorySlots[0].itemData = emptyItemSO;
         inventory.InventorySlots[0].script = null;
         isFirstSlotFull = false;
     }
@@ -93,29 +106,29 @@ public class InventoryManager : MonoBehaviour
         InventorySlot slot2 = inventory.InventorySlots[1];
         //Debug.Log("slot1" + slot1);
         //Debug.Log("slot2"+slot2);
-        if (slot1.itemData != null)
+        if (slot1.itemData != emptyItemSO)
         {
             firstSlot.sprite = slot1.itemData.itemImg;
         }
         else
         {
-            firstSlot.sprite = emptyImg;
+            firstSlot.sprite = emptyItemSO.itemImg;
         }
         
-        if (slot2.itemData != null)
+        if (slot2.itemData != emptyItemSO)
         {
             secondSlot.sprite = slot2.itemData.itemImg;
         }
         else
         {
-            secondSlot.sprite = emptyImg;
+            secondSlot.sprite = emptyItemSO.itemImg;
         }
     }
 
     public void UseItem()
     {
         InventorySlot item = inventory.InventorySlots[0];
-        if (item.itemData != null)
+        if (item.itemData != emptyItemSO)
         {
             inventory.UseItemEvent(item);
             ClearItem();
