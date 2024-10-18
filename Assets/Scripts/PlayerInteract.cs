@@ -28,6 +28,9 @@ public class PlayerInteract : MonoBehaviour
     //Stage UI Manager
     [SerializeField] private StageUIManager _stageUIManager;
     
+    //타일을 뒤집기 위한 레이캐스트
+    private RaycastHit hit;
+    
     
     void Awake()
     {
@@ -66,6 +69,30 @@ public class PlayerInteract : MonoBehaviour
             //타일 비교
             _compareStart = true;
             CompareTile(_tiles[0], _tiles[1]);
+        }
+        
+        //플레이어가 타일 뒤집기(space)를 클릭한다면
+        if (Input.GetButtonUp("FlipTile"))
+        {
+            Debug.DrawRay(transform.position,Vector3.down * 2f, Color.red);
+            if (Physics.Raycast(transform.position, Vector3.down, out hit, 2f)){}
+            {
+                Tile curTile = hit.collider.GetComponent<Tile>();
+                //선택되지 않은 타일이라면 && 상호작용 가능하다면
+                if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
+                {
+                    //타일 선택 횟수 하나 증가
+                    _curSelectCnt++;
+                    curTile.tileSO.selectNum = _curSelectCnt;
+                    //선택 여부 true로 변경
+                    curTile.isSelected = true;
+                    //뒤집기 애니메이션 시작
+                    curTile._animator.SetTrigger("Select");
+            
+                    //타일 아이디 값 저장
+                    _tiles.Add(curTile);
+                }
+            }
         }
     }
 
@@ -141,27 +168,8 @@ public class PlayerInteract : MonoBehaviour
             //InitValue();
         }
     }
-    public void IncSelectCnt()
-    {
-        _curSelectCnt++;
-        Debug.Log("타일 선택 횟수 증가");
-    }
-    public int GetCurSelectCnt()
-    {
-        Debug.Log($"현재 타일 횟수 : {_curSelectCnt}");
-        return _curSelectCnt;
-    }
-
-    //타일을 선택하였을 경우, 리스트에 추가함
-    
-    public void AddTile(Tile tile)
-    {
-        Debug.Log("타일 info에 추가");
-        _tiles.Add(tile);
-    }
     public void InitValue()
     {
-        Debug.Log("타일 선택 값 초기화 함수 호출");
         //값 초기화
         _curSelectCnt = 0;
         _compareStart = false;
