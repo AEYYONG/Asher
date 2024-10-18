@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 5942560119042791849}
   - component: {fileID: 182253446604268967}
   - component: {fileID: 6913778308079264940}
+  - component: {fileID: 907695079208561728}
   m_Layer: 0
   m_Name: Asher
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -111,7 +112,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
@@ -129,8 +130,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   moveDuration: 0.3
-  gravity: 9.8
-  jumpForce: 2
   isAttacked: 0
   startJump: 0
 --- !u!95 &182253446604268967
@@ -175,3 +174,20 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.5019442
   m_Center: {x: 0, y: -2.5, z: 0}
+--- !u!114 &907695079208561728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2982884133803568182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c654dd3c18e64e638a228757a7a0d1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSelectCnt: 2
+  _curSelectCnt: 0
+  canInteract: 1
+  inventory: {fileID: 11400000, guid: 958853fc61e5547d78c0114aca406fa5, type: 2}
+  _stageUIManager: {fileID: 0}

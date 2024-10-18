@@ -22,7 +22,7 @@ public class Tile : MonoBehaviour
     public TileType tileType;
     
     //타일 애니메이터
-    [SerializeField] private Animator _animator;
+    public Animator _animator;
     //타일 매니저 스크립트 할당
     private TileManager _tileManager;
     //플레이어 상호작용 스크립트 할당
@@ -45,24 +45,6 @@ public class Tile : MonoBehaviour
         _x = x;
         _z = z;
         tileType = TileType.RandomAvail;
-    }
-    //타일을 클릭하였을 때
-    void OnMouseDown()
-    {
-        //선택되지 않은 타일이라면 && 상호작용 가능하다면
-        if (!isSelected && _playerInteract.canInteract && tileType!=TileType.RandomNotAvail)
-        {
-            //타일 선택 횟수 하나 증가
-            _playerInteract.IncSelectCnt();
-            tileSO.selectNum = _playerInteract.GetCurSelectCnt();
-            //선택 여부 true로 변경
-            isSelected = true;
-            //뒤집기 애니메이션 시작
-            _animator.SetTrigger("Select");
-            
-            //타일 아이디 값 저장
-            _playerInteract.AddTile(this);
-        }
     }
 
     //타일이 다시 원상복귀
