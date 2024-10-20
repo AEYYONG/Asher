@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DustAni
+  m_Name: GreenZoneAni
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,12 +21,12 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 21300000, guid: f0cc2fb5c5bcf42b58a88f9059b56e6a, type: 3}
+      value: {fileID: 21300000, guid: 3ae3054e10cce4f17a49d9ca10eec090, type: 3}
     - time: 0.33333334
-      value: {fileID: 21300000, guid: 06f8940908f624ee9a7b8ce648e21545, type: 3}
+      value: {fileID: 21300000, guid: 2f9901a45ef96404db1f8e750af7499a, type: 3}
     - time: 0.35
-      value: {fileID: 21300000, guid: 06f8940908f624ee9a7b8ce648e21545, type: 3}
-    - time: 2
+      value: {fileID: 21300000, guid: feeb49b2599c14d8e8d97e2e53af1a3a, type: 3}
+    - time: 2.0166667
       value: {fileID: 21300000, guid: feeb49b2599c14d8e8d97e2e53af1a3a, type: 3}
     attribute: m_Sprite
     path: 
@@ -50,16 +50,16 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 21300000, guid: f0cc2fb5c5bcf42b58a88f9059b56e6a, type: 3}
-    - {fileID: 21300000, guid: 06f8940908f624ee9a7b8ce648e21545, type: 3}
-    - {fileID: 21300000, guid: 06f8940908f624ee9a7b8ce648e21545, type: 3}
+    - {fileID: 21300000, guid: 3ae3054e10cce4f17a49d9ca10eec090, type: 3}
+    - {fileID: 21300000, guid: 2f9901a45ef96404db1f8e750af7499a, type: 3}
+    - {fileID: 21300000, guid: feeb49b2599c14d8e8d97e2e53af1a3a, type: 3}
     - {fileID: 21300000, guid: feeb49b2599c14d8e8d97e2e53af1a3a, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2.0166667
+    m_StopTime: 2.0333333
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0

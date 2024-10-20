@@ -73,7 +73,10 @@ public class Tile : MonoBehaviour
     {
         uiManager.ActiveSideCutSceneUI(tileSO);
     }
-    
-    public virtual void Use(){}
+
+    public virtual void Use(StageUIManager uiManager)
+    {
+        uiManager.ActiveSideCutSceneUI(tileSO);
+    }
     
 }

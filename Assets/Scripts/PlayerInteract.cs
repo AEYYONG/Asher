@@ -32,6 +32,10 @@ public class PlayerInteract : MonoBehaviour
     private RaycastHit _hit;
     private Vector3 _rayPos;
     
+    //그린존 사용여부 flag 변수
+    //한번 사용하면 더는 추격 상황에서 그린존이 활성화되지 않음.
+    public bool useGreenZone = false;
+    
     
     void Awake()
     {
@@ -77,7 +81,7 @@ public class PlayerInteract : MonoBehaviour
         //플레이어가 타일 뒤집기(space)를 클릭한다면
         if (Input.GetButtonUp("FlipTile"))
         {
-            if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f)){}
+            if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
                 //선택되지 않은 타일이라면 && 상호작용 가능하다면
@@ -96,6 +100,22 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
+
+        if (_tileManager.isGreenZoneActive && !useGreenZone)
+        {
+            if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
+            {
+                Tile curTile = _hit.collider.GetComponent<Tile>();
+                //그린존 타일로 들어왔다면
+                if (curTile.tileSO.tileID == TileID.GreenZone)
+                {
+                    Debug.Log("그린존 입성");
+                    useGreenZone = true;
+                    curTile.Use(_stageUIManager);
+                }
+            }
+        }
+        
     }
 
     void CompareTile(Tile tile1, Tile tile2)
@@ -118,7 +138,7 @@ public class PlayerInteract : MonoBehaviour
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
-                    tile1.Use();
+                    tile1.Use(_stageUIManager);
                     StartCoroutine(InvokeInitValue());
                     break;
                 case TileID.Item:

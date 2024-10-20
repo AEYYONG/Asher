@@ -63,6 +63,13 @@ public class StageUIManager : MonoBehaviour
                 break;
             case TileID.HeartStone:
                 break;
+            case TileID.GreenZone:
+                _curImgId = 1;
+                _triggerName = "GreenZone";
+                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[4];
+                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[4];
+                break;
+                
         }
         _sideCutSceneUI.SetActive(true);
         StartCoroutine(SetSideCutSceneUIImg(_triggerName, _curImgId));
