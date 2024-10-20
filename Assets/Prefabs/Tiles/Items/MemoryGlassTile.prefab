@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3761349924235490333}
   - component: {fileID: 1904463522039586686}
   m_Layer: 0
-  m_Name: MemoryTile
+  m_Name: MemoryGlassTile
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

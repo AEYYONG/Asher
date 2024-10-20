@@ -25,10 +25,10 @@ public enum JokerID
 public enum ItemID
 {
     Default,
-    Memory,
+    MemoryGlass,
     HairBall,
     SpeedUp,
-    DoubleTile,
+    InvisibilityCloak,
     FeverTime
 }
 

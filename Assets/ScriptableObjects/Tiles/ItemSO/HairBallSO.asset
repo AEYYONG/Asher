@@ -16,6 +16,6 @@ MonoBehaviour:
   itemID: 2
   jokerID: 0
   trapID: 0
-  itemImg: {fileID: 21300000, guid: 0986bed9e2e1b4012910e646a46b809c, type: 3}
+  itemImg: {fileID: 21300000, guid: da4469b46cc494fd1a2ceeac40d6c2e0, type: 3}
   sideCutSceneImg: {fileID: 21300000, guid: f0cc2fb5c5bcf42b58a88f9059b56e6a, type: 3}
   selectNum: 2

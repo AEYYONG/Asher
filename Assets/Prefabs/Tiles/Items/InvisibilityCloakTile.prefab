@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3761349924235490333}
   - component: {fileID: 6616074359794154275}
   m_Layer: 0
-  m_Name: DoubleTile
+  m_Name: InvisibilityCloakTile
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
