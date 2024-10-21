@@ -21,11 +21,13 @@ public class StageUIManager : MonoBehaviour
     
     //외부 스크립트에서 참조하기 위한 플레이어 변수
     public GameObject player;
+    public GameObject npc;
     
     void Awake()
     {
         IniteartStonesList();
         player = GameObject.FindWithTag("Player");
+        npc = GameObject.FindWithTag("NPC");
     }
 
     public void UpdateHeartStoneUI()
