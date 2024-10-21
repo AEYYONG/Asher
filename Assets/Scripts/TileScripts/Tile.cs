@@ -28,6 +28,9 @@ public class Tile : MonoBehaviour
     //플레이어 상호작용 스크립트 할당
     private PlayerInteract _playerInteract;
 
+    //인접 타일 리스트
+    private List<Tile> nearTiles = new List<Tile>();
+
     void Awake()
     {
         //타일 선택 여부 초기화
@@ -79,4 +82,32 @@ public class Tile : MonoBehaviour
         uiManager.ActiveSideCutSceneUI(tileSO);
     }
     
+    //피버 타임 시, 주변 8개의 타일 정보 가져오기
+    public List<Tile> GetNearTiles()
+    {
+        int width = _tileManager.width;
+        int height = _tileManager.height;
+
+        int left = _x - 1;
+        int right = _x + 1;
+        int bottom = _z - 1;
+        int top = _z + 1;
+        
+        for (int i = bottom; i <= top; i++)
+        {
+            for (int j = left; j <= right; j++)
+            {
+                if (!(i < 0 || i >= width || j < 0 || j >= height))
+                {
+                    Vector2Int tile = new Vector2Int(j, i);
+                    if (_tileManager._tiles.ContainsKey(tile))
+                    {
+                        nearTiles.Add(_tileManager._tiles[tile].GetComponent<Tile>());
+                    }
+                }
+            }
+        }
+
+        return nearTiles;
+    }
 }

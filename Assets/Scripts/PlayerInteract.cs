@@ -41,6 +41,9 @@ public class PlayerInteract : MonoBehaviour
     private LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
     public List<Tile> _testList = new List<Tile>();
     
+    //피버 타임인지
+    public bool isFever = false;
+    
     
     void Awake()
     {
@@ -70,9 +73,23 @@ public class PlayerInteract : MonoBehaviour
             if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
-                //선택되지 않은 타일이라면 && 상호작용 가능하다면
-                if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
+                if (isFever)
                 {
+                    List<Tile> nearTiles = curTile.GetNearTiles();
+                    foreach (var tile in nearTiles)
+                    {
+                        if (!tile.isSelected && canInteract && tile.tileType != TileType.RandomNotAvail)
+                        {
+                            //선택 여부 true로 변경
+                            tile.isSelected = true;
+                            //뒤집기 애니메이션 시작
+                            tile._animator.SetTrigger("Select");
+                            //뒤집힌 피버 타일들 비교
+                        }
+                    }
+                }
+                else if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
+                {   //선택되지 않은 타일이라면 && 상호작용 가능하다면
                     //타일 선택 횟수 하나 증가
                     _curSelectCnt++;
                     curTile.tileSO.selectNum = _curSelectCnt;

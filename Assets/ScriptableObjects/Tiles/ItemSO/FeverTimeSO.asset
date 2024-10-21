@@ -18,4 +18,6 @@ MonoBehaviour:
   trapID: 0
   itemImg: {fileID: 21300000, guid: 3c9f373fb725e47cca3f69d103c113e8, type: 3}
   sideCutSceneImg: {fileID: 21300000, guid: 70184e312d03841b7b3677e2467ad1e8, type: 3}
-  selectNum: 2
+  selectNum: 0
+  duration: 7
+  power: 1.5
