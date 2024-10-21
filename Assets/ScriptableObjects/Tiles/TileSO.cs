@@ -55,4 +55,8 @@ public class TileSO : ScriptableObject
     public Sprite itemImg;
     public Sprite sideCutSceneImg;
     public int selectNum;
+    //지속시간
+    public float duration;
+    //파워
+    public float power;
 }

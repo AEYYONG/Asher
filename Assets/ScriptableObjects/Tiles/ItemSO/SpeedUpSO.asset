@@ -19,3 +19,5 @@ MonoBehaviour:
   itemImg: {fileID: 21300000, guid: 5d5e7590bc2d34aeca701bcc1243e72e, type: 3}
   sideCutSceneImg: {fileID: 21300000, guid: 7bd7586a5407f4805a4079bee15b7794, type: 3}
   selectNum: 0
+  duration: 10
+  power: 2
