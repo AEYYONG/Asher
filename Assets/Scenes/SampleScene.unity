@@ -15376,6 +15376,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: _maxRecentTile
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: _stageUIManager
       value: 
       objectReference: {fileID: 1006040431}

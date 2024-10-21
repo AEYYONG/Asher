@@ -36,6 +36,11 @@ public class PlayerInteract : MonoBehaviour
     //한번 사용하면 더는 추격 상황에서 그린존이 활성화되지 않음.
     public bool useGreenZone = false;
     
+    //최근 타일 리스트
+    [SerializeField] private int _maxRecentTile;
+    private LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
+    public List<Tile> _testList = new List<Tile>();
+    
     
     void Awake()
     {
@@ -57,25 +62,6 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
-        //선택한 첫번째 카드가 함정 카드라면
-        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
-        {
-            canInteract = false;
-            _tiles[0].TrapUse(_stageUIManager);
-            StartCoroutine(InvokeInitValue());
-        }
-        
-        //선택 가능한 타일을 모두 선택하였을 때
-        if (_curSelectCnt == maxSelectCnt && !_compareStart)
-        {
-            //상호작용 불가능함
-            canInteract = false;
-            
-            //타일 비교
-            _compareStart = true;
-            CompareTile(_tiles[0], _tiles[1]);
-        }
-
         _rayPos = new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.5f);
         Debug.DrawRay(_rayPos,Vector3.down * 1f, Color.red);
         //플레이어가 타일 뒤집기(space)를 클릭한다면
@@ -100,6 +86,25 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
+        
+        //선택한 첫번째 카드가 함정 카드라면
+        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
+        {
+            canInteract = false;
+            _tiles[0].TrapUse(_stageUIManager);
+            StartCoroutine(InvokeInitValue());
+        }
+        
+        //선택 가능한 타일을 모두 선택하였을 때
+        if (_curSelectCnt == maxSelectCnt && !_compareStart)
+        {
+            //상호작용 불가능함
+            canInteract = false;
+            
+            //타일 비교
+            _compareStart = true;
+            CompareTile(_tiles[0], _tiles[1]);
+        }
 
         if (_tileManager.isGreenZoneActive && !useGreenZone)
         {
@@ -115,7 +120,6 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
-        
     }
 
     void CompareTile(Tile tile1, Tile tile2)
@@ -135,6 +139,9 @@ public class PlayerInteract : MonoBehaviour
                 case TileID.General:
                     Debug.Log("General Tile");
                     _tileManager.ReturnTile(_tiles);
+                    //최근 선택 타일 스택에 저장
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
@@ -151,13 +158,19 @@ public class PlayerInteract : MonoBehaviour
                     }
                     Debug.Log("Not Same Item Tile"); 
                     _tileManager.ReturnTile(_tiles);
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
                 case TileID.Joker:
                     Debug.Log("Red and Black Joker");
                     _tileManager.ReturnTile(_tiles);
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
                 default:
                     _tileManager.ReturnTile(_tiles);
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
             }
             //InitValue();
@@ -186,6 +199,8 @@ public class PlayerInteract : MonoBehaviour
             else
             {
                 _tileManager.ReturnTile(_tiles);
+                AddRecentTileList(tile1);
+                AddRecentTileList(tile2);
             }
             //InitValue();
         }
@@ -209,5 +224,17 @@ public class PlayerInteract : MonoBehaviour
     {
         yield return new WaitForSeconds(_tileManager.tileReturnTime);
         InitValue();
+    }
+
+    public void AddRecentTileList(Tile tile)
+    {
+        if (!_recentTiles.Contains(tile))
+        {
+            if (_recentTiles.Count == _maxRecentTile)
+            {
+                _recentTiles.RemoveFirst();
+            }
+            _recentTiles.AddLast(tile);
+        }
     }
 }
