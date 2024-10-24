@@ -28,6 +28,7 @@ public class Player_Move_anim : MonoBehaviour
 
     //회피 관련
     public bool isAttacked = false;
+    private bool isDodge = false;
 
     //점프 시작했는지
     public bool startJump = false;
@@ -149,17 +150,18 @@ public class Player_Move_anim : MonoBehaviour
             ChangeAnimationState(PLAYER_DOWN);
 
         }
-        else if (Input.GetKey(KeyCode.Space) && !isAttacked)
+        else if (Input.GetKey(KeyCode.Space) && !isAttacked )
         {
             startJump = true;
             ChangeAnimationState(PLAYER_JUMP);  // 점프 애니메이션 실행
         }
 
-        else if (Input.GetKey(KeyCode.Space) && isAttacked)
+        else if (Input.GetKey(KeyCode.Space) && isAttacked && !isDodge)
         {
             ChangeAnimationState(PLAYER_LEFT);
             Debug.Log("회피!");
             isAttacked = false;
+            Invoke("Dodge", 2f);
         }
         /*  else if (Input.GetKey(KeyCode.None)  &&!startJump ) // &&!startJump 가 언제 false가 될지..
           {
@@ -176,6 +178,13 @@ public class Player_Move_anim : MonoBehaviour
             isMoving = true;  // 이동 중 상태로 변경
         }
     }
+
+    void Dodge()
+    {
+        isDodge = false;
+        Debug.Log("회피 쿨타임 종료!");
+    }
+
     void OnDrawGizmos()
     {
         if (Application.isPlaying)
