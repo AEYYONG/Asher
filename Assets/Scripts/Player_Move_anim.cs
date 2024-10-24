@@ -155,6 +155,7 @@ public class Player_Move_anim : MonoBehaviour
             startJump = true;
             ChangeAnimationState(PLAYER_JUMP);  // 점프 애니메이션 실행
         }
+        
 
         else if (Input.GetKey(KeyCode.Space) && isAttacked && !isDodge)
         {
@@ -163,11 +164,10 @@ public class Player_Move_anim : MonoBehaviour
             isAttacked = false;
             Invoke("Dodge", 2f);
         }
-        /*  else if (Input.GetKey(KeyCode.None)  &&!startJump ) // &&!startJump 가 언제 false가 될지..
+          else if (!Input.anyKey&&!startJump) 
           {
-              Debug.Log("아이들로 가야하는데");
               ChangeAnimationState(PLAYER_IDLE);
-          }*/
+          }
 
         if (movement != Vector3.zero)
         {
@@ -256,7 +256,8 @@ public class Player_Move_anim : MonoBehaviour
     // 애니메이션 이벤트에 의해 호출되는 함수
     public void Jump()
     {
-        Debug.Log("애니메이션 이벤트로 점프");
+        Debug.Log("점프 끝");
+        startJump = false;
     }
 
     public void Idle()
