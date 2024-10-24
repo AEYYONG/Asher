@@ -57,7 +57,7 @@ public class NPC_Move : MonoBehaviour
         }
         else
         {
-            MoveInGrid();
+          //  MoveInGrid();
         }
 
         
