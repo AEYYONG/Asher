@@ -19,3 +19,7 @@ MonoBehaviour:
   itemImg: {fileID: 0}
   sideCutSceneImg: {fileID: 21300000, guid: a7cbb1a156cd5469d9355c7cec193e89, type: 3}
   selectNum: 0
+  duration: 0
+  power: 0
+  originTopTex: {fileID: 2800000, guid: a00df048c84d64538b02ee2e75c64a4f, type: 3}
+  transTopTex: {fileID: 2800000, guid: b02bcbbdcdc45447a97fb27ac54986c1, type: 3}

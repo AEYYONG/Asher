@@ -3,7 +3,11 @@ guid: 17778a9c27ed7446b9e382158b0b5da7
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - itemImg: {instanceID: 0}
+  - sideCutSceneImg: {instanceID: 0}
+  - originTopTex: {fileID: 2800000, guid: a00df048c84d64538b02ee2e75c64a4f, type: 3}
+  - transTopTex: {fileID: 2800000, guid: d2bd39a086fef4a008216fdfeee8ba88, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

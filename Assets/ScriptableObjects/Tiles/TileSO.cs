@@ -59,4 +59,7 @@ public class TileSO : ScriptableObject
     public float duration;
     //파워
     public float power;
+    //투명 고글 아이템 -> 투명 버전 타일 텍스쳐
+    public Texture2D originTopTex;
+    public Texture2D transTopTex;
 }

@@ -38,8 +38,7 @@ public class PlayerInteract : MonoBehaviour
     
     //최근 타일 리스트
     [SerializeField] private int _maxRecentTile;
-    private LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
-    public List<Tile> _testList = new List<Tile>();
+    public LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
     
     //피버 타임인지
     public bool isFever = false;
@@ -249,8 +248,10 @@ public class PlayerInteract : MonoBehaviour
         {
             if (_recentTiles.Count == _maxRecentTile)
             {
+                Debug.Log("5개 꽉차서, 가장 처음에 선택한 " + _recentTiles.First().name + " 제거");
                 _recentTiles.RemoveFirst();
             }
+            Debug.Log(tile.name+"을 최근 리스트에 추가");
             _recentTiles.AddLast(tile);
         }
     }
