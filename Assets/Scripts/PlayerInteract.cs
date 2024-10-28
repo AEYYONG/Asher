@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
+using Random = System.Random;
 
 public class PlayerInteract : MonoBehaviour
 {
@@ -41,15 +42,26 @@ public class PlayerInteract : MonoBehaviour
     public LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
     
     //피버 타임인지
+    private InventoryManager _inventoryManager;
     public bool isFever = false;
-    
-    
+
+    public class FeverTile
+    {
+        public Tile tile;
+        public bool isComplete; //짝을 맞추었는지
+    }
+
     void Awake()
     {
         _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
         _curSelectCnt = 0;
         canInteract = true;
         _compareStart = false;
+    }
+
+    void Start()
+    {
+        _inventoryManager = FindObjectOfType<InventoryManager>();
     }
 
     void OnEnable()
@@ -75,6 +87,8 @@ public class PlayerInteract : MonoBehaviour
                 if (isFever)
                 {
                     List<Tile> nearTiles = curTile.GetNearTiles();
+                    List<FeverTile> compareTiles = new List<FeverTile>();
+                    List<Tile> returnTiles = new List<Tile>();
                     foreach (var tile in nearTiles)
                     {
                         if (!tile.isSelected && canInteract && tile.tileType != TileType.RandomNotAvail)
@@ -83,9 +97,15 @@ public class PlayerInteract : MonoBehaviour
                             tile.isSelected = true;
                             //뒤집기 애니메이션 시작
                             tile._animator.SetTrigger("Select");
-                            //뒤집힌 피버 타일들 비교
+                            //뒤집힌 피버 타일들 비교를 위해 비교 타일에 집어넣기
+                            FeverTile feverTile = new FeverTile();
+                            feverTile.tile = tile;
+                            feverTile.isComplete = false;
+                            compareTiles.Add(feverTile);
                         }
                     }
+                    //compareTiles에 있는 타일들을 비교
+                    CompareNearTiles(compareTiles,returnTiles);
                 }
                 else if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
                 {   //선택되지 않은 타일이라면 && 상호작용 가능하다면
@@ -219,6 +239,73 @@ public class PlayerInteract : MonoBehaviour
                 AddRecentTileList(tile2);
             }
             //InitValue();
+        }
+    }
+
+    //피버타일로 인한 인접 타일들 비교 함수
+    public void CompareNearTiles(List<FeverTile> tiles, List<Tile> returnTiles)
+    {
+        List<Tile> itemList = new List<Tile>();
+        for (int i = 0; i < tiles.Count; i++)
+        {
+            if (tiles[i].isComplete || tiles[i].tile.tileSO.tileID != TileID.Item)
+            {
+                continue;
+            }
+            for (int j = i+1; j < tiles.Count; j++)
+            {
+                if (tiles[j].isComplete || tiles[j].tile.tileSO.tileID != TileID.Item)
+                {
+                    continue;
+                }
+
+                if (tiles[i].tile.tileSO.itemID == tiles[j].tile.tileSO.itemID)
+                {
+                    tiles[i].isComplete = true;
+                    tiles[j].isComplete = true;
+                    //획득 아이템 리스트에 추가
+                    itemList.Add(tiles[i].tile);
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < tiles.Count(); i++)
+        {
+            if (!tiles[i].isComplete)
+            {
+                returnTiles.Add(tiles[i].tile);
+            }
+        }
+        SelectFeverItems(itemList, returnTiles);
+    }
+    
+    //피버 타일로 획득한 아이템들 중 획득할 아이템을 선택하는 함수
+    public void SelectFeverItems(List<Tile> items, List<Tile> returnTiles)
+    {
+        //인벤토리가 비어있는 개수만큼 아이템이 존재하면 인벤토리에 넣기
+        int availCnt = 2 - _inventoryManager.GetItemCnt();
+        
+        //획득한 아이템 수가, 획득 가능한 아이템 수보다 같거나 작으면 -> 획득한 아이템 그대로 인벤토리에 넣으면 됨.
+        if (availCnt >= items.Count)
+        {
+            foreach (var item in items)
+            {
+                inventory.AddItemEvent(item);
+            }
+        }
+        else
+        {
+            //획득한 아이템 수가, 획득 가능한 아이템 수보다 많으면
+            //아이템 선택 시스템 발동
+            Debug.Log("선택 시스템 발동");
+            foreach (var item in items)
+            {
+                Debug.Log(item.name + "\n");
+            }
+            Debug.Log("중에 선택 가능");
+            //다 선택하면 이제 뒤집어져야 하는 타일들 뒤집기
+            _tileManager.ReturnTile(returnTiles);
         }
     }
     public void InitValue()

@@ -135,5 +135,24 @@ public class InventoryManager : MonoBehaviour
             UpdateSlotUI();
         }
     }
+
+    public int GetItemCnt()
+    {
+        int cnt = 0;
+        InventorySlot slot1 = inventory.InventorySlots[0];
+        InventorySlot slot2 = inventory.InventorySlots[1];
+        //Debug.Log("slot1" + slot1);
+        //Debug.Log("slot2"+slot2);
+        if (slot1.itemData != emptyItemSO)
+        {
+            cnt++;
+        }
+        if (slot2.itemData != emptyItemSO)
+        {
+            cnt++;
+        }
+
+        return cnt;
+    }
     
 }
