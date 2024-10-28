@@ -97,7 +97,7 @@ public class Tile : MonoBehaviour
         {
             for (int j = left; j <= right; j++)
             {
-                if (!(i < 0 || i >= width || j < 0 || j >= height))
+                if (!(i < 0 || i >= height || j < 0 || j >= width))
                 {
                     Vector2Int tile = new Vector2Int(j, i);
                     if (_tileManager._tiles.ContainsKey(tile))
