@@ -21,6 +21,7 @@ public class NPC_Move : MonoBehaviour
     //추적 관련 변수
     public bool isChasing = false;
     public bool isBlocked = false;
+    public bool canDetect = true; //NPC가 애셔를 감지할 수 있는지(아이템 사용 시 이용)
 
     // 공격, 회피 관련
     private GameObject asher;
@@ -56,7 +57,7 @@ public class NPC_Move : MonoBehaviour
         }
         else
         {
-            MoveInGrid();
+          //  MoveInGrid();
         }
 
         
@@ -117,7 +118,7 @@ public class NPC_Move : MonoBehaviour
         if (Physics.Raycast(ray, out hit, detectionRange))
         {
             // 감지된 물체의 이름이 "Asher"라면
-            if (hit.collider.name == "Asher")
+            if (hit.collider.name == "Asher" && canDetect)
             {
                 // Debug.Log("Asher 감지됨: " + hit.collider.name);
               

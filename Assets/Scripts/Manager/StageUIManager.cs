@@ -19,9 +19,15 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private List<Sprite> _sideCutSceneFrameBottomList;
     //0: 함정, 1: 아이템, 2: 마음의 조각, 3: 조커, 4: 그린존, 5: 타이머
     
+    //외부 스크립트에서 참조하기 위한 플레이어 변수
+    public GameObject player;
+    public GameObject npc;
+    
     void Awake()
     {
         IniteartStonesList();
+        player = GameObject.FindWithTag("Player");
+        npc = GameObject.FindWithTag("NPC");
     }
 
     public void UpdateHeartStoneUI()
@@ -63,6 +69,13 @@ public class StageUIManager : MonoBehaviour
                 break;
             case TileID.HeartStone:
                 break;
+            case TileID.GreenZone:
+                _curImgId = 1;
+                _triggerName = "GreenZone";
+                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[4];
+                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[4];
+                break;
+                
         }
         _sideCutSceneUI.SetActive(true);
         StartCoroutine(SetSideCutSceneUIImg(_triggerName, _curImgId));

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6620057068993517578}
   - component: {fileID: 1617044052681711701}
   - component: {fileID: 3761349924235490333}
+  - component: {fileID: 6436926596267468268}
   m_Layer: 0
   m_Name: GreenZoneTile
   m_TagString: Ground
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f0e76a45bc4c48188711bf5de2b1a6c, type: 2}
+  - {fileID: 2100000, guid: 388d423df4acb461a90eeda77fe8f5d1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,3 +128,21 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6436926596267468268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6389873552652161418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb55b61f7de094928b2181a06ba6f5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSO: {fileID: 11400000, guid: dfc83d9ee20b7498aa3aa046291ae9c5, type: 2}
+  _x: 0
+  _z: 0
+  isSelected: 0
+  tileType: 0
+  _animator: {fileID: 3761349924235490333}

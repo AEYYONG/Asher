@@ -568,7 +568,7 @@ MonoBehaviour:
   secondSlot: {fileID: 404668015}
   isFirstSlotFull: 0
   inventory: {fileID: 11400000, guid: 958853fc61e5547d78c0114aca406fa5, type: 2}
-  emptyImg: {fileID: 21300000, guid: 112a474246af745a8a25be16f6685e40, type: 3}
+  emptyItemSO: {fileID: 11400000, guid: df1183f6cb93b4f94ae0817fe2112d5e, type: 2}
 --- !u!1 &106887313
 GameObject:
   m_ObjectHideFlags: 0
@@ -7645,13 +7645,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3adc463d52dc74d1586403e18d003003, type: 3}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: b41577029013c47fe84f7fc5c65f7ec6, type: 3}
   _sideCutSceneFrameBottomList:
   - {fileID: 21300000, guid: 9c3763ca1a47949e4b23ca08541e6f44, type: 3}
   - {fileID: 21300000, guid: a94d655499101451a9051224cb38a544, type: 3}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: 62fc637d10ee8469dad045473fa82b50, type: 3}
+  player: {fileID: 0}
 --- !u!1 &1014513402
 GameObject:
   m_ObjectHideFlags: 0
@@ -9160,6 +9161,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 873414468901822651, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_Name
+      value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 873414468901822651, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
+      propertyPath: m_TagString
       value: NPC
       objectReference: {fileID: 0}
     - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
@@ -13485,11 +13490,19 @@ MonoBehaviour:
   tileParent: {fileID: 1135192898}
   buffItemTypes:
   - tilePrefab: {fileID: 6389873552652161418, guid: 901194a5965c94a5a819245d8ff94a40, type: 3}
-    count: 52
+    count: 21
   - tilePrefab: {fileID: 6389873552652161418, guid: 1513a6b1414da42efa03a07287afd77a, type: 3}
-    count: 52
+    count: 21
+  - tilePrefab: {fileID: 6389873552652161418, guid: 6cdcb4e80195b424fbb780d55d2e6ce7, type: 3}
+    count: 21
+  - tilePrefab: {fileID: 6389873552652161418, guid: 258385e5e40e845d69794df130040813, type: 3}
+    count: 21
+  - tilePrefab: {fileID: 6389873552652161418, guid: 369ca2d01d78c4bc99a95458cc1dc775, type: 3}
+    count: 17
   debuffItemTypes: []
-  etcItemTypes: []
+  etcItemTypes:
+  - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
+    count: 3
   tileEntries:
   - position: {x: 0, y: 0}
     tile: {fileID: 1926672158}
@@ -13699,7 +13712,8 @@ MonoBehaviour:
     tile: {fileID: 890960042}
   - position: {x: 12, y: 7}
     tile: {fileID: 1861278156}
-  eventTileCnt: 0
+  greenZoneTileList: []
+  isGreenZoneActive: 0
 --- !u!4 &1840335611
 Transform:
   m_ObjectHideFlags: 0
@@ -15363,9 +15377,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: _maxRecentTile
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: _stageUIManager
       value: 
       objectReference: {fileID: 1006040431}
+    - target: {fileID: 2791380705674465803, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_Name
       value: Asher

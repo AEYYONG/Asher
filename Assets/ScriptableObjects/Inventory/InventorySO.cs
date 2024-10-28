@@ -17,6 +17,12 @@ public class InventorySlot
         this.itemData = tile.tileSO;
         this.script = tile;
     }
+
+    public InventorySlot(TileSO tileSO)
+    {
+        this.itemData = tileSO;
+        this.script = null;
+    }
     
 }
 

@@ -60,19 +60,33 @@ public class TileManager : MonoBehaviour
     public Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>(); //실제 사용 딕셔너리
     public List<TileEntry> tileEntries = new List<TileEntry>(); //직렬화 가능한 리스트
     
-    //이벤트 타일 프리팹
-    private GameObject _eventPrefab;
-    public int eventTileCnt = 0;
+    //그린존 타일 리스트
+    public List<GameObject> greenZoneTileList = new List<GameObject>();
+    public bool isGreenZoneActive = false;
+    private NPC_Move _npcMove; //적 npc
+    private PlayerInteract _playerInteract; //플레이어 상호작용
     
     void Start()
     {
-        _eventPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/Etc/EventTile.prefab");
         _tiles.Clear();
         Debug.Log(_tiles.Count);
         InitTileList();
+        
+        //NPC 할당
+        _npcMove = GameObject.FindWithTag("NPC").GetComponent<NPC_Move>();
+        //PlayerInteract 할당
+        _playerInteract = GameObject.FindWithTag("Player").GetComponent<PlayerInteract>();
     }
-    
-    
+
+    void Update()
+    {
+        if (!isGreenZoneActive && _npcMove.isChasing && !_playerInteract.useGreenZone)
+        {
+            ActiveGreenZone();
+        }
+    }
+
+
     //타일 종류와 빈도에 따라 Tiles 딕셔너리에
     void InitTileList()
     {
@@ -136,30 +150,23 @@ public class TileManager : MonoBehaviour
                 GameObject newTile = Instantiate(prefab, new Vector3(pos.x, 0, pos.y),
                     prefab.transform.rotation);
                 newTile.transform.SetParent(tileParent.transform);
-                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
+                Tile newTileScript = newTile.GetComponent<Tile>();
+                newTileScript.InitTile(pos.x,pos.y);
                 _tiles.Add(pos,newTile);
                 //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
                 newTile.name = $"Tile{pos} : {newTile.name.Substring(0,newTile.name.Length - 7)}";
+                
+                //그린존 타일일 경우, 그린존 딕셔너리에서 추가적으로 관리
+                if (newTileScript.tileSO.tileID == TileID.GreenZone)
+                {
+                    greenZoneTileList.Add(newTile);
+                }
                 
             }
             else if (tile.tileType == TileType.RandomNotAvail)
             {
                 //Debug.Log("타입 2" + entry.tile);
                 tile.name = $"Tile{pos} : Furniture Tile";
-            }
-            else if (tile.tileType == TileType.Event)
-            {
-                //추가적으로 이벤트 타일 문 확인 작성해줘야 함.
-                //Debug.Log("타입 3 " + entry.tile);
-                eventTileCnt++;
-                Destroy(entry.tile);
-                GameObject newTile = Instantiate(_eventPrefab, new Vector3(pos.x, 0, pos.y),
-                    _eventPrefab.transform.rotation);
-                newTile.transform.SetParent(tileParent.transform);
-                newTile.GetComponent<Tile>().InitTile(pos.x,pos.y);
-                _tiles.Add(pos,newTile);
-                //타일 오브젝트 이름 설정(Tile + TileID + Tile 좌표)
-                newTile.name = $"Tile{pos} : {newTile.name.Substring(0,newTile.name.Length - 7)}";
             }
         }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
@@ -173,4 +180,30 @@ public class TileManager : MonoBehaviour
             StartCoroutine(tile.ReturnTile());
         }
     }
+
+    // 추격 상황 시, 그린존 타일을 활성화
+    public void ActiveGreenZone()
+    {
+        foreach (var tile in greenZoneTileList)
+        {
+            Tile script = tile.GetComponent<Tile>();
+            //선택 여부 true로 변경
+            script.isSelected = true;
+            //뒤집기 애니메이션 시작
+            script._animator.SetTrigger("Select");
+        }
+        isGreenZoneActive = true;
+    }
+
+    //그린존 비활성화
+    public void InActiveGreenZone()
+    {
+        foreach (var tile in greenZoneTileList)
+        {
+            Tile script = tile.GetComponent<Tile>();
+            StartCoroutine(script.ReturnTile());
+        }
+        isGreenZoneActive = false;
+    }
+    
 }

@@ -29,7 +29,20 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private StageUIManager _stageUIManager;
     
     //타일을 뒤집기 위한 레이캐스트
-    private RaycastHit hit;
+    private RaycastHit _hit;
+    private Vector3 _rayPos;
+    
+    //그린존 사용여부 flag 변수
+    //한번 사용하면 더는 추격 상황에서 그린존이 활성화되지 않음.
+    public bool useGreenZone = false;
+    
+    //최근 타일 리스트
+    [SerializeField] private int _maxRecentTile;
+    private LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
+    public List<Tile> _testList = new List<Tile>();
+    
+    //피버 타임인지
+    public bool isFever = false;
     
     
     void Awake()
@@ -52,6 +65,45 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
+        _rayPos = new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.5f);
+        Debug.DrawRay(_rayPos,Vector3.down * 1f, Color.red);
+        //플레이어가 타일 뒤집기(space)를 클릭한다면
+        if (Input.GetButtonUp("FlipTile"))
+        {
+            if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
+            {
+                Tile curTile = _hit.collider.GetComponent<Tile>();
+                if (isFever)
+                {
+                    List<Tile> nearTiles = curTile.GetNearTiles();
+                    foreach (var tile in nearTiles)
+                    {
+                        if (!tile.isSelected && canInteract && tile.tileType != TileType.RandomNotAvail)
+                        {
+                            //선택 여부 true로 변경
+                            tile.isSelected = true;
+                            //뒤집기 애니메이션 시작
+                            tile._animator.SetTrigger("Select");
+                            //뒤집힌 피버 타일들 비교
+                        }
+                    }
+                }
+                else if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
+                {   //선택되지 않은 타일이라면 && 상호작용 가능하다면
+                    //타일 선택 횟수 하나 증가
+                    _curSelectCnt++;
+                    curTile.tileSO.selectNum = _curSelectCnt;
+                    //선택 여부 true로 변경
+                    curTile.isSelected = true;
+                    //뒤집기 애니메이션 시작
+                    curTile._animator.SetTrigger("Select");
+            
+                    //타일 아이디 값 저장
+                    _tiles.Add(curTile);
+                }
+            }
+        }
+        
         //선택한 첫번째 카드가 함정 카드라면
         if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
         {
@@ -70,27 +122,18 @@ public class PlayerInteract : MonoBehaviour
             _compareStart = true;
             CompareTile(_tiles[0], _tiles[1]);
         }
-        
-        //플레이어가 타일 뒤집기(space)를 클릭한다면
-        if (Input.GetButtonUp("FlipTile"))
+
+        if (_tileManager.isGreenZoneActive && !useGreenZone)
         {
-            Debug.DrawRay(transform.position,Vector3.down * 2f, Color.red);
-            if (Physics.Raycast(transform.position, Vector3.down, out hit, 2f)){}
+            if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
             {
-                Tile curTile = hit.collider.GetComponent<Tile>();
-                //선택되지 않은 타일이라면 && 상호작용 가능하다면
-                if (!curTile.isSelected && canInteract && curTile.tileType!=TileType.RandomNotAvail)
+                Tile curTile = _hit.collider.GetComponent<Tile>();
+                //그린존 타일로 들어왔다면
+                if (curTile.tileSO.tileID == TileID.GreenZone)
                 {
-                    //타일 선택 횟수 하나 증가
-                    _curSelectCnt++;
-                    curTile.tileSO.selectNum = _curSelectCnt;
-                    //선택 여부 true로 변경
-                    curTile.isSelected = true;
-                    //뒤집기 애니메이션 시작
-                    curTile._animator.SetTrigger("Select");
-            
-                    //타일 아이디 값 저장
-                    _tiles.Add(curTile);
+                    Debug.Log("그린존 입성");
+                    useGreenZone = true;
+                    curTile.Use(_stageUIManager);
                 }
             }
         }
@@ -113,10 +156,13 @@ public class PlayerInteract : MonoBehaviour
                 case TileID.General:
                     Debug.Log("General Tile");
                     _tileManager.ReturnTile(_tiles);
+                    //최근 선택 타일 스택에 저장
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
-                    tile1.Use();
+                    tile1.Use(_stageUIManager);
                     StartCoroutine(InvokeInitValue());
                     break;
                 case TileID.Item:
@@ -129,13 +175,19 @@ public class PlayerInteract : MonoBehaviour
                     }
                     Debug.Log("Not Same Item Tile"); 
                     _tileManager.ReturnTile(_tiles);
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
                 case TileID.Joker:
                     Debug.Log("Red and Black Joker");
                     _tileManager.ReturnTile(_tiles);
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
                 default:
                     _tileManager.ReturnTile(_tiles);
+                    AddRecentTileList(tile1);
+                    AddRecentTileList(tile2);
                     break;
             }
             //InitValue();
@@ -164,6 +216,8 @@ public class PlayerInteract : MonoBehaviour
             else
             {
                 _tileManager.ReturnTile(_tiles);
+                AddRecentTileList(tile1);
+                AddRecentTileList(tile2);
             }
             //InitValue();
         }
@@ -180,12 +234,24 @@ public class PlayerInteract : MonoBehaviour
     
     public void UseItem(InventorySlot item)
     {
-        item.script.ItemUse();
+        item.script.ItemUse(_stageUIManager);
     }
 
     public IEnumerator InvokeInitValue()
     {
         yield return new WaitForSeconds(_tileManager.tileReturnTime);
         InitValue();
+    }
+
+    public void AddRecentTileList(Tile tile)
+    {
+        if (!_recentTiles.Contains(tile))
+        {
+            if (_recentTiles.Count == _maxRecentTile)
+            {
+                _recentTiles.RemoveFirst();
+            }
+            _recentTiles.AddLast(tile);
+        }
     }
 }
