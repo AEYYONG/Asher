@@ -20,14 +20,20 @@ public class InventoryManager : MonoBehaviour
 
     private InventorySlot emptySlot;
 
+    private bool _isSwap = false;
+    private Animator _animator;
+    [SerializeField] private InventorySlot _curSlot;
+
     void Awake()
     {
-        emptySlot = new InventorySlot(emptyItemSO); 
+        emptySlot = new InventorySlot(emptyItemSO);
+        _animator = GetComponent<Animator>();
     }
     void Start()
     {
         inventory.InventorySlots[0] = emptySlot;
         inventory.InventorySlots[1] = emptySlot;
+        _curSlot = inventory.InventorySlots[0];
     }
     
     
@@ -36,6 +42,18 @@ public class InventoryManager : MonoBehaviour
         //아이템 Swap 버튼을 클릭한 경우
         if (Input.GetButtonUp("SwapItem"))
         {
+            if (_isSwap)
+            {
+                _animator.SetTrigger("ReSwap");
+                _isSwap = false;
+                _curSlot = inventory.InventorySlots[0];
+            }
+            else
+            {
+                _animator.SetTrigger("Swap");
+                _isSwap = true;
+                _curSlot = inventory.InventorySlots[1];
+            }
             Debug.Log("아이템 Swap");
             SwapSlot();
         }
@@ -62,10 +80,11 @@ public class InventoryManager : MonoBehaviour
     void SwapSlot()
     {
         //슬롯 값 교환
+        /*
         (inventory.InventorySlots[0], inventory.InventorySlots[1]) =
             (inventory.InventorySlots[1], inventory.InventorySlots[0]);
-
-        if (inventory.InventorySlots[0].itemData == emptyItemSO)
+        */
+        if (_curSlot.itemData == emptyItemSO)
         {
             //Debug.Log("swap debug");
             isFirstSlotFull = false;
@@ -82,11 +101,25 @@ public class InventoryManager : MonoBehaviour
     {
         if (isFirstSlotFull)
         {
-            inventory.InventorySlots[1] = item;
+            if (_isSwap)
+            {
+                inventory.InventorySlots[0] = item;
+            }
+            else
+            {
+                inventory.InventorySlots[1] = item; 
+            }
         }
         else
         {
-            inventory.InventorySlots[0] = item;
+            if (_isSwap)
+            {
+                inventory.InventorySlots[1] = item;
+            }
+            else
+            {
+                inventory.InventorySlots[0] = item; 
+            }
             isFirstSlotFull = true;
         }
         UpdateSlotUI();
@@ -95,8 +128,8 @@ public class InventoryManager : MonoBehaviour
     //아이템 사용 시, 슬롯 비우기
     public void ClearItem()
     {
-        inventory.InventorySlots[0].itemData = emptyItemSO;
-        inventory.InventorySlots[0].script = null;
+        _curSlot.itemData = emptyItemSO;
+        _curSlot.script = null;
         isFirstSlotFull = false;
     }
 
@@ -123,11 +156,19 @@ public class InventoryManager : MonoBehaviour
         {
             secondSlot.sprite = emptyItemSO.itemImg;
         }
+
+        if (_isSwap)
+        {
+            _curSlot = inventory.InventorySlots[1];
+        }
+        else{
+            _curSlot = inventory.InventorySlots[0];
+        }
     }
 
     public void UseItem()
     {
-        InventorySlot item = inventory.InventorySlots[0];
+        InventorySlot item = _curSlot;
         if (item.itemData != emptyItemSO)
         {
             inventory.UseItemEvent(item);

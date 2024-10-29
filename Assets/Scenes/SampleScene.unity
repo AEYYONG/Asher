@@ -644,6 +644,9 @@ MonoBehaviour:
   isFirstSlotFull: 0
   inventory: {fileID: 11400000, guid: 958853fc61e5547d78c0114aca406fa5, type: 2}
   emptyItemSO: {fileID: 11400000, guid: df1183f6cb93b4f94ae0817fe2112d5e, type: 2}
+  _curSlot:
+    itemData: {fileID: 0}
+    script: {fileID: 0}
 --- !u!95 &83493235
 Animator:
   serializedVersion: 5
@@ -3305,7 +3308,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0612b3ef01cfe4b6ab9678e23d5cb0ff, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 112a474246af745a8a25be16f6685e40, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11556,7 +11559,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5d5e7590bc2d34aeca701bcc1243e72e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 112a474246af745a8a25be16f6685e40, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
