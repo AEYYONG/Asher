@@ -13671,9 +13671,9 @@ MonoBehaviour:
     count: 21
   - tilePrefab: {fileID: 6389873552652161418, guid: 258385e5e40e845d69794df130040813, type: 3}
     count: 21
-  - tilePrefab: {fileID: 6389873552652161418, guid: 369ca2d01d78c4bc99a95458cc1dc775, type: 3}
+  debuffItemTypes:
+  - tilePrefab: {fileID: 6389873552652161418, guid: 4c6c1b72b58dd48e9999d2b35e3f3650, type: 3}
     count: 17
-  debuffItemTypes: []
   etcItemTypes:
   - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
     count: 3

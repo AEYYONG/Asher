@@ -32,6 +32,9 @@ public class Player_Move_anim : MonoBehaviour
 
     //점프 시작했는지
     public bool startJump = false;
+    
+    //혼란 함정 flag
+    public bool isInverse = false;
 
 
     void Start()
@@ -113,42 +116,83 @@ public class Player_Move_anim : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D))
         {
-            if (!IsObstacleInDirection(Vector3.right))
+            if (!isInverse)
             {
-                movement = Vector3.right;
+                if (!IsObstacleInDirection(Vector3.right))
+                {
+                    movement = Vector3.right;
 
+                }
+                ChangeAnimationState(PLAYER_RIGHT);
             }
-            ChangeAnimationState(PLAYER_RIGHT);
-
+            else
+            {
+                if (!IsObstacleInDirection(Vector3.left))
+                {
+                    movement = Vector3.left;
+                }
+                ChangeAnimationState(PLAYER_LEFT);
+            }
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            if (!IsObstacleInDirection(Vector3.left))
+            if (!isInverse)
             {
-                movement = Vector3.left;
+                if (!IsObstacleInDirection(Vector3.left))
+                {
+                    movement = Vector3.left;
+                }
+                ChangeAnimationState(PLAYER_LEFT);
             }
-            ChangeAnimationState(PLAYER_LEFT);
+            else
+            {
+                if (!IsObstacleInDirection(Vector3.right))
+                {
+                    movement = Vector3.right;
 
+                }
+                ChangeAnimationState(PLAYER_RIGHT);
+            }
         }
         else if (Input.GetKey(KeyCode.W))
         {
-            if (!IsObstacleInDirection(Vector3.forward))
+            if (!isInverse)
             {
-                movement = Vector3.forward;
+                if (!IsObstacleInDirection(Vector3.forward))
+                {
+                    movement = Vector3.forward;
 
+                }
+                ChangeAnimationState(PLAYER_UP);
             }
-
-            ChangeAnimationState(PLAYER_UP);
-
+            else
+            {
+                if (!IsObstacleInDirection(Vector3.back))
+                {
+                    movement = Vector3.back; // 음의 Z축으로 이동
+                }
+                ChangeAnimationState(PLAYER_DOWN);
+            }
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            if (!IsObstacleInDirection(Vector3.back))
+            if (!isInverse)
             {
-                movement = Vector3.back; // 음의 Z축으로 이동
+                if (!IsObstacleInDirection(Vector3.back))
+                {
+                    movement = Vector3.back; // 음의 Z축으로 이동
+                }
+                ChangeAnimationState(PLAYER_DOWN);
             }
-            ChangeAnimationState(PLAYER_DOWN);
+            else
+            {
+                if (!IsObstacleInDirection(Vector3.forward))
+                {
+                    movement = Vector3.forward;
 
+                }
+                ChangeAnimationState(PLAYER_UP);
+            }
         }
         else if (Input.GetKey(KeyCode.Space) && !isAttacked )
         {
