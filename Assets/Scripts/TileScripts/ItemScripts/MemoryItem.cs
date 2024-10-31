@@ -15,14 +15,19 @@ public class MemoryItem : Tile
 
     IEnumerator ShowRecentTiles(LinkedList<Tile> tiles)
     {
-        //투명 버전의 텍스쳐로 셰이더의 Top 변경
+        List<Tile> recentTiles = new List<Tile>();
         foreach (var tile in tiles)
+        {
+            recentTiles.Add(tile);
+        }
+        //투명 버전의 텍스쳐로 셰이더의 Top 변경
+        foreach (var tile in recentTiles)
         {
             tile.GetComponent<Renderer>().material.SetTexture("_TopTex",tile.tileSO.transTopTex);
         }
         yield return new WaitForSeconds(tileSO.duration);
         //원래 버전의 텍스쳐로 셰이더의 Top 변경
-        foreach (var tile in tiles)
+        foreach (var tile in recentTiles)
         {
             tile.GetComponent<Renderer>().material.SetTexture("_TopTex",tile.tileSO.originTopTex);
         }
