@@ -304,9 +304,10 @@ public class PlayerInteract : MonoBehaviour
                 Debug.Log(item.name + "\n");
             }
             Debug.Log("중에 선택 가능");
-            //다 선택하면 이제 뒤집어져야 하는 타일들 뒤집기
-            _tileManager.ReturnTile(returnTiles);
+            _stageUIManager.DrawItemSelectionUI(items);
         }
+        //다 선택하면 이제 뒤집어져야 하는 타일들 뒤집기
+        _tileManager.ReturnTile(returnTiles);
     }
     public void InitValue()
     {
