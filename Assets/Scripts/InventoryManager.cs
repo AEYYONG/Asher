@@ -195,5 +195,11 @@ public class InventoryManager : MonoBehaviour
 
         return cnt;
     }
-    
+
+    public void SelectFeverTimeItem(Tile item)
+    {
+        _curSlot.itemData = item.tileSO;
+        _curSlot.script = item;
+        UpdateSlotUI();
+    }
 }

@@ -8070,6 +8070,10 @@ MonoBehaviour:
   _camera: {fileID: 963194227}
   _itemSelectionPrefab: {fileID: 2673998890636156559, guid: 6d8ecf7912b484d9aae4143e50a5e419, type: 3}
   _itemSelectionUIList: []
+  itemSelectionDuration: 3
+  _itemSelectStart: 0
+  _selectItem: {fileID: 0}
+  _inventoryManager: {fileID: 83493234}
 --- !u!1 &1014513402
 GameObject:
   m_ObjectHideFlags: 0
