@@ -132,6 +132,7 @@ MonoBehaviour:
   moveDuration: 0.3
   isAttacked: 0
   startJump: 0
+  isInverse: 0
 --- !u!95 &182253446604268967
 Animator:
   serializedVersion: 5
@@ -191,3 +192,6 @@ MonoBehaviour:
   canInteract: 1
   inventory: {fileID: 11400000, guid: 958853fc61e5547d78c0114aca406fa5, type: 2}
   _stageUIManager: {fileID: 0}
+  useGreenZone: 0
+  _maxRecentTile: 5
+  isFever: 0
