@@ -8,5 +8,6 @@ public class GreenZoneTile : Tile
     {
         base.Use(uiManager);
         FindObjectOfType<NPC_Move>().isChasing = false;
+        Debug.Log("그린존");
     }
 }

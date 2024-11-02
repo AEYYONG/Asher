@@ -8,7 +8,7 @@ public class NPC_Move : MonoBehaviour
     public NavMeshAgent agent;
     private Vector3 targetPosition;
     private bool moveInXAxis = true;
-    public float detectionRange = 3.0f;
+    public float detectionRange = 2.5f;
 
     // 이동 가능한 범위 설정
     public Vector3 minRange = new Vector3(0, 0, 0);  // 최소 좌표
