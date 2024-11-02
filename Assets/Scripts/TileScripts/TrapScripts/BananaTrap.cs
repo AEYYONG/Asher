@@ -8,5 +8,7 @@ public class BananaTrap : Tile
     {
         base.TrapUse(uiManager);
         Debug.Log("바나나 아이템 사용");
+        FindObjectOfType<Player_Move>().StartSlip();
+
     }
 }

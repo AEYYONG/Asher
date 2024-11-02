@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Player_Move_anim : MonoBehaviour
+public class Player_Move : MonoBehaviour
 {
     public float moveSpeed = 5f;  // 이동 속도
     public float moveDuration = 0.3f;  // 각 방향으로 이동하는 시간 (0.3초)
@@ -32,9 +32,12 @@ public class Player_Move_anim : MonoBehaviour
 
     //점프 시작했는지
     public bool startJump = false;
-    
+
     //혼란 함정 flag
     public bool isInverse = false;
+
+    public bool isSlip = false;
+    private Vector3 randomDirection;
 
 
     void Start()
@@ -62,6 +65,11 @@ public class Player_Move_anim : MonoBehaviour
 
     void Update()
     {
+        if (isSlip)
+        {
+            Slip();
+        }
+
         if (!isMoving)
         {
             HandleMovement();  // 이동 중이 아닐 때만 입력을 처리
@@ -71,6 +79,52 @@ public class Player_Move_anim : MonoBehaviour
 
         SpaceInput();
 
+        
+
+    }
+
+    public void StartSlip()
+    {
+        int randomDirectionIndex = Random.Range(0, 4);  // 0에서 3 사이의 정수 생성
+        switch (randomDirectionIndex)
+        {
+            case 0:
+                randomDirection = Vector3.left;
+                Debug.Log("미끄러짐 시작! 방향: 왼쪽");
+                break;
+            case 1:
+                randomDirection = Vector3.right;
+                Debug.Log("미끄러짐 시작! 방향: 오른쪽");
+                break;
+            case 2:
+                randomDirection = Vector3.forward;
+                Debug.Log("미끄러짐 시작! 방향: 위");
+                break;
+            case 3:
+                randomDirection = Vector3.back;
+                Debug.Log("미끄러짐 시작! 방향: 아래");
+                break;
+        }
+        isSlip = true; 
+        isMoving = false;
+    }
+
+    void Slip()
+    {
+        transform.position += randomDirection * moveSpeed * Time.deltaTime;
+        Debug.Log("ㅎㅎㅎㅎ");
+        Debug.Log("미끄러짐 방향: " + randomDirection);
+
+        // 장애물이 감지되면 미끄러짐 중지
+        if (IsObstacleInDirection(randomDirection))
+        {
+            isSlip = false;
+            isMoving = true;
+            Debug.Log("미끄러짐 종료 - 장애물에 부딪힘");
+            targetPosition = transform.position;
+            targetPosition = SnapToGrid(transform.position);
+            ChangeAnimationState(PLAYER_IDLE);
+        }
     }
 
 
@@ -194,12 +248,12 @@ public class Player_Move_anim : MonoBehaviour
                 ChangeAnimationState(PLAYER_UP);
             }
         }
-        else if (Input.GetKey(KeyCode.Space) && !isAttacked )
+        else if (Input.GetKey(KeyCode.Space) && !isAttacked)
         {
             startJump = true;
             ChangeAnimationState(PLAYER_JUMP);  // 점프 애니메이션 실행
         }
-        
+
 
         else if (Input.GetKey(KeyCode.Space) && isAttacked && !isDodge)
         {
@@ -208,10 +262,10 @@ public class Player_Move_anim : MonoBehaviour
             isAttacked = false;
             Invoke("Dodge", 2f);
         }
-          else if (!Input.anyKey&&!startJump) 
-          {
-              ChangeAnimationState(PLAYER_IDLE);
-          }
+        /*else if (!Input.anyKey && !startJump)
+        {
+            ChangeAnimationState(PLAYER_IDLE);
+        }*/
 
         if (movement != Vector3.zero)
         {
@@ -278,7 +332,7 @@ public class Player_Move_anim : MonoBehaviour
             }
 
         }
-      
+
 
     }
 
@@ -312,16 +366,16 @@ public class Player_Move_anim : MonoBehaviour
 
     //점프 중력 관련 보류
     void OnCollisionEnter(Collision collision)
-        //점프 가능 판정(땅에 닿음) 어떻게 짤건지? -> 땅에 닿으면 startJump false로 변경해야 함(애니메이션 제어용)
+    //점프 가능 판정(땅에 닿음) 어떻게 짤건지? -> 땅에 닿으면 startJump false로 변경해야 함(애니메이션 제어용)
     {
-     /*   if (collision.gameObject.CompareTag("Ground")) // 바닥과 닿으면 점프 가능
-        {
-            startJump = false;
-            body.velocity = new Vector3(0, 0, 0);
-            Vector3 currentPosition = transform.position;
-            currentPosition.z = Mathf.Floor(currentPosition.z) + 0.5f;
-            transform.position = currentPosition;
-        }*/
+        /*   if (collision.gameObject.CompareTag("Ground")) // 바닥과 닿으면 점프 가능
+           {
+               startJump = false;
+               body.velocity = new Vector3(0, 0, 0);
+               Vector3 currentPosition = transform.position;
+               currentPosition.z = Mathf.Floor(currentPosition.z) + 0.5f;
+               transform.position = currentPosition;
+           }*/
 
 
     }
