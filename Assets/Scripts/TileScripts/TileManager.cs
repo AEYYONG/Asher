@@ -54,8 +54,11 @@ public class TileManager : MonoBehaviour
     public List<TileTypeStruct> debuffItemTypes = new List<TileTypeStruct>();
     public List<TileTypeStruct> etcItemTypes = new List<TileTypeStruct>();
     
+    //가구 타일의 위치
+    public List<Vector2Int> furnitureTilePosList = new List<Vector2Int>();
+    
     //타일 셔플을 위한 임시 리스트
-    private List<GameObject> _tileShuffleList = new List<GameObject>();
+    public List<GameObject> _tileShuffleList = new List<GameObject>();
     //타일 딕셔너리
     public Dictionary<Vector2Int, GameObject> _tiles = new Dictionary<Vector2Int, GameObject>(); //실제 사용 딕셔너리
     public List<TileEntry> tileEntries = new List<TileEntry>(); //직렬화 가능한 리스트
@@ -113,21 +116,21 @@ public class TileManager : MonoBehaviour
             }
         }
         //타일 리스트 섞기
-        ShuffleTileList(_tileShuffleList);
+        //셔플 완료된 타일 리스트를 보드에 배치하기
+        ArrangeTilesOnBoard(ShuffleTileList(_tileShuffleList));
     }
 
     //타일 리스트 섞는 함수
     //Fisher-Yates Shuffle 알고리즘
-    void ShuffleTileList(List<GameObject> tileList)
+    public List<GameObject> ShuffleTileList(List<GameObject> tileList)
     {
         for (int i = tileList.Count - 1; i > 0; i--)
         {
             int randomIndex = Random.Range(0, i + 1);
             (tileList[i], tileList[randomIndex]) = (tileList[randomIndex], tileList[i]);
         }
-        
-        //셔플 완료된 타일 리스트를 보드에 배치하기
-        ArrangeTilesOnBoard(tileList);
+
+        return tileList;
     }
 
     //보드에 타일 배치하기
@@ -165,6 +168,8 @@ public class TileManager : MonoBehaviour
             }
             else if (tile.tileType == TileType.RandomNotAvail)
             {
+                Vector2Int furnitureTilePos = tile.ReturnPos();
+                furnitureTilePosList.Add(furnitureTilePos);
                 //Debug.Log("타입 2" + entry.tile);
                 tile.name = $"Tile{pos} : Furniture Tile";
             }

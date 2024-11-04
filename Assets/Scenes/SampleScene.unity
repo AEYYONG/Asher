@@ -15777,12 +15777,16 @@ MonoBehaviour:
     count: 21
   - tilePrefab: {fileID: 6389873552652161418, guid: 1513a6b1414da42efa03a07287afd77a, type: 3}
     count: 21
-  - tilePrefab: {fileID: 6389873552652161418, guid: 6cdcb4e80195b424fbb780d55d2e6ce7, type: 3}
-    count: 48
-  debuffItemTypes: []
+  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+    count: 35
+  debuffItemTypes:
+  - tilePrefab: {fileID: 6389873552652161418, guid: 2ddeb229a9226427d90e29e33c3112e1, type: 3}
+    count: 10
   etcItemTypes:
   - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
     count: 3
+  furnitureTilePosList: []
+  _tileShuffleList: []
   tileEntries:
   - position: {x: 0, y: 0}
     tile: {fileID: 1926672158}
@@ -18132,11 +18136,39 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5942560119042791849, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2117134285}
   m_SourcePrefab: {fileID: 100100000, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+--- !u!1 &2117134284 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2982884133803568182, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+  m_PrefabInstance: {fileID: 2117134283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2117134285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117134284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10b6aa75fae811e4e8193d44c1fea9dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
+  moveDuration: 0.3
+  isMoving: 0
+  isAttacked: 0
+  startJump: 0
+  isInverse: 0
+  isSlip: 0
 --- !u!1 &2131788370
 GameObject:
   m_ObjectHideFlags: 0

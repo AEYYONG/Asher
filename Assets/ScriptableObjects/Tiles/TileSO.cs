@@ -41,7 +41,7 @@ public enum TrapID
     Fog,
     Inverse,
     TimeBomb,
-    TimeDown,
+    Gauntlet,
     Turtle,
 }
 
