@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6236565973482364664}
   - component: {fileID: 8739202576223701810}
   m_Layer: 0
-  m_Name: HairBall
+  m_Name: HairBallItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

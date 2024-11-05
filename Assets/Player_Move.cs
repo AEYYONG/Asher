@@ -38,6 +38,7 @@ public class Player_Move : MonoBehaviour
 
     public bool isSlip = false;
     private Vector3 randomDirection;
+    private bool slipping = false;
 
     // 헤어볼
     public GameObject HairBall;
@@ -152,26 +153,27 @@ public class Player_Move : MonoBehaviour
         }
         isSlip = true; 
         isMoving = false;
+        slipping = true;
     }
 
     void Slip()
     {
+        // 미끄러짐 이동 처리
         transform.position += randomDirection * moveSpeed * Time.deltaTime;
-        Debug.Log("ㅎㅎㅎㅎ");
-        Debug.Log("미끄러짐 방향: " + randomDirection);
 
         // 장애물이 감지되면 미끄러짐 중지
         if (IsObstacleInDirection(randomDirection))
         {
-            isSlip = false;
+            isSlip = false;  // isSlip을 false로 설정하여 미끄러짐 중지
             isMoving = true;
             Debug.Log("미끄러짐 종료 - 장애물에 부딪힘");
+
+            // 목표 위치 설정 및 애니메이션 업데이트
             targetPosition = transform.position;
             targetPosition = SnapToGrid(transform.position);
             ChangeAnimationState(PLAYER_IDLE);
         }
     }
-
 
 
 
