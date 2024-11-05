@@ -4,90 +4,29 @@ using UnityEngine;
 
 public class HairBallItem : Tile
 {
-    public int BallDirection = -1;
-    private NPC_Move npcMove;
-    void Start()
-    {
-        npcMove = FindObjectOfType<NPC_Move>();
-    }
+    private HairBallItemUse hairBallItemUse;
+
     public override void ItemUse(StageUIManager uiManager)
     {
         base.ItemUse(uiManager);
         Debug.Log("헤어볼 아이템 사용");
-        StartCoroutine(WaitForDirectionInput());
 
-    }
-
-    private IEnumerator WaitForDirectionInput()
-    {
-        float waitTime = 2f;
-        float timer = 0f;
-        while (timer < waitTime)
+        GameObject hairBallObject = GameObject.FindWithTag("HairBall");
+        if (hairBallObject != null)
         {
-            // 방향 입력을 즉시 감지하여 발사
-            if (Input.GetKeyDown(KeyCode.W))
+            hairBallItemUse = hairBallObject.GetComponent<HairBallItemUse>();
+            if (hairBallItemUse != null)
             {
-                BallDirection = 0;
-                FireImmediately();
-                yield break; // 코루틴 종료
+                hairBallItemUse.StartDirectionInput();
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else
             {
-                BallDirection = 1;
-                FireImmediately();
-                yield break; // 코루틴 종료
+                Debug.LogWarning("HairBallItemUse 컴포넌트를 찾을 수 없습니다.");
             }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                BallDirection = 2;
-                FireImmediately();
-                yield break; // 코루틴 종료
-            }
-            else if (Input.GetKeyDown(KeyCode.D))
-            {
-                BallDirection = 3;
-                FireImmediately();
-                yield break; // 코루틴 종료
-            }
-
-            timer += Time.deltaTime;
-            yield return null;
         }
-
-        // 2초 동안 입력이 없으면 기본 방향으로 발사
-        if (BallDirection == -1)
+        else
         {
-            BallDirection = 0;
-            FireImmediately();
-        }
-    }
-
-    private void FireImmediately()
-    {
-        FindObjectOfType<Player_Move>().StartFire(BallDirection);
-    }
-
-
-
-    // 언제 사라지는지? 일단은 5만큼 이동하면 사라지기 또는 장애물, npc에 맞으면 사라지게
-    void OnTriggerEnter(Collider collision)
-    {
-        Debug.Log("장애물 충돌");
-        Debug.Log("충돌한 태그: " + collision.gameObject.tag);
-        if (collision.gameObject.tag == "Obstacle")
-        {
-            Debug.Log("장애물 충돌 후 삭제");
-            BallDirection = -1;
-            //애니메이션 재생 필요
-            Destroy(gameObject);
-
-        }
-
-        else if (collision.gameObject.tag == "NPC")
-        {
-            Debug.Log("npc를 맞춤");
-            npcMove.AttackedHairBall();
-            Destroy(gameObject);
+            Debug.LogWarning("HairBallUse 태그를 가진 오브젝트를 찾을 수 없습니다.");
         }
     }
 }

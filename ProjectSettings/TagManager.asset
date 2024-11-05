@@ -9,6 +9,7 @@ TagManager:
   - Obstacle
   - NPC
   - Rails
+  - HairBall
   layers:
   - Default
   - TransparentFX

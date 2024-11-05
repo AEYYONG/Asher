@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 8863773626597049827}
   - component: {fileID: -1024927782826390468}
   - component: {fileID: -6236565973482364664}
-  - component: {fileID: 8739202576223701810}
+  - component: {fileID: 961376317215121490}
   m_Layer: 0
   m_Name: HairBallItem
-  m_TagString: Untagged
+  m_TagString: HairBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,7 +135,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.16
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8739202576223701810
+--- !u!114 &961376317215121490
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,13 +144,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7744802067183723968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 047896b1e6f764095873a8af9121714b, type: 3}
+  m_Script: {fileID: 11500000, guid: 38e26f78b1985ee4680e773397e19613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSO: {fileID: 0}
-  _x: 0
-  _z: 0
-  isSelected: 0
-  tileType: 0
-  _animator: {fileID: 0}
   BallDirection: -1
