@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2982884133803568182
+--- !u!1 &7744802067183723968
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3897806926975662045}
-  - component: {fileID: 2791380705674465803}
-  - component: {fileID: 688912158137700741}
-  - component: {fileID: 182253446604268967}
-  - component: {fileID: 6913778308079264940}
-  - component: {fileID: 907695079208561728}
-  - component: {fileID: 385565235384987310}
+  - component: {fileID: 960101010658362061}
+  - component: {fileID: 8863773626597049827}
+  - component: {fileID: -1024927782826390468}
+  - component: {fileID: -6236565973482364664}
+  - component: {fileID: 8739202576223701810}
   m_Layer: 0
-  m_Name: Asher
-  m_TagString: Player
+  m_Name: HairBall
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3897806926975662045
+--- !u!4 &960101010658362061
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
+  m_GameObject: {fileID: 7744802067183723968}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 5, y: 0.5, z: 7.5}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.18, y: 0.18, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 60, y: 0, z: 0}
---- !u!212 &2791380705674465803
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &8863773626597049827
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
+  m_GameObject: {fileID: 7744802067183723968}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -78,24 +76,24 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 290b646c8307344f3831ad0879554085, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 93e965b599e6f3a439fd6112bc7c8216, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 20.48, y: 20.48}
+  m_Size: {x: 2.56, y: 2.56}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!54 &688912158137700741
+--- !u!54 &-1024927782826390468
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
+  m_GameObject: {fileID: 7744802067183723968}
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
@@ -112,38 +110,17 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
---- !u!95 &182253446604268967
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 77522c7be00ef054ba02e9671403ac1d, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!135 &6913778308079264940
+  m_CollisionDetection: 2
+--- !u!135 &-6236565973482364664
 SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
+  m_GameObject: {fileID: 7744802067183723968}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -152,50 +129,28 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5019442
-  m_Center: {x: 0, y: -2.5, z: 0}
---- !u!114 &907695079208561728
+  m_Radius: 0.16
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8739202576223701810
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
+  m_GameObject: {fileID: 7744802067183723968}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c654dd3c18e64e638a228757a7a0d1d, type: 3}
+  m_Script: {fileID: 11500000, guid: 047896b1e6f764095873a8af9121714b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSelectCnt: 2
-  _curSelectCnt: 0
-  canInteract: 1
-  inventory: {fileID: 11400000, guid: 958853fc61e5547d78c0114aca406fa5, type: 2}
-  _stageUIManager: {fileID: 0}
-  useGreenZone: 0
-  _maxRecentTile: 5
-  isFever: 0
---- !u!114 &385565235384987310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2982884133803568182}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10b6aa75fae811e4e8193d44c1fea9dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  moveDuration: 0.3
-  isMoving: 0
-  isAttacked: 0
-  startJump: 0
-  isInverse: 0
-  isSlip: 0
-  HairBall: {fileID: 7744802067183723968, guid: c46f5b56fe5e6f6418491300439b3f52, type: 3}
-  isfire: 0
+  tileSO: {fileID: 0}
+  _x: 0
+  _z: 0
+  isSelected: 0
+  tileType: 0
+  _animator: {fileID: 0}
+  BallDirection: -1

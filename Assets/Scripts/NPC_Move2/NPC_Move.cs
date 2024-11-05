@@ -66,7 +66,24 @@ public class NPC_Move : MonoBehaviour
         transform.rotation = Quaternion.Euler(70, 0, 0);
 
     }
+    //헤어볼에 맞으면 잠깐 멈춤
+    public void AttackedHairBall()
+    {
+        Debug.Log("AttackedHairBall 호출됨");
+        //NPC 잠깐 멈춤 현재는 IEnumerator로 2초간 정지처리하지만 추후 애니메이션 종료 후 agent.isStopped = false;로 변경해야 함
+        agent.isStopped = true;
+        StartCoroutine(WaitForSecond());
+    }
 
+    private IEnumerator WaitForSecond()
+    {
+        Debug.Log("코루틴 시작");
+        yield return new WaitForSeconds(2f);
+
+        Debug.Log("npc 다시 움직임");
+        agent.isStopped = false;
+
+    }
     // 목표 지점에 정확히 도달했는지 확인하는 함수
     bool HasReachedDestination()
     {
@@ -472,7 +489,7 @@ public class NPC_Move : MonoBehaviour
     // 회피 관련
    public void IsAttackdeOn()
     {
-        asher.GetComponent<Player_Move_anim>().isAttacked = true;
+        asher.GetComponent<Player_Move>().isAttacked = true;
     }
 
    public void IsAttackClear()
@@ -482,16 +499,16 @@ public class NPC_Move : MonoBehaviour
         isAttack = false;
         //플레이어가 영역 안에 존재하면 죽음
         
-        if (asher.GetComponent<Player_Move_anim>().isAttacked)
+        if (asher.GetComponent<Player_Move>().isAttacked)
         {
          //   Debug.Log("죽음");
             agent.isStopped = false;
-            asher.GetComponent<Player_Move_anim>().isAttacked = false;
+            asher.GetComponent<Player_Move>().isAttacked = false;
         }
         else
         {
         //    Debug.Log("생존");
-            asher.GetComponent<Player_Move_anim>().isAttacked = false;
+            asher.GetComponent<Player_Move>().isAttacked = false;
             Invoke("WakeUp", 1f);
         }
         

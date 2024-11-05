@@ -39,6 +39,11 @@ public class Player_Move : MonoBehaviour
     public bool isSlip = false;
     private Vector3 randomDirection;
 
+    // 헤어볼
+    public GameObject HairBall;
+    private int direction = -1;
+    public bool isfire = false;
+
 
     void Start()
     {
@@ -69,18 +74,58 @@ public class Player_Move : MonoBehaviour
         {
             Slip();
         }
+        else MovePlayer();  // 이동 처리
 
         if (!isMoving)
         {
             HandleMovement();  // 이동 중이 아닐 때만 입력을 처리
         }
 
-        MovePlayer();  // 이동 처리
+       
 
         SpaceInput();
+   
 
-        
+    }
 
+    public void StartFire(int newDirection)
+    {
+        direction = newDirection;
+        isfire = true;
+        Fire();
+    }
+
+    void Fire()
+    {
+
+        Vector3 spawnPosition = transform.position + new Vector3(0, -0.3f, -0.5f);
+        GameObject HairballItem = Instantiate(HairBall, spawnPosition, transform.rotation);
+        Rigidbody rigid = HairballItem.GetComponent<Rigidbody>();
+
+        //누르고있는 방향에 따라 다르게 발사
+        switch (direction)
+        {
+            case -1:
+                return;
+            case 0:
+                rigid.AddForce(Vector3.forward * 1, ForceMode.Impulse);
+                break;
+            case 1:
+                rigid.AddForce(Vector3.left * 2, ForceMode.Impulse);
+                break;
+            case 2:
+                rigid.AddForce(Vector3.back * 1, ForceMode.Impulse);
+                break;
+            case 3:
+                rigid.AddForce(Vector3.right * 2, ForceMode.Impulse);
+                break;
+            
+        }
+        /*if (direction == 0)
+        {//위
+            rigid.AddForce(Vector3.forward);
+        }*/
+       
     }
 
     public void StartSlip()
