@@ -24,9 +24,9 @@ public class Tile : MonoBehaviour
     //타일 애니메이터
     public Animator _animator;
     //타일 매니저 스크립트 할당
-    private TileManager _tileManager;
+    public TileManager tileManager;
     //플레이어 상호작용 스크립트 할당
-    private PlayerInteract _playerInteract;
+    public PlayerInteract playerInteract;
 
     //인접 타일 리스트
     private List<Tile> nearTiles = new List<Tile>();
@@ -37,11 +37,16 @@ public class Tile : MonoBehaviour
         isSelected = false;
         //타일 애니메이터 할당
         _animator = GetComponent<Animator>();
-        //타일 매니저 스크립트 할당
-        _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
-        //플레이어 상호작용 스크립트 할당
-        _playerInteract = GameObject.FindWithTag("Player").GetComponent<PlayerInteract>();
     }
+
+    void Start()
+    {
+        //타일 매니저 스크립트 할당
+        tileManager = FindObjectOfType<TileManager>();
+        //플레이어 상호작용 스크립트 할당
+        playerInteract = GameObject.FindWithTag("Player").GetComponent<PlayerInteract>();
+    }
+    
     //타일 초기화
     public void InitTile(int x, int z)
     {
@@ -53,7 +58,7 @@ public class Tile : MonoBehaviour
     //타일이 다시 원상복귀
     public IEnumerator ReturnTile()
     {
-        yield return new WaitForSeconds(_tileManager.tileReturnTime);
+        yield return new WaitForSeconds(tileManager.tileReturnTime);
         //되돌아오는 애니메이션 실행
         _animator.SetTrigger("Return");
         //선택 여부 false로 변경
@@ -85,8 +90,8 @@ public class Tile : MonoBehaviour
     //피버 타임 시, 주변 8개의 타일 정보 가져오기
     public List<Tile> GetNearTiles()
     {
-        int width = _tileManager.width;
-        int height = _tileManager.height;
+        int width = tileManager.width;
+        int height = tileManager.height;
 
         int left = _x - 1;
         int right = _x + 1;
@@ -100,9 +105,9 @@ public class Tile : MonoBehaviour
                 if (!(i < 0 || i >= height || j < 0 || j >= width))
                 {
                     Vector2Int tile = new Vector2Int(j, i);
-                    if (_tileManager._tiles.ContainsKey(tile))
+                    if (tileManager._tiles.ContainsKey(tile))
                     {
-                        nearTiles.Add(_tileManager._tiles[tile].GetComponent<Tile>());
+                        nearTiles.Add(tileManager._tiles[tile].GetComponent<Tile>());
                     }
                 }
             }
