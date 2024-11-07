@@ -68,6 +68,9 @@ public class TileManager : MonoBehaviour
     public bool isGreenZoneActive = false;
     private NPC_Move _npcMove; //적 npc
     private PlayerInteract _playerInteract; //플레이어 상호작용
+
+    //일반 타일 리스트
+    public List<GameObject> generalTileList = new List<GameObject>();
     
     void Start()
     {
@@ -163,6 +166,11 @@ public class TileManager : MonoBehaviour
                 if (newTileScript.tileSO.tileID == TileID.GreenZone)
                 {
                     greenZoneTileList.Add(newTile);
+                }
+                //일반 타일일 경우, 일반 타일 리스트에 추가
+                if (newTileScript.tileSO.tileID == TileID.General)
+                {
+                    generalTileList.Add(newTile);
                 }
                 
             }

@@ -33,7 +33,7 @@ public class StageUIManager : MonoBehaviour
     private bool _isSelect = false;
     private float _timer = 0f;
     [SerializeField] private InventoryManager _inventoryManager;
-
+    public TileManager tileManager;
     class ItemSelectUI
     {
         public GameObject selectionUI;
@@ -48,8 +48,13 @@ public class StageUIManager : MonoBehaviour
     void Awake()
     {
         IniteartStonesList();
+    }
+
+    void Start()
+    {
         player = GameObject.FindWithTag("Player");
         npc = GameObject.FindWithTag("NPC");
+        tileManager = FindObjectOfType<TileManager>();
     }
     
     void Update()
