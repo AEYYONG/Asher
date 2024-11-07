@@ -47,7 +47,7 @@ public class StageUIManager : MonoBehaviour
     }
     void Awake()
     {
-        IniteartStonesList();
+        InitHeartStonesList();
     }
 
     void Start()
@@ -124,15 +124,23 @@ public class StageUIManager : MonoBehaviour
         _heartStonesList[stageSO.GetHeartStoneCnt()-1].color = Color.white;
     }
 
-    void IniteartStonesList()
+    void InitHeartStonesList()
     {
         //heart stone ui List에 담기
         _heartStonesList.Clear();
         for (int i = 0; i < stageSO.heartStoneTotalCnt; i++)
         {
             Image heartStone = heartStonesParent.transform.GetChild(i).GetComponent<Image>();
+            heartStone.color = Color.black;
             _heartStonesList.Add(heartStone);
         }
+    }
+
+    public void LoseAllHeartStones()
+    {
+        //마음의 조각 다 잃는 애니메이션
+        //마음의 조각 리스트 초기화
+        _heartStonesList.Clear();
     }
 
     public void ActiveSideCutSceneUI(TileSO tileSO)
