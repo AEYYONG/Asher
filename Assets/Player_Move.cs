@@ -309,10 +309,10 @@ public class Player_Move : MonoBehaviour
             isAttacked = false;
             Invoke("Dodge", 2f);
         }
-        /*else if (!Input.anyKey && !startJump)
+        else if (!Input.anyKey && !startJump)
         {
             ChangeAnimationState(PLAYER_IDLE);
-        }*/
+        }
 
         if (movement != Vector3.zero)
         {

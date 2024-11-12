@@ -5503,11 +5503,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.7, y: 0.225, z: 0.8}
+  m_Extents: {x: 0.85, y: 0.6, z: 0.8}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 0
-  m_Center: {x: -0.18, y: -0.03, z: 0.03}
+  m_Center: {x: -0.18, y: 0.12, z: 0.03}
   m_TimeToStationary: 0.5
 --- !u!54 &537281856
 Rigidbody:
@@ -9557,6 +9557,7 @@ MonoBehaviour:
   _itemSelectStart: 0
   _selectItem: {fileID: 0}
   _inventoryManager: {fileID: 83493234}
+  tileManager: {fileID: 0}
 --- !u!1 &1014513402
 GameObject:
   m_ObjectHideFlags: 0
@@ -16902,6 +16903,8 @@ MonoBehaviour:
     count: 3
   - tilePrefab: {fileID: 0}
     count: 0
+  furnitureTilePosList: []
+  _tileShuffleList: []
   tileEntries:
   - position: {x: 0, y: 0}
     tile: {fileID: 1926672158}
@@ -17113,6 +17116,7 @@ MonoBehaviour:
     tile: {fileID: 1861278156}
   greenZoneTileList: []
   isGreenZoneActive: 0
+  generalTileList: []
 --- !u!4 &1840335611
 Transform:
   m_ObjectHideFlags: 0

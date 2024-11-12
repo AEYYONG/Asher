@@ -487,7 +487,7 @@ public class NPC_Move : MonoBehaviour
 
 
     // 회피 관련
-   public void IsAttackdeOn()
+   public void IsAttackOn()
     {
         asher.GetComponent<Player_Move>().isAttacked = true;
     }
