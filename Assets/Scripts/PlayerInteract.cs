@@ -44,6 +44,9 @@ public class PlayerInteract : MonoBehaviour
     //피버 타임인지
     private InventoryManager _inventoryManager;
     public bool isFever = false;
+    
+    //애셔 초상화
+    [SerializeField] private PortraitTest _asherPortrait;
 
     public class FeverTile
     {
@@ -182,6 +185,7 @@ public class PlayerInteract : MonoBehaviour
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
                     tile1.Use(_stageUIManager);
+                    _asherPortrait.SetGood();
                     StartCoroutine(InvokeInitValue());
                     break;
                 case TileID.Item:
@@ -189,6 +193,7 @@ public class PlayerInteract : MonoBehaviour
                     {
                         Debug.Log("Same Item Tile");
                         inventory.AddItemEvent(tile1);
+                        _asherPortrait.SetGood();
                         StartCoroutine(InvokeInitValue());
                         break;
                     }
@@ -218,12 +223,14 @@ public class PlayerInteract : MonoBehaviour
             {
                 Debug.Log("Joker and Item");
                 inventory.AddItemEvent(tile2);
+                _asherPortrait.SetGood();
                 StartCoroutine(InvokeInitValue());
             }
             else if (id1 == TileID.Item && id2 == TileID.Joker)
             {
                 Debug.Log("Joker and Item");
                 inventory.AddItemEvent(tile1);
+                _asherPortrait.SetGood();
                 StartCoroutine(InvokeInitValue());
             }
             else if (id2 == TileID.Trap)
