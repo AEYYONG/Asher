@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Move : MonoBehaviour
@@ -45,6 +46,13 @@ public class Player_Move : MonoBehaviour
     private int direction = -1;
     public bool isfire = false;
 
+    // LineRenderer 관련
+    public LineRendererAtoB lineRendererPrefab; // LineRenderer 프리팹
+    private List<LineRendererAtoB> activeLines = new List<LineRendererAtoB>();
+    public float lineLength = 5f; // 라인의 길이
+    public LayerMask obstacleLayer; // 장애물 레이어
+
+
 
     void Start()
     {
@@ -82,12 +90,82 @@ public class Player_Move : MonoBehaviour
             HandleMovement();  // 이동 중이 아닐 때만 입력을 처리
         }
 
-       
+        if (Input.GetKey(KeyCode.Q))
+        {
+            CreateDirectionalLines();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            ClearLines();
+        }
+
 
         SpaceInput();
    
 
     }
+
+    void CreateDirectionalLines()
+    {
+        // 기존 라인을 모두 삭제
+        ClearLines();
+
+        // 4방향 정의
+        Vector3[] directions = new Vector3[]
+        {
+        Vector3.forward,  // 위쪽
+        Vector3.back,     // 아래쪽
+        Vector3.left,     // 왼쪽
+        Vector3.right     // 오른쪽
+        };
+
+        // 현재 위치 기준으로 라인 생성
+        foreach (Vector3 direction in directions)
+        {
+            Vector3 from = transform.position;
+            from.y += 0.5f; // Y축 높이 조정 (플레이어의 중심에서 시작)
+
+            Vector3 to = CalculateEndPoint(from, direction);
+
+            // LineRenderer 프리팹 인스턴스 생성
+            LineRendererAtoB line = Instantiate(lineRendererPrefab, transform);
+            line.Play(from, to);
+
+            // 활성 라인 리스트에 추가
+            activeLines.Add(line);
+        }
+    }
+
+
+
+
+    void ClearLines()
+    {
+        foreach (var line in activeLines)
+        {
+            line.Stop();
+            Destroy(line.gameObject);
+        }
+        activeLines.Clear();
+    }
+
+    Vector3 CalculateEndPoint(Vector3 from, Vector3 direction)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(from, direction, out hit, lineLength, obstacleLayer))
+        {
+            Debug.Log($"Hit Detected for Direction: {direction}, Hit Point: {hit.point}");
+            return hit.point; // 장애물에 닿은 경우
+        }
+        else
+        {
+            Debug.Log($"No Hit Detected for Direction: {direction}, Calculated End: {from + direction * lineLength}");
+            return from + direction * lineLength; // 최대 거리까지
+        }
+    }
+
+
 
     public void StartFire(int newDirection)
     {
