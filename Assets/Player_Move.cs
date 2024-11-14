@@ -20,6 +20,7 @@ public class Player_Move : MonoBehaviour
     const string PLAYER_UP = "up";
     const string PLAYER_DOWN = "down";
     const string PLAYER_JUMP = "jump";
+    const string PLAYER_SLIP = "slip";
 
     private Rigidbody body;
 
@@ -248,6 +249,8 @@ public class Player_Move : MonoBehaviour
     {
         // 미끄러짐 이동 처리
         transform.position += randomDirection * moveSpeed * Time.deltaTime;
+        // 애니메이션 slip으로
+        ChangeAnimationState(PLAYER_SLIP);
 
         // 장애물이 감지되면 미끄러짐 중지
         if (IsObstacleInSlip(randomDirection))

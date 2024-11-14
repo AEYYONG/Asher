@@ -150,8 +150,13 @@ public class NPC_Move : MonoBehaviour
 
     void ResetSpeed()
     {
-        agent.speed = 2.5f;
-        Debug.Log("속도 감소: " + agent.speed);
+        if (isChasing)
+        {
+            agent.speed = 2.5f;
+            Debug.Log("속도 감소: " + agent.speed);
+        }
+        else
+            agent.speed = 1.5f;
     }
 
     void SetDestination(Vector3 destination)
