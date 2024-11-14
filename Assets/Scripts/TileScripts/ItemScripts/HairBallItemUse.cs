@@ -56,6 +56,8 @@ public class HairBallItemUse : MonoBehaviour
         {
             BallDirection = 0;
             FireImmediately();
+            Player_Move player_Move = FindObjectOfType<Player_Move>();
+            player_Move.useBall = false;
         }
     }
 

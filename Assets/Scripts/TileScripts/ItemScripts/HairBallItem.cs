@@ -5,11 +5,13 @@ using UnityEngine;
 public class HairBallItem : Tile
 {
     private HairBallItemUse hairBallItemUse;
-
+    
     public override void ItemUse(StageUIManager uiManager)
     {
         base.ItemUse(uiManager);
         Debug.Log("헤어볼 아이템 사용");
+        Player_Move player_Move = FindObjectOfType<Player_Move>();
+        player_Move.useBall = true;
 
         GameObject hairBallObject = GameObject.FindWithTag("HairBall");
         if (hairBallObject != null)

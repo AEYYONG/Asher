@@ -44,24 +44,16 @@ public class NPC_Move : MonoBehaviour
         DetectInFront();
         if (isChasing)
         {
+            agent.speed = 2.5f;
+            SetDestination(SnapToGrid(asher.transform.position));
 
-            if (!isBlocked)
-            {
-                SetDestination(SnapToGrid(asher.transform.position));
-            }
         }
         if (!isChasing && HasReachedDestination())
         {
             // 목표 지점에 정확히 도달하면 새로운 랜덤 목적지를 설정
             SetRandomDestination();
         }
-        else
-        {
-          //  MoveInGrid();
-        }
-
         
-
         UpdateAnimation();
         transform.rotation = Quaternion.Euler(70, 0, 0);
 
@@ -145,6 +137,8 @@ public class NPC_Move : MonoBehaviour
                 // 스냅된 좌표를 목표 지점으로 설정
                 SetDestination(asherPosition);
                 isChasing = true;
+                agent.speed = 5;
+                Invoke("ResetSpeed", 3f);
                 //   Debug.Log("asherPosition: " + asherPosition);
                 //   Debug.Log("애셔 위치: " + targetPosition);
             }
@@ -152,6 +146,12 @@ public class NPC_Move : MonoBehaviour
 
        
        
+    }
+
+    void ResetSpeed()
+    {
+        agent.speed = 2.5f;
+        Debug.Log("속도 감소: " + agent.speed);
     }
 
     void SetDestination(Vector3 destination)
