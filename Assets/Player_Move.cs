@@ -281,7 +281,7 @@ public class Player_Move : MonoBehaviour
         RaycastHit hit;
         Vector3 rayOrigin = transform.position; // 레이의 시작점
         rayOrigin.y -= 0.2f;
-        rayOrigin.z -= 0.5f;
+        rayOrigin.z -= 0.3f;
         float rayDistance = 0.5f; // 레이 거리
         Vector3 rayDirection = transform.TransformDirection(localDirection);
 

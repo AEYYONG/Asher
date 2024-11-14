@@ -22,25 +22,25 @@ public class HairBallItemUse : MonoBehaviour
         while (timer < waitTime)
         {
             // 방향 입력을 즉시 감지하여 발사
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 BallDirection = 0;
                 FireImmediately();
                 yield break; // 코루틴 종료
             }
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 BallDirection = 1;
                 FireImmediately();
                 yield break; // 코루틴 종료
             }
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 BallDirection = 2;
                 FireImmediately();
                 yield break; // 코루틴 종료
             }
-            else if (Input.GetKeyDown(KeyCode.D))
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 BallDirection = 3;
                 FireImmediately();
