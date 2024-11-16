@@ -13,7 +13,7 @@ public class InverseTrap : Tile
     IEnumerator SetKeyInverse(StageUIManager uiManager)
     {
         Debug.Log("역방향 함정 발동");
-        Player_Move_anim playerMove = uiManager.player.GetComponent<Player_Move_anim>();
+        Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.isInverse = true;
         yield return new WaitForSeconds(tileSO.duration);
         playerMove.isInverse = false;
