@@ -8,7 +8,7 @@ public class NPC_Move : MonoBehaviour
     public NavMeshAgent agent;
     private Vector3 targetPosition;
     private bool moveInXAxis = true;
-    public float detectionRange = 2.5f;
+    public float detectionRange = 3f;
 
     // 이동 가능한 범위 설정
     public Vector3 minRange = new Vector3(0, 0, 0);  // 최소 좌표
@@ -26,8 +26,13 @@ public class NPC_Move : MonoBehaviour
     // 공격, 회피 관련
     private GameObject asher;
     public float attackRange = 1.5f;     // 공격 레이캐스트 범위
-    public float attackDistance = 1.0f;  // 공격 감지 거리
+    public float attackDistance = 0.7f;  // 공격 감지 거리
     public bool isAttack = false;
+
+    // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
+    public bool goInGreenZone = false;
+    public float greenZoneDistance = 1f;  // 그린존 감지 범위
+    private bool greenZoneAttack = false;
 
 
     // Start is called before the first frame update
@@ -120,8 +125,8 @@ public class NPC_Move : MonoBehaviour
                 agent.isStopped = true;
             }
         }
-                // 감지 레이 범위
-                Ray ray = new Ray(rayOrigin, rayDirection);
+        // 감지 레이 범위
+        Ray ray = new Ray(rayOrigin, rayDirection);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit, detectionRange))
@@ -130,7 +135,7 @@ public class NPC_Move : MonoBehaviour
             if (hit.collider.name == "Asher" && canDetect)
             {
                 // Debug.Log("Asher 감지됨: " + hit.collider.name);
-              
+
                 // Asher의 위치 좌표를 그리드에 스냅
                 Vector3 asherPosition = SnapToGrid(hit.transform.position);
 
@@ -143,11 +148,50 @@ public class NPC_Move : MonoBehaviour
                 //   Debug.Log("애셔 위치: " + targetPosition);
             }
         }
+        if (isChasing)
+        {
 
-       
-       
+            Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down); // 진행 방향으로 한 칸 앞에서 아래로
+            RaycastHit downwardHit;
+
+            if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
+            {
+                if (downwardHit.collider.CompareTag("GreenZone"))
+                {
+                    Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
+                    goInGreenZone = true;
+                    greenZoneAttack = true;
+                    Vector3 backwardDirection = -rayDirection; // 이동 방향의 반대 방향
+                    agent.velocity = backwardDirection * 3f; // 0.3 유닛만큼 후진
+                    
+                    Debug.Log("멈춤");
+                }
+                else
+                {
+                    Debug.Log("타일 감지됨: " + downwardHit.collider.name);
+                    
+                    goInGreenZone = false;
+                }
+            }
+
+        }
+        // 디버그 레이
+        Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
+        Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
     }
 
+
+    public void Dizzy()
+    {
+        ChangeAnimationState("dizzy");
+        agent.isStopped = true;
+        isChasing = false;
+        greenZoneAttack = false;
+        Invoke("WakeUp",3f);
+    }
+
+    
+    
     void ResetSpeed()
     {
         if (isChasing)
@@ -410,6 +454,9 @@ public class NPC_Move : MonoBehaviour
         return false; // 장애물 없음
     }
 
+    //ischasing 중일 때만 진행방향의 앞칸의 아래로 ray, 그린존인지 확인
+
+
 
 
     // 애니메이션 변경
@@ -425,33 +472,55 @@ public class NPC_Move : MonoBehaviour
         {
             if (velocity.z > 0 && currentAnimation != "up_npc")
             {
+                
+                if (greenZoneAttack)
+                {
+                    ChangeAnimationState("defend_down");
+                    //!!다음 해롱해롱으로 가기
+                }
+               
+                else
+                    ChangeAnimationState("up_npc");
 
-                ChangeAnimationState("up_npc");
             }
             else if (velocity.z < 0 && currentAnimation != "down_npc")
             {
-                ChangeAnimationState("down_npc");
+                if (greenZoneAttack)
+                {
+                    ChangeAnimationState("defend_up");
+                }
+                else
+                    ChangeAnimationState("down_npc");
             }
         }
 
         else
         {
+
             if (velocity.x > 0 && currentAnimation != "right_npc")
             {
-
-                ChangeAnimationState("right_npc");
+                if (greenZoneAttack)
+                {
+                    ChangeAnimationState("defend_left");
+                }
+                else
+                    ChangeAnimationState("right_npc");
             }
             else if (velocity.x < 0 && currentAnimation != "left_npc")
             {
-                ;
-                ChangeAnimationState("left_npc");
+                if (greenZoneAttack)
+                {
+                    ChangeAnimationState("defend_right");
+                }
+                else
+                    ChangeAnimationState("left_npc");
             }
         }
 
         
     }
 
-    void ChangeAnimationState(string newAnimation)
+    public void ChangeAnimationState(string newAnimation)
     {
         if (currentAnimation == newAnimation) return;
 
@@ -514,7 +583,8 @@ public class NPC_Move : MonoBehaviour
         {
         //    Debug.Log("생존");
             asher.GetComponent<Player_Move>().isAttacked = false;
-            Invoke("WakeUp", 1f);
+            
+            Invoke("WakeUp", 3f);
         }
         
     }
