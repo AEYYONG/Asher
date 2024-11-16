@@ -144,7 +144,8 @@ public class PlayerInteract : MonoBehaviour
             _compareStart = true;
             CompareTile(_tiles[0], _tiles[1]);
         }
-
+        //이 부분이 NPC 정면 확인 코드로 이동되면서 그린존 타일이 앞에 감지되면 멈추고 애니메이션 defend 실행되도록 코드 수정 필요
+        /*
         if (_tileManager.isGreenZoneActive && !useGreenZone)
         {
             if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
@@ -158,7 +159,7 @@ public class PlayerInteract : MonoBehaviour
                     curTile.Use(_stageUIManager);
                 }
             }
-        }
+        }*/
     }
 
     void CompareTile(Tile tile1, Tile tile2)

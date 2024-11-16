@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player_Move : MonoBehaviour
@@ -19,6 +20,7 @@ public class Player_Move : MonoBehaviour
     const string PLAYER_UP = "up";
     const string PLAYER_DOWN = "down";
     const string PLAYER_JUMP = "jump";
+    const string PLAYER_SLIP = "slip";
 
     private Rigidbody body;
 
@@ -45,9 +47,22 @@ public class Player_Move : MonoBehaviour
     private int direction = -1;
     public bool isfire = false;
 
+    // LineRenderer 관련
+    public LineRendererAtoB lineRendererPrefab; // LineRenderer 프리팹
+    private List<LineRendererAtoB> activeLines = new List<LineRendererAtoB>();
+    public float lineLength = 5f; // 라인의 길이
+    public LayerMask obstacleLayer; // 장애물 레이어
+    public bool useBall = false;
+
+
+
 
     void Start()
     {
+        // "Obstacle" 레이어를 LayerMask로 가져오기
+        obstacleLayer = LayerMask.GetMask("Obstacle");
+
+
         targetPosition = SnapToGrid(transform.position);  // 시작 시 현재 위치를 목표 위치로 스냅
         startPosition = targetPosition;
 
@@ -82,12 +97,82 @@ public class Player_Move : MonoBehaviour
             HandleMovement();  // 이동 중이 아닐 때만 입력을 처리
         }
 
-       
+        if (useBall)
+        {
+            CreateDirectionalLines();
+        }
+
+        if (!useBall)
+        {
+            ClearLines();
+        }
+
 
         SpaceInput();
    
 
     }
+
+    void CreateDirectionalLines()
+    {
+        // 기존 라인을 모두 삭제
+        ClearLines();
+
+        // 4방향 정의
+        Vector3[] directions = new Vector3[]
+        {
+        Vector3.forward,  
+        Vector3.back,
+        Vector3.left,
+        Vector3.right
+        };
+
+        // 현재 위치 기준으로 라인 생성
+        foreach (Vector3 direction in directions)
+        {
+            Vector3 from = transform.position + direction * 0.3f;
+            from.z -= 0.2f; // z축 높이 조정 (플레이어의 중심에서 시작)
+
+            Vector3 to = CalculateEndPoint(from, direction);
+
+            // LineRenderer 프리팹 인스턴스 생성
+            LineRendererAtoB line = Instantiate(lineRendererPrefab, transform);
+            line.Play(from, to);
+
+            // 활성 라인 리스트에 추가
+            activeLines.Add(line);
+        }
+    }
+
+
+
+
+    void ClearLines()
+    {
+        foreach (var line in activeLines)
+        {
+            line.Stop();
+            Destroy(line.gameObject);
+        }
+        activeLines.Clear();
+    }
+
+    Vector3 CalculateEndPoint(Vector3 from, Vector3 direction)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(from, direction, out hit, lineLength, obstacleLayer))
+        {
+            Debug.Log($"Hit Detected for Direction: {direction}, Hit Point: {hit.point}");
+            return hit.point; // 장애물에 닿은 경우
+        }
+        else
+        {
+            Debug.Log($"No Hit Detected for Direction: {direction}, Calculated End: {from + direction * lineLength}");
+            return from + direction * lineLength; // 최대 거리까지
+        }
+    }
+
+
 
     public void StartFire(int newDirection)
     {
@@ -109,15 +194,19 @@ public class Player_Move : MonoBehaviour
             case -1:
                 return;
             case 0:
+                useBall = false;
                 rigid.AddForce(Vector3.forward * 1, ForceMode.Impulse);
                 break;
             case 1:
+                useBall = false;
                 rigid.AddForce(Vector3.left * 2, ForceMode.Impulse);
                 break;
             case 2:
+                useBall = false;
                 rigid.AddForce(Vector3.back * 1, ForceMode.Impulse);
                 break;
             case 3:
+                useBall = false;
                 rigid.AddForce(Vector3.right * 2, ForceMode.Impulse);
                 break;
             
@@ -160,9 +249,11 @@ public class Player_Move : MonoBehaviour
     {
         // 미끄러짐 이동 처리
         transform.position += randomDirection * moveSpeed * Time.deltaTime;
+        // 애니메이션 slip으로
+        ChangeAnimationState(PLAYER_SLIP);
 
         // 장애물이 감지되면 미끄러짐 중지
-        if (IsObstacleInDirection(randomDirection))
+        if (IsObstacleInSlip(randomDirection))
         {
             isSlip = false;  // isSlip을 false로 설정하여 미끄러짐 중지
             isMoving = true;
@@ -186,6 +277,30 @@ public class Player_Move : MonoBehaviour
         }
 
 
+    }
+
+    bool IsObstacleInSlip(Vector3 localDirection)
+    {
+        RaycastHit hit;
+        Vector3 rayOrigin = transform.position; // 레이의 시작점
+        rayOrigin.y -= 0.2f;
+        rayOrigin.z -= 0.3f;
+        float rayDistance = 0.5f; // 레이 거리
+        Vector3 rayDirection = transform.TransformDirection(localDirection);
+
+        // 레이를 쏴서 해당 방향에 장애물이 있는지 확인
+        if (Physics.Raycast(rayOrigin, localDirection, out hit, rayDistance))
+        {
+            if (hit.collider.CompareTag("Obstacle"))
+            {
+                Debug.Log("장애물 감지: " + hit.collider.name);
+                isColliding = true;
+
+                return true; // 장애물이 있을 때
+            }
+        }
+        isColliding = false;
+        return false; // 장애물이 없을 때
     }
     bool IsObstacleInDirection(Vector3 localDirection)
     {
@@ -309,10 +424,10 @@ public class Player_Move : MonoBehaviour
             isAttacked = false;
             Invoke("Dodge", 2f);
         }
-        /*else if (!Input.anyKey && !startJump)
+        else if (!Input.anyKey && !startJump)
         {
             ChangeAnimationState(PLAYER_IDLE);
-        }*/
+        }
 
         if (movement != Vector3.zero)
         {

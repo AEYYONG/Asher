@@ -177,7 +177,7 @@ MonoBehaviour:
   _stageUIManager: {fileID: 0}
   useGreenZone: 0
   _maxRecentTile: 5
-  isFever: 0
+  isFever: 1
 --- !u!114 &385565235384987310
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,3 +199,9 @@ MonoBehaviour:
   isSlip: 0
   HairBall: {fileID: 7744802067183723968, guid: c46f5b56fe5e6f6418491300439b3f52, type: 3}
   isfire: 0
+  lineRendererPrefab: {fileID: 0}
+  lineLength: 5
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  useBall: 0

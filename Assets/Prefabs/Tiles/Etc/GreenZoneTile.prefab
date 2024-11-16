@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6436926596267468268}
   m_Layer: 0
   m_Name: GreenZoneTile
-  m_TagString: Ground
+  m_TagString: GreenZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,3 +146,5 @@ MonoBehaviour:
   isSelected: 0
   tileType: 0
   _animator: {fileID: 3761349924235490333}
+  tileManager: {fileID: 0}
+  playerInteract: {fileID: 0}

@@ -8,16 +8,23 @@ public class AggroTrap : Tile
     public override void TrapUse(StageUIManager uiManager)
     {
         base.TrapUse(uiManager);
-        Debug.Log("어그로 아이템 사용");
+        StartCoroutine(ActivateAggroTrap());
+    }
 
+    private IEnumerator ActivateAggroTrap()
+    {
         NPC_Move npc = FindObjectOfType<NPC_Move>();
         if (npc != null)
         {
+            // 기존 값 저장
+            float originalDetectionRange = npc.detectionRange;
+            NavMeshAgent agent = npc.GetComponent<NavMeshAgent>();
+            float originalSpeed = agent != null ? agent.speed : 1.5f;
+
             npc.detectionRange = 4.5f;
             Debug.Log("NPC의 detectionRange가 4.5로 변경");
 
-            // NPC의 NavMeshAgent 속도 변경
-            NavMeshAgent agent = npc.GetComponent<NavMeshAgent>();
+
             if (agent != null)
             {
                 agent.speed = 3.5f;
@@ -27,6 +34,11 @@ public class AggroTrap : Tile
             {
                 Debug.LogWarning("NPC에서 NavMeshAgent 컴포넌트를 찾을 수 없습니다.");
             }
+
+            yield return new WaitForSeconds(10f);
+            npc.detectionRange = originalDetectionRange;
+            agent.speed = originalSpeed;
+            Debug.Log("NPC 속도 복구");
         }
         else
         {
