@@ -11162,6 +11162,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: NPC
       objectReference: {fileID: 0}
+    - target: {fileID: 1714532621553600730, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
+      propertyPath: attackDistance
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1714532621553600730, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
+      propertyPath: greenZoneDistance
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
@@ -11204,7 +11212,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3569308853951841298, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_Acceleration
-      value: 2500
+      value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 3569308853951841298, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 3569308853951841298, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_StoppingDistance
