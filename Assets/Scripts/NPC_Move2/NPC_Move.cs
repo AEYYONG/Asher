@@ -33,7 +33,7 @@ public class NPC_Move : MonoBehaviour
     public bool goInGreenZone = false;
     public float greenZoneDistance = 1.2f;  // 그린존 감지 범위
     private bool greenZoneAttack = false;
-    private bool isAnimationLocked = false;
+    public bool isAnimationLocked = false;
     private bool notDizzy = true;
 
 
@@ -99,86 +99,94 @@ public class NPC_Move : MonoBehaviour
 
     void DetectInFront()
     {
-        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
-
-        // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
-        Vector3 rayDirection = agent.velocity.normalized;
-        // velocity가 0일 때를 대비한 기본값
-        if (rayDirection == Vector3.zero)
+        if (!notDizzy)
         {
-            rayDirection = transform.forward; // 기본적으로 정면으로 설정
+            return;
         }
-
-        Ray attackRay = new Ray(rayOrigin, rayDirection);
-        RaycastHit attackHit;
-
-        if (Physics.Raycast(attackRay, out attackHit, attackDistance))
+        else
         {
-            // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
-            if (attackHit.collider.name == "Asher")
+            Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
+
+            // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+            Vector3 rayDirection = agent.velocity.normalized;
+            // velocity가 0일 때를 대비한 기본값
+            if (rayDirection == Vector3.zero)
             {
-                Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
-                isAttack = true;
-
-                // 공격 애니메이션 실행 (필요시)
-                ChangeAnimationState("attack");
-
-                // NPC를 멈추게 하려면 NavMeshAgent 멈춤
-                agent.isStopped = true;
+                rayDirection = transform.forward; // 기본적으로 정면으로 설정
             }
-        }
-        // 감지 레이 범위
-        Ray ray = new Ray(rayOrigin, rayDirection);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, detectionRange))
-        {
-            // 감지된 물체의 이름이 "Asher"라면
-            if (hit.collider.name == "Asher" && canDetect)
+            Ray attackRay = new Ray(rayOrigin, rayDirection);
+            RaycastHit attackHit;
+
+            if (Physics.Raycast(attackRay, out attackHit, attackDistance))
             {
-                // Debug.Log("Asher 감지됨: " + hit.collider.name);
-
-                // Asher의 위치 좌표를 그리드에 스냅
-                Vector3 asherPosition = SnapToGrid(hit.transform.position);
-
-                // 스냅된 좌표를 목표 지점으로 설정
-                SetDestination(asherPosition);
-                isChasing = true;
-                agent.speed = 5;
-                Invoke("ResetSpeed", 3f);
-                //   Debug.Log("asherPosition: " + asherPosition);
-                //   Debug.Log("애셔 위치: " + targetPosition);
-            }
-        }
-        if (isChasing)
-        {
-
-            Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down); // 진행 방향으로 한 칸 앞에서 아래로
-            RaycastHit downwardHit;
-
-            if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
-            {
-                if (downwardHit.collider.CompareTag("GreenZone"))
+                // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
+                if (attackHit.collider.name == "Asher")
                 {
-                    Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
-                    goInGreenZone = true;
-                    greenZoneAttack = true;
-                    Vector3 backwardDirection = -rayDirection; // 이동 방향의 반대 방향
-                    agent.velocity = backwardDirection * 0.3f; // 0.3 유닛만큼 후진
-                    
-                    Debug.Log("멈춤");
-                }
-                else
-                {
-                   // Debug.Log("타일 감지됨: " + downwardHit.collider.name);
-                    
+                    Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
+                    isAttack = true;
+
+                    // 공격 애니메이션 실행 (필요시)
+                    ChangeAnimationState("attack");
+
+                    // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+                    agent.isStopped = true;
                 }
             }
+            // 감지 레이 범위
+            Ray ray = new Ray(rayOrigin, rayDirection);
+            RaycastHit hit;
 
+            if (Physics.Raycast(ray, out hit, detectionRange))
+            {
+                // 감지된 물체의 이름이 "Asher"라면
+                if (hit.collider.name == "Asher" && canDetect)
+                {
+                    // Debug.Log("Asher 감지됨: " + hit.collider.name);
+
+                    // Asher의 위치 좌표를 그리드에 스냅
+                    Vector3 asherPosition = SnapToGrid(hit.transform.position);
+
+                    // 스냅된 좌표를 목표 지점으로 설정
+                    SetDestination(asherPosition);
+                    isChasing = true;
+                    agent.speed = 5;
+                    Invoke("ResetSpeed", 3f);
+                    //   Debug.Log("asherPosition: " + asherPosition);
+                    //   Debug.Log("애셔 위치: " + targetPosition);
+                }
+            }
+            if (isChasing)
+            {
+
+                Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down); // 진행 방향으로 한 칸 앞에서 아래로
+                RaycastHit downwardHit;
+
+                if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
+                {
+                    if (downwardHit.collider.CompareTag("GreenZone"))
+                    {
+                        Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
+                        goInGreenZone = true;
+                        greenZoneAttack = true;
+                        Vector3 backwardDirection = -rayDirection; // 이동 방향의 반대 방향
+                        agent.velocity = backwardDirection * 0.3f; // 0.3 유닛만큼 후진
+
+                        Debug.Log("멈춤");
+                    }
+                    else
+                    {
+                        // Debug.Log("타일 감지됨: " + downwardHit.collider.name);
+
+                    }
+                }
+
+            }
+
+            // 디버그 레이
+            Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
+            Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
         }
-        // 디버그 레이
-        Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
-        Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
     }
 
 

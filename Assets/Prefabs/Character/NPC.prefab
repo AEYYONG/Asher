@@ -69,10 +69,10 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.05
   m_Speed: 1.5
-  m_Acceleration: 100
+  m_Acceleration: 3000
   avoidancePriority: 99
   m_AngularSpeed: 1080
-  m_StoppingDistance: 0.1
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 0
   m_AutoRepath: 0
@@ -101,8 +101,10 @@ MonoBehaviour:
   isBlocked: 0
   canDetect: 1
   attackRange: 1
-  attackDistance: 1
+  attackDistance: 0.5
   isAttack: 0
+  goInGreenZone: 0
+  greenZoneDistance: 0.7
 --- !u!212 &1619662974807616425
 SpriteRenderer:
   m_ObjectHideFlags: 0
