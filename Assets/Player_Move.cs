@@ -291,7 +291,7 @@ public class Player_Move : MonoBehaviour
         // 레이를 쏴서 해당 방향에 장애물이 있는지 확인
         if (Physics.Raycast(rayOrigin, localDirection, out hit, rayDistance))
         {
-            if (hit.collider.CompareTag("Obstacle"))
+            if (hit.collider.CompareTag("Obstacle") || hit.collider.CompareTag("NPC"))
             {
                 Debug.Log("장애물 감지: " + hit.collider.name);
                 isColliding = true;
@@ -314,7 +314,7 @@ public class Player_Move : MonoBehaviour
         // 레이를 쏴서 해당 방향에 장애물이 있는지 확인
         if (Physics.Raycast(rayOrigin, localDirection, out hit, rayDistance))
         {
-            if (hit.collider.CompareTag("Obstacle"))
+            if (hit.collider.CompareTag("Obstacle") || hit.collider.CompareTag("NPC"))
             {
                 Debug.Log("장애물 감지: " + hit.collider.name);
                 isColliding = true;
