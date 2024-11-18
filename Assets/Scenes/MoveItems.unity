@@ -1793,48 +1793,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &201883799 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 873414468901822651, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-  m_PrefabInstance: {fileID: 1199174931}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &201883807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 201883799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 519716bcd123a694ca27fd40932f3f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Active: 0
-  SlideEA: 10
-  SlideTime: 0.1
-  RedMin: 0
-  RedMax: 255
-  GreenMin: 0
-  GreenMax: 255
-  BlueMin: 0
-  BlueMax: 255
---- !u!114 &201883808
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 201883799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba61ec7d675bb044cb53ed6e2e5add9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 0}
-  trailLifetime: 0.5
-  trailInterval: 0.1
-  trailColor: {r: 1, g: 1, b: 1, a: 0.5}
 --- !u!1001 &203345749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11370,13 +11328,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 873414468901822651, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 201883807}
-    - targetCorrespondingSourceObject: {fileID: 873414468901822651, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 201883808}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
 --- !u!1 &1204353758
 GameObject:
