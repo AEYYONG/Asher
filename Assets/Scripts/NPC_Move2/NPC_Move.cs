@@ -36,12 +36,17 @@ public class NPC_Move : MonoBehaviour
     public bool isAnimationLocked = false;
     private bool notDizzy = true;
 
+    // MotionTrail 관련
+    private MotionTrail motionTrail; // MotionTrail 스크립트
+    private bool isTrailActive = false;
+
 
     // Start is called before the first frame update
     void Start()
     {
         agent.updateRotation = false;
         asher = GameObject.Find("Asher");
+        motionTrail = GetComponent<MotionTrail>();
         SetRandomDestination();
     }
 
@@ -151,6 +156,7 @@ public class NPC_Move : MonoBehaviour
                     SetDestination(asherPosition);
                     isChasing = true;
                     agent.speed = 5;
+                    StartCoroutine(ActivateTrailForDuration(5f));
                     Invoke("ResetSpeed", 3f);
                     //   Debug.Log("asherPosition: " + asherPosition);
                     //   Debug.Log("애셔 위치: " + targetPosition);
@@ -186,6 +192,27 @@ public class NPC_Move : MonoBehaviour
             // 디버그 레이
             Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
             Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
+        }
+    }
+
+
+    // MotionTrail을 일정 시간 동안 활성화
+    private IEnumerator ActivateTrailForDuration(float duration)
+    {
+        agent.speed = 5;
+        if (motionTrail != null && !isTrailActive)
+        {
+            motionTrail.StartTrail();
+            isTrailActive = true;
+        }
+
+        yield return new WaitForSeconds(duration);
+
+        agent.speed = 2.5f; // 속도 원상 복구
+        if (motionTrail != null && isTrailActive)
+        {
+            motionTrail.StopTrail();
+            isTrailActive = false;
         }
     }
 
