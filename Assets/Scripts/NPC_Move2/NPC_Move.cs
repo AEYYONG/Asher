@@ -64,7 +64,8 @@ public class NPC_Move : MonoBehaviour
             // 목표 지점에 정확히 도달하면 새로운 랜덤 목적지를 설정
             SetRandomDestination();
         }
-        
+
+
         UpdateAnimation();
         transform.rotation = Quaternion.Euler(70, 0, 0);
 
@@ -136,6 +137,8 @@ public class NPC_Move : MonoBehaviour
                     // NPC를 멈추게 하려면 NavMeshAgent 멈춤
                     agent.isStopped = true;
                 }
+                else
+                    isAttack = false;
             }
             // 감지 레이 범위
             Ray ray = new Ray(rayOrigin, rayDirection);
@@ -153,12 +156,13 @@ public class NPC_Move : MonoBehaviour
 
                     // 스냅된 좌표를 목표 지점으로 설정
                     SetDestination(asherPosition);
-                    isChasing = true;
-                    agent.speed = 5;
                     if (!isChasing)
                     {
                         StartCoroutine(ActivateTrailForDuration(5f));
                     }
+                    isChasing = true;
+                    agent.speed = 5;
+                    
                   
                    // Invoke("ResetSpeed", 3f);
                     //   Debug.Log("asherPosition: " + asherPosition);
@@ -346,7 +350,7 @@ public class NPC_Move : MonoBehaviour
     bool IsPositionTaggedAsObstacle(Vector3 position)
     {
         // 반경 0.1의 구 모양으로 해당 위치의 충돌체를 감지
-        Collider[] hitColliders = Physics.OverlapSphere(position, 0.1f);
+        Collider[] hitColliders = Physics.OverlapSphere(position, 0.001f);
 
         foreach (var collider in hitColliders)
         {
@@ -365,34 +369,7 @@ public class NPC_Move : MonoBehaviour
     {
         return new Vector3(Mathf.Round(position.x), position.y, Mathf.Floor(position.z));
     }
-
-    Vector3 SnapZToGrid(Vector3 position)
-    {
-        return new Vector3(position.x, position.y, Mathf.Round(position.z));
-    }
-
- 
-
-    // 경로 상에 장애물이 있는지 확인하는 함수
-    bool IsPathBlocked(Vector3 from, Vector3 to)
-    {
-        RaycastHit hit;
-        Vector3 direction = (to - from).normalized;
-        float distance = 0.4f;
-
-       // Debug.DrawRay(from, direction * distance, Color.black, 0.1f); // 0.1초 동안 검은색 레이 표시
-
-
-        if (Physics.Raycast(from, direction, out hit, distance))
-        {
-            if (hit.collider.CompareTag("Obstacle"))
-            {
-                return true; // 장애물이 경로 상에 있음
-            }
-        }
-        return false; // 장애물 없음
-    }
-
+    
     //ischasing 중일 때만 진행방향의 앞칸의 아래로 ray, 그린존인지 확인
 
 
@@ -539,6 +516,7 @@ public class NPC_Move : MonoBehaviour
 
    public void IsAttackClear()
     {
+        Debug.Log("멈추면 안되는데");
         ChangeAnimationState("up_npc");
    //     Debug.Log("실행");
         isAttack = false;
