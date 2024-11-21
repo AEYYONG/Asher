@@ -56,7 +56,6 @@ public class NPC_Move : MonoBehaviour
         DetectInFront();
         if (isChasing)
         {
-            agent.speed = 2.5f;
             SetDestination(SnapToGrid(asher.transform.position));
 
         }
@@ -156,8 +155,12 @@ public class NPC_Move : MonoBehaviour
                     SetDestination(asherPosition);
                     isChasing = true;
                     agent.speed = 5;
-                    StartCoroutine(ActivateTrailForDuration(5f));
-                    Invoke("ResetSpeed", 3f);
+                    if (!isChasing)
+                    {
+                        StartCoroutine(ActivateTrailForDuration(5f));
+                    }
+                  
+                   // Invoke("ResetSpeed", 3f);
                     //   Debug.Log("asherPosition: " + asherPosition);
                     //   Debug.Log("애셔 위치: " + targetPosition);
                 }
@@ -200,6 +203,7 @@ public class NPC_Move : MonoBehaviour
     private IEnumerator ActivateTrailForDuration(float duration)
     {
         agent.speed = 5;
+        Debug.Log("스피드 5");
         if (motionTrail != null && !isTrailActive)
         {
             motionTrail.StartTrail();
@@ -208,11 +212,14 @@ public class NPC_Move : MonoBehaviour
 
         yield return new WaitForSeconds(duration);
 
-        agent.speed = 2.5f; // 속도 원상 복구
+       
+        
         if (motionTrail != null && isTrailActive)
         {
             motionTrail.StopTrail();
             isTrailActive = false;
+            ResetSpeed();
+            Debug.Log("스피드 2.5");
         }
     }
 
@@ -224,6 +231,7 @@ public class NPC_Move : MonoBehaviour
         isAnimationLocked = true;
         agent.isStopped = true;
         isChasing = false;
+        ResetSpeed();
         greenZoneAttack = false;
         Invoke("WakeUp",3f);
     }
@@ -234,7 +242,7 @@ public class NPC_Move : MonoBehaviour
     {
         if (isChasing)
         {
-            agent.speed = 2.5f;
+           // agent.speed = 2.5f;
             Debug.Log("속도 감소: " + agent.speed);
         }
         else
