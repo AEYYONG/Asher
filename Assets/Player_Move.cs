@@ -417,7 +417,7 @@ public class Player_Move : MonoBehaviour
         }
 
 
-        else if (Input.GetKey(KeyCode.Space) && isAttacked && !isDodge)
+        else if ((Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.LeftShift))&& isAttacked && !isDodge)
         {
             ChangeAnimationState(PLAYER_LEFT);
             Debug.Log("회피!");
