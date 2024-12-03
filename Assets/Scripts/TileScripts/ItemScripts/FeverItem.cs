@@ -13,13 +13,24 @@ public class FeverItem : Tile
 
     IEnumerator FeverTime(StageUIManager uiManager)
     {
+        SetRainbowMaterial(uiManager,true);
         uiManager.player.GetComponent<PlayerInteract>().isFever = true;
-        Player_Move_anim playerMove = uiManager.player.GetComponent<Player_Move_anim>();
+        Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.moveDuration *= 1/tileSO.power;
 
         yield return new WaitForSeconds(tileSO.duration);
-        
+
+        SetRainbowMaterial(uiManager, false);
         uiManager.player.GetComponent<PlayerInteract>().isFever = false;
         playerMove.moveDuration *= tileSO.power;
+    }
+
+    void SetRainbowMaterial(StageUIManager uiManager,bool isEnabled)
+    {
+        //애셔가 갖고 있는 머티리얼 가져와서 레인'
+        Renderer renderer = uiManager.player.GetComponent<Renderer>();
+        int value = isEnabled ? 1 : 0;
+        renderer.material.SetFloat("_EnableRainbow", value);
+        renderer.material = new Material(renderer.material);
     }
 }
