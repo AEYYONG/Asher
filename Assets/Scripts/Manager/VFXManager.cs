@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VFXManager : MonoBehaviour
+public class VFXManager : Singleton<VFXManager>
 {
     // 딕셔너리로 VFX 관리
     private Dictionary<string, VFXData> vfxDictionary = new Dictionary<string, VFXData>();

@@ -26,13 +26,19 @@ public class NPC_Move : MonoBehaviour
     // 공격, 회피 관련
     private GameObject asher;
     public float attackRange = 1.5f;     // 공격 레이캐스트 범위
-    public float attackDistance = 0.7f;  // 공격 감지 거리
+    public float attackDistance = 0.5f;  // 공격 감지 거리
     public bool isAttack = false;
 
     // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
     public bool goInGreenZone = false;
-    public float greenZoneDistance = 1f;  // 그린존 감지 범위
+    public float greenZoneDistance = 1.2f;  // 그린존 감지 범위
     private bool greenZoneAttack = false;
+    public bool isAnimationLocked = false;
+    private bool notDizzy = true;
+
+    // MotionTrail 관련
+    private MotionTrail motionTrail; // MotionTrail 스크립트
+    private bool isTrailActive = false;
 
 
     // Start is called before the first frame update
@@ -40,6 +46,7 @@ public class NPC_Move : MonoBehaviour
     {
         agent.updateRotation = false;
         asher = GameObject.Find("Asher");
+        motionTrail = GetComponent<MotionTrail>();
         SetRandomDestination();
     }
 
@@ -49,7 +56,6 @@ public class NPC_Move : MonoBehaviour
         DetectInFront();
         if (isChasing)
         {
-            agent.speed = 2.5f;
             SetDestination(SnapToGrid(asher.transform.position));
 
         }
@@ -58,7 +64,8 @@ public class NPC_Move : MonoBehaviour
             // 목표 지점에 정확히 도달하면 새로운 랜덤 목적지를 설정
             SetRandomDestination();
         }
-        
+
+
         UpdateAnimation();
         transform.rotation = Quaternion.Euler(70, 0, 0);
 
@@ -97,95 +104,138 @@ public class NPC_Move : MonoBehaviour
 
     void DetectInFront()
     {
-        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
-
-        // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
-        Vector3 rayDirection = agent.velocity.normalized;
-        // velocity가 0일 때를 대비한 기본값
-        if (rayDirection == Vector3.zero)
+        if (!notDizzy)
         {
-            rayDirection = transform.forward; // 기본적으로 정면으로 설정
+            return;
         }
-
-        Ray attackRay = new Ray(rayOrigin, rayDirection);
-        RaycastHit attackHit;
-
-        if (Physics.Raycast(attackRay, out attackHit, attackDistance))
+        else
         {
-            // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
-            if (attackHit.collider.name == "Asher")
+            Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
+
+            // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+            Vector3 rayDirection = agent.velocity.normalized;
+            // velocity가 0일 때를 대비한 기본값
+            if (rayDirection == Vector3.zero)
             {
-                Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
-                isAttack = true;
-
-                // 공격 애니메이션 실행 (필요시)
-                ChangeAnimationState("attack");
-
-                // NPC를 멈추게 하려면 NavMeshAgent 멈춤
-                agent.isStopped = true;
+                rayDirection = transform.forward; // 기본적으로 정면으로 설정
             }
-        }
-        // 감지 레이 범위
-        Ray ray = new Ray(rayOrigin, rayDirection);
-        RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, detectionRange))
-        {
-            // 감지된 물체의 이름이 "Asher"라면
-            if (hit.collider.name == "Asher" && canDetect)
+            Ray attackRay = new Ray(rayOrigin, rayDirection);
+            RaycastHit attackHit;
+
+            if (Physics.Raycast(attackRay, out attackHit, attackDistance))
             {
-                // Debug.Log("Asher 감지됨: " + hit.collider.name);
-
-                // Asher의 위치 좌표를 그리드에 스냅
-                Vector3 asherPosition = SnapToGrid(hit.transform.position);
-
-                // 스냅된 좌표를 목표 지점으로 설정
-                SetDestination(asherPosition);
-                isChasing = true;
-                agent.speed = 5;
-                Invoke("ResetSpeed", 3f);
-                //   Debug.Log("asherPosition: " + asherPosition);
-                //   Debug.Log("애셔 위치: " + targetPosition);
-            }
-        }
-        if (isChasing)
-        {
-
-            Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down); // 진행 방향으로 한 칸 앞에서 아래로
-            RaycastHit downwardHit;
-
-            if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
-            {
-                if (downwardHit.collider.CompareTag("GreenZone"))
+                // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
+                if (attackHit.collider.name == "Asher")
                 {
-                    Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
-                    goInGreenZone = true;
-                    greenZoneAttack = true;
-                    Vector3 backwardDirection = -rayDirection; // 이동 방향의 반대 방향
-                    agent.velocity = backwardDirection * 3f; // 0.3 유닛만큼 후진
-                    
-                    Debug.Log("멈춤");
+                    Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
+                    isAttack = true;
+
+                    // 공격 애니메이션 실행 (필요시)
+                    ChangeAnimationState("attack");
+
+                    // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+                    agent.isStopped = true;
                 }
                 else
+                    isAttack = false;
+            }
+            // 감지 레이 범위
+            Ray ray = new Ray(rayOrigin, rayDirection);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, detectionRange))
+            {
+                // 감지된 물체의 이름이 "Asher"라면
+                if (hit.collider.name == "Asher" && canDetect)
                 {
-                    Debug.Log("타일 감지됨: " + downwardHit.collider.name);
+                    // Debug.Log("Asher 감지됨: " + hit.collider.name);
+
+                    // Asher의 위치 좌표를 그리드에 스냅
+                    Vector3 asherPosition = SnapToGrid(hit.transform.position);
+
+                    // 스냅된 좌표를 목표 지점으로 설정
+                    SetDestination(asherPosition);
+                    if (!isChasing)
+                    {
+                        StartCoroutine(ActivateTrailForDuration(5f));
+                    }
+                    isChasing = true;
+                    agent.speed = 5;
                     
-                    goInGreenZone = false;
+                  
+                   // Invoke("ResetSpeed", 3f);
+                    //   Debug.Log("asherPosition: " + asherPosition);
+                    //   Debug.Log("애셔 위치: " + targetPosition);
                 }
             }
+            if (isChasing)
+            {
 
+                Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down); // 진행 방향으로 한 칸 앞에서 아래로
+                RaycastHit downwardHit;
+
+                if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
+                {
+                    if (downwardHit.collider.CompareTag("GreenZone"))
+                    {
+                        Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
+                        goInGreenZone = true;
+                        greenZoneAttack = true;
+                        Vector3 backwardDirection = -rayDirection; // 이동 방향의 반대 방향
+                        agent.velocity = backwardDirection * 0.3f; // 0.3 유닛만큼 후진
+
+                        Debug.Log("멈춤");
+                    }
+                    else
+                    {
+                        // Debug.Log("타일 감지됨: " + downwardHit.collider.name);
+
+                    }
+                }
+
+            }
+
+            // 디버그 레이
+            Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
+            Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
         }
-        // 디버그 레이
-        Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
-        Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
+    }
+
+
+    // MotionTrail을 일정 시간 동안 활성화
+    private IEnumerator ActivateTrailForDuration(float duration)
+    {
+        agent.speed = 5;
+        Debug.Log("스피드 5");
+        if (motionTrail != null && !isTrailActive)
+        {
+            motionTrail.StartTrail();
+            isTrailActive = true;
+        }
+
+        yield return new WaitForSeconds(duration);
+
+       
+        
+        if (motionTrail != null && isTrailActive)
+        {
+            motionTrail.StopTrail();
+            isTrailActive = false;
+            ResetSpeed();
+            Debug.Log("스피드 2.5");
+        }
     }
 
 
     public void Dizzy()
     {
         ChangeAnimationState("dizzy");
+        notDizzy = false;
+        isAnimationLocked = true;
         agent.isStopped = true;
         isChasing = false;
+        ResetSpeed();
         greenZoneAttack = false;
         Invoke("WakeUp",3f);
     }
@@ -196,7 +246,7 @@ public class NPC_Move : MonoBehaviour
     {
         if (isChasing)
         {
-            agent.speed = 2.5f;
+           // agent.speed = 2.5f;
             Debug.Log("속도 감소: " + agent.speed);
         }
         else
@@ -300,7 +350,7 @@ public class NPC_Move : MonoBehaviour
     bool IsPositionTaggedAsObstacle(Vector3 position)
     {
         // 반경 0.1의 구 모양으로 해당 위치의 충돌체를 감지
-        Collider[] hitColliders = Physics.OverlapSphere(position, 0.1f);
+        Collider[] hitColliders = Physics.OverlapSphere(position, 0.001f);
 
         foreach (var collider in hitColliders)
         {
@@ -319,141 +369,7 @@ public class NPC_Move : MonoBehaviour
     {
         return new Vector3(Mathf.Round(position.x), position.y, Mathf.Floor(position.z));
     }
-
-    Vector3 SnapZToGrid(Vector3 position)
-    {
-        return new Vector3(position.x, position.y, Mathf.Round(position.z));
-    }
-
-    // 그리드 상에서 X축과 Z축으로만 이동하는 함수
-    void MoveInGrid()
-    {
-        Vector3 currentPosition = transform.position;
-
-        if (moveInXAxis)
-        {
-            // X축 방향으로 이동 시도
-            Vector3 nextPosition = new Vector3(targetPosition.x, currentPosition.y, currentPosition.z);
-
-            //z축 스냅
-            currentPosition.z = Mathf.Round(currentPosition.z);
-            transform.position = currentPosition;
-
-            // X축 이동 시 장애물 확인
-            if (IsPathBlocked(currentPosition, nextPosition))
-            {
-               // Debug.Log("X축에 장애물 감지");
-                // X축 경로가 막혀있으면 Z축을 먼저 이동
-                if (isChasing)
-                {
-                    isBlocked = true;
-                }
-               
-                Vector3 randomPosition = FindRandomPositionInSemiCircle();
-            //    Debug.Log("플레이어 위치" + SnapToGrid(asher.transform.position));
-             //   Debug.Log("랜덤 위치" + randomPosition);
-                SetDestination(SnapToGrid(randomPosition));
-          //      Debug.Log("재정의된 위치: " + SnapToGrid(randomPosition));
-                moveInXAxis = false;
-
-            }
-            else
-            {
-                agent.SetDestination(nextPosition);
-                if (Mathf.Abs(currentPosition.x - targetPosition.x) < 0.1f)
-                {
-                    moveInXAxis = false; // X축 이동 완료 후 Z축 이동으로 전환
-                    isBlocked = false;
-                }
-            }
-        }
-        else
-        {
-            // Z축 방향으로 이동 시도
-            Vector3 nextPosition = new Vector3(currentPosition.x, currentPosition.y, targetPosition.z);
-            // X축 좌표를 정수로 스냅
-            currentPosition.x = Mathf.Round(currentPosition.x);
-            transform.position = currentPosition;
-            // Z축 이동 시 장애물 확인
-            if (IsPathBlocked(currentPosition, nextPosition))
-            {
-             //   Debug.Log("Z축에 장애물 감지");
-                if (isChasing)
-                {
-                    isBlocked = true;
-                }
-
-                Vector3 randomPosition = FindRandomPositionInSemiCircle();
-             //   Debug.Log("플레이어 위치" + randomPosition);
-            //    Debug.Log("랜덤 위치" + randomPosition);
-                SetDestination(SnapToGrid(randomPosition));
-         //       Debug.Log("재정의된 위치" + randomPosition);
-                // Z축 경로가 막혀있으면 다시 X축을 시도하거나 다른 처리
-
-                moveInXAxis = true;
-
-            }
-            else
-            {
-                agent.SetDestination(nextPosition);
-                if (Mathf.Abs(currentPosition.z - targetPosition.z) < 0.1f)
-                {
-                    moveInXAxis = true; // Z축 이동 완료 후 다시 X축 이동으로 전환
-                    isBlocked = false;
-                }
-            }
-        }
-    }
-    Vector3 FindRandomPositionInSemiCircle()
-    {
-        Vector3 currentPosition = transform.position;
-        Vector3 direction = (targetPosition - currentPosition).normalized;
-
-        // 반원 형태로 장애물이 없는 랜덤한 위치 찾기
-        float radius = 2.0f;  // 탐색할 반원의 반지름
-        List<Vector3> possiblePositions = new List<Vector3>();
-
-        for (int angle = -90; angle <= 90; angle += 10)
-        {
-            float radian = angle * Mathf.Deg2Rad;
-            Vector3 offset = new Vector3(Mathf.Cos(radian), 0, Mathf.Sin(radian)) * radius;
-            Vector3 candidatePosition = currentPosition + direction + offset;
-
-            if (!IsPositionTaggedAsObstacle(candidatePosition))
-            {
-                possiblePositions.Add(candidatePosition);
-            }
-        }
-
-        if (possiblePositions.Count > 0)
-        {
-            return possiblePositions[Random.Range(0, possiblePositions.Count)];
-        }
-
-        return currentPosition;  // 만약 유효한 위치가 없으면 현재 위치 반환
-    }
-
-
-    // 경로 상에 장애물이 있는지 확인하는 함수
-    bool IsPathBlocked(Vector3 from, Vector3 to)
-    {
-        RaycastHit hit;
-        Vector3 direction = (to - from).normalized;
-        float distance = 0.4f;
-
-       // Debug.DrawRay(from, direction * distance, Color.black, 0.1f); // 0.1초 동안 검은색 레이 표시
-
-
-        if (Physics.Raycast(from, direction, out hit, distance))
-        {
-            if (hit.collider.CompareTag("Obstacle"))
-            {
-                return true; // 장애물이 경로 상에 있음
-            }
-        }
-        return false; // 장애물 없음
-    }
-
+    
     //ischasing 중일 때만 진행방향의 앞칸의 아래로 ray, 그린존인지 확인
 
 
@@ -462,8 +378,10 @@ public class NPC_Move : MonoBehaviour
     // 애니메이션 변경
     void UpdateAnimation()
     {
+        if (isAnimationLocked) return;
+
         Vector3 velocity = agent.velocity;
-        if(isAttack)
+        if(isAttack && notDizzy)
         {
             ChangeAnimationState("attack");
         }
@@ -472,25 +390,40 @@ public class NPC_Move : MonoBehaviour
         {
             if (velocity.z > 0 && currentAnimation != "up_npc")
             {
-                
-                if (greenZoneAttack)
+
+                if (greenZoneAttack&&goInGreenZone)
                 {
                     ChangeAnimationState("defend_down");
+                    Debug.Log("어택후 아래 애니메이션");
+                    goInGreenZone = false;
+                    isAnimationLocked = true;
+                    return;
                     //!!다음 해롱해롱으로 가기
                 }
-               
-                else
+
+                else if (!greenZoneAttack)
+                {
                     ChangeAnimationState("up_npc");
+                    Debug.Log("위로 애니메이션");
+                }
 
             }
             else if (velocity.z < 0 && currentAnimation != "down_npc")
             {
-                if (greenZoneAttack)
+                if (greenZoneAttack&&goInGreenZone)
                 {
                     ChangeAnimationState("defend_up");
+                    goInGreenZone = false;
+                    isAnimationLocked = true;
+                    Debug.Log("어택후 위로 애니메이션");
+                    return;
+                    
                 }
-                else
+                else if (!greenZoneAttack)
+                {
                     ChangeAnimationState("down_npc");
+                    Debug.Log("아래로 애니메이션");
+                }
             }
         }
 
@@ -499,21 +432,36 @@ public class NPC_Move : MonoBehaviour
 
             if (velocity.x > 0 && currentAnimation != "right_npc")
             {
-                if (greenZoneAttack)
+                if (greenZoneAttack&&goInGreenZone)
                 {
                     ChangeAnimationState("defend_left");
+                    goInGreenZone = false;
+                    isAnimationLocked = true;
+                    Debug.Log("어택후 왼쪽 애니메이션");
+                    return;
                 }
-                else
+                else if (!greenZoneAttack)
+                {
+                    Debug.Log("오른쪽으로 애니메이션");
                     ChangeAnimationState("right_npc");
+                   
+                }
             }
             else if (velocity.x < 0 && currentAnimation != "left_npc")
             {
-                if (greenZoneAttack)
+                if (greenZoneAttack&&goInGreenZone)
                 {
                     ChangeAnimationState("defend_right");
+                    goInGreenZone = false;
+                    isAnimationLocked = true;
+                    Debug.Log("어택후 오른쪽 애니메이션");
+                    return;
                 }
-                else
+                else if (!greenZoneAttack)
+                {
                     ChangeAnimationState("left_npc");
+                    Debug.Log("왼쪽으로 애니메이션");
+                }
             }
         }
 
@@ -568,6 +516,7 @@ public class NPC_Move : MonoBehaviour
 
    public void IsAttackClear()
     {
+        Debug.Log("멈추면 안되는데");
         ChangeAnimationState("up_npc");
    //     Debug.Log("실행");
         isAttack = false;
@@ -592,6 +541,8 @@ public class NPC_Move : MonoBehaviour
     void WakeUp()
     {
         Debug.Log("깨어나다");
+        isAnimationLocked = false;
         agent.isStopped = false;
+        notDizzy = true;
     }
 }
