@@ -18,8 +18,9 @@ MonoBehaviour:
   trapID: 0
   itemImg: {fileID: 21300000, guid: da4469b46cc494fd1a2ceeac40d6c2e0, type: 3}
   sideCutSceneImg: {fileID: 21300000, guid: f0cc2fb5c5bcf42b58a88f9059b56e6a, type: 3}
-  selectNum: 0
+  selectNum: 2
   duration: 0
   power: 0
-  originTopTex: {fileID: 2800000, guid: a00df048c84d64538b02ee2e75c64a4f, type: 3}
+  originTopTex: {fileID: 2800000, guid: ae59fae6092ac492297bf5ff5d1a28bf, type: 3}
   transTopTex: {fileID: 2800000, guid: 2b84b1a805177424cb339216fc35ac80, type: 3}
+  timeBombTopTex: {fileID: 0}
