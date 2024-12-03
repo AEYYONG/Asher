@@ -197,7 +197,6 @@ public class PlayerInteract : MonoBehaviour
                         StartTileMatchEffect(tile1, tile2);
                         inventory.AddItemEvent(tile1);
                         _asherPortrait.SetGood();
-                        VFXManager.Instance.PlayVFX("PickUp", this.transform.position, Quaternion.identity);
                         Debug.Log("픽업 vfx");
                         StartCoroutine(InvokeInitValue());
                         break;

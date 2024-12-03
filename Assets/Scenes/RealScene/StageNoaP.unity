@@ -16149,18 +16149,22 @@ MonoBehaviour:
   cam: {fileID: 963194227}
   tileParent: {fileID: 1135192898}
   buffItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: 901194a5965c94a5a819245d8ff94a40, type: 3}
-    count: 21
   - tilePrefab: {fileID: 6389873552652161418, guid: 1513a6b1414da42efa03a07287afd77a, type: 3}
-    count: 21
-  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
-    count: 35
-  debuffItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: 2ddeb229a9226427d90e29e33c3112e1, type: 3}
-    count: 10
+    count: 15
+  - tilePrefab: {fileID: 6389873552652161418, guid: 901194a5965c94a5a819245d8ff94a40, type: 3}
+    count: 151
+  - tilePrefab: {fileID: 6389873552652161418, guid: 75212366308cb4730b0912fe6d252373, type: 3}
+    count: 15
+  - tilePrefab: {fileID: 6389873552652161418, guid: 369ca2d01d78c4bc99a95458cc1dc775, type: 3}
+    count: 151
+  - tilePrefab: {fileID: 6389873552652161418, guid: 6cdcb4e80195b424fbb780d55d2e6ce7, type: 3}
+    count: 15
+  - tilePrefab: {fileID: 6389873552652161418, guid: 258385e5e40e845d69794df130040813, type: 3}
+    count: 15
+  debuffItemTypes: []
   etcItemTypes:
   - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
-    count: 3
+    count: 1
   furnitureTilePosList: []
   _tileShuffleList: []
   tileEntries:
@@ -18640,6 +18644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5942560119042791849, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+    - {fileID: 385565235384987310, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -18671,7 +18676,7 @@ MonoBehaviour:
   startJump: 0
   isInverse: 0
   isSlip: 0
-  HairBall: {fileID: 0}
+  HairBall: {fileID: 7744802067183723968, guid: c46f5b56fe5e6f6418491300439b3f52, type: 3}
   isfire: 0
   lineRendererPrefab: {fileID: 0}
   lineLength: 5
