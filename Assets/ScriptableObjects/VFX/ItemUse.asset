@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 176aac27667bd4d148f17e3a9792b6e9, type: 3}
-  m_Name: PickUp
+  m_Name: ItemUse
   m_EditorClassIdentifier: 
-  vfxName: PickUp
+  vfxName: ItemUse
   vfxPrefab: {fileID: 4231482995727018640, guid: cd799f62aab418c4d8efed7992b9f568, type: 3}
   duration: 1
   scale: {x: 1, y: 1, z: 1}
