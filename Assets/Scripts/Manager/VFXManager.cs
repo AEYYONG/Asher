@@ -22,12 +22,20 @@ public class VFXManager : Singleton<VFXManager>
         }
     }
 
-    public void PlayVFX(string vfxName, Vector3 position, Quaternion rotation)
+    public void PlayVFX(string vfxName, Transform transform , Quaternion rotation, bool isChild)
     {
         if (vfxDictionary.TryGetValue(vfxName, out VFXData vfxData))
         {
+            GameObject vfxInstance;
             // VFX 생성
-            GameObject vfxInstance = Instantiate(vfxData.vfxPrefab, position, rotation);
+            if (isChild)
+            {
+                vfxInstance = Instantiate(vfxData.vfxPrefab, transform);
+            }
+            else
+            {
+                vfxInstance = Instantiate(vfxData.vfxPrefab, transform.position, rotation);
+            }
 
             // 스케일 적용
             vfxInstance.transform.localScale = vfxData.scale;

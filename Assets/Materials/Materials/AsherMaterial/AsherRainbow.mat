@@ -393,7 +393,7 @@ Material:
     - _PoisonRecolorFactor: 0.5
     - _PoisonShiftSpeed: 0.2
     - _QueueOffset: 0
-    - _RainbowBrightness: 6
+    - _RainbowBrightness: 5
     - _RainbowContrast: 1
     - _RainbowDensity: 0.5
     - _RainbowFade: 1
