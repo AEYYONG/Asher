@@ -162,4 +162,10 @@ public class Tile : MonoBehaviour
         Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
         effectAnimator.Play("TileMatch");
     }
+
+    public void ChangeTileTexEmpty()
+    {
+        Material material = GetComponent<Renderer>().material;
+        material.SetTexture("_BottomTex",tileSO.originBottomTex);
+    }
 }

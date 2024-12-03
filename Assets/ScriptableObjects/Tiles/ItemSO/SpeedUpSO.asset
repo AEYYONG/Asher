@@ -23,4 +23,5 @@ MonoBehaviour:
   power: 1.5
   originTopTex: {fileID: 2800000, guid: ae59fae6092ac492297bf5ff5d1a28bf, type: 3}
   transTopTex: {fileID: 2800000, guid: 272796be8172d4fe8a067d173a8849f1, type: 3}
+  originBottomTex: {fileID: 2800000, guid: e47ecf620ce5a4c56bee1f4cbc32354f, type: 3}
   timeBombTopTex: {fileID: 0}

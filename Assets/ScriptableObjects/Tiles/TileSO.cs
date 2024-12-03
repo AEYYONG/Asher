@@ -62,6 +62,7 @@ public class TileSO : ScriptableObject
     //투명 고글 아이템 -> 투명 버전 타일 텍스쳐
     public Texture2D originTopTex;
     public Texture2D transTopTex;
+    public Texture2D originBottomTex;
     //시한폭탄 함정 -> 빛나는 텍스쳐
     public Texture2D timeBombTopTex;
 }
