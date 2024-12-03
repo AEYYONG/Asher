@@ -185,6 +185,7 @@ public class PlayerInteract : MonoBehaviour
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
+                    StartTileMatchEffect(tile1, tile2);
                     tile1.Use(_stageUIManager);
                     _asherPortrait.SetGood();
                     StartCoroutine(InvokeInitValue());
@@ -193,6 +194,7 @@ public class PlayerInteract : MonoBehaviour
                     if (tile1.tileSO.itemID == tile2.tileSO.itemID)
                     {
                         Debug.Log("Same Item Tile");
+                        StartTileMatchEffect(tile1, tile2);
                         inventory.AddItemEvent(tile1);
                         _asherPortrait.SetGood();
                         StartCoroutine(InvokeInitValue());
@@ -223,6 +225,7 @@ public class PlayerInteract : MonoBehaviour
             if (id1 == TileID.Joker && id2 == TileID.Item)
             {
                 Debug.Log("Joker and Item");
+                StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile2);
                 _asherPortrait.SetGood();
                 StartCoroutine(InvokeInitValue());
@@ -230,6 +233,7 @@ public class PlayerInteract : MonoBehaviour
             else if (id1 == TileID.Item && id2 == TileID.Joker)
             {
                 Debug.Log("Joker and Item");
+                StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile1);
                 _asherPortrait.SetGood();
                 StartCoroutine(InvokeInitValue());
@@ -350,5 +354,11 @@ public class PlayerInteract : MonoBehaviour
             Debug.Log(tile.name+"을 최근 리스트에 추가");
             _recentTiles.AddLast(tile);
         }
+    }
+
+    public void StartTileMatchEffect(Tile tile1, Tile tile2)
+    {
+        StartCoroutine(tile1.StartTileMatchEffect());
+        StartCoroutine(tile2.StartTileMatchEffect());
     }
 }
