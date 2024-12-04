@@ -89,6 +89,9 @@ public class PlayerInteract : MonoBehaviour
                 Tile curTile = _hit.collider.GetComponent<Tile>();
                 if (isFever)
                 {
+                    //피버타일 이펙트 실행
+                    Vector3 vfxPos = transform.position + new Vector3(0, 0, -0.5f);
+                    VFXManager.Instance.PlayVFX("FeverTimeTileEffect", vfxPos);
                     List<Tile> nearTiles = curTile.GetNearTiles();
                     List<FeverTile> compareTiles = new List<FeverTile>();
                     List<Tile> returnTiles = new List<Tile>();

@@ -14,7 +14,7 @@ public class FeverItem : Tile
     IEnumerator FeverTime(StageUIManager uiManager)
     {
         SetRainbowMaterial(uiManager,true);
-        VFXManager.Instance.PlayVFX("FeverTimeTrail",uiManager.player.transform,Quaternion.identity,true);
+        VFXManager.Instance.PlayVFX("FeverTimeTrail",uiManager.player.transform);
         uiManager.player.GetComponent<PlayerInteract>().isFever = true;
         Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.moveDuration *= 1/tileSO.power;
