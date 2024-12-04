@@ -19185,7 +19185,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8167288655205246968, guid: 2e18eaab98be8451ea49fa46f526a5fe, type: 3}
       propertyPath: vfxDataList.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8167288655205246968, guid: 2e18eaab98be8451ea49fa46f526a5fe, type: 3}
       propertyPath: vfxDataList.Array.data[0]
@@ -19199,6 +19199,10 @@ PrefabInstance:
       propertyPath: vfxDataList.Array.data[2]
       value: 
       objectReference: {fileID: 11400000, guid: 961f0fe112ea94e7aa09ae6bd227633b, type: 2}
+    - target: {fileID: 8167288655205246968, guid: 2e18eaab98be8451ea49fa46f526a5fe, type: 3}
+      propertyPath: vfxDataList.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1a3190b1114da43f596615ae07190a3c, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

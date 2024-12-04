@@ -13,8 +13,14 @@ public class FeverItem : Tile
 
     IEnumerator FeverTime(StageUIManager uiManager)
     {
+        //FeverTimeTitle 띄우기 및 피버타임 효과
+        VFXManager.Instance.PlayVFX("FeverTimeTitle",uiManager.transform);
         SetRainbowMaterial(uiManager,true);
         VFXManager.Instance.PlayVFX("FeverTimeTrail",uiManager.player.transform);
+        //애셔와 npc 모두 idle 상태로 멈추게 하기
+        yield return new WaitForSeconds(1f);
+        //애셔와 npc 모두 다시 이동 시작
+        
         uiManager.player.GetComponent<PlayerInteract>().isFever = true;
         Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.moveDuration *= 1/tileSO.power;
