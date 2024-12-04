@@ -47,6 +47,9 @@ public class PlayerInteract : MonoBehaviour
     
     //애셔 초상화
     [SerializeField] private PortraitTest _asherPortrait;
+    
+    //애셔 UI canvas
+    public GameObject asherUICanvas;
 
     public class FeverTile
     {
@@ -130,7 +133,7 @@ public class PlayerInteract : MonoBehaviour
         }
         
         //선택한 첫번째 카드가 함정 카드라면
-        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
+        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap && canInteract)
         {
             canInteract = false;
             _tiles[0].TrapUse(_stageUIManager);

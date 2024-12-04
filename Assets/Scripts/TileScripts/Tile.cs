@@ -85,6 +85,8 @@ public class Tile : MonoBehaviour
     {
         StartCoroutine(ClearSelectingEffect());
         uiManager.ActiveSideCutSceneUI(tileSO);
+        //trap emotion 실행
+        VFXManager.Instance.PlayVFX("TrapEmotion", uiManager.player.transform.GetChild(0).transform);
     }
 
     public virtual void Use(StageUIManager uiManager)
