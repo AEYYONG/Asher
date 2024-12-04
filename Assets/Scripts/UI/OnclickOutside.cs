@@ -26,12 +26,7 @@ public class OnclickOutside : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         }
     }
 
-    public void  OnClickX()
-    {
-        gameObject.SetActive(false);
 
-        buttonController.ComeBack();
-    }
 
     // 마우스가 버튼 위에 올라갔을 때 호출
     public void OnPointerEnter(PointerEventData eventData)

@@ -23,8 +23,6 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     void Start()
     {
 
-        // 현제 오브젝트
-        GameObject currentObject = this.gameObject;
 
         // 다른 버튼 오브젝트
         buttonObjects = GameObject.FindGameObjectsWithTag("Button");
