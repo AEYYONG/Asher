@@ -59,6 +59,9 @@ public class Tile : MonoBehaviour
     public IEnumerator ReturnTile()
     {
         yield return new WaitForSeconds(tileManager.tileReturnTime);
+        //타일 선택 effect 해제
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("Clear");
         //되돌아오는 애니메이션 실행
         _animator.SetTrigger("Return");
         //선택 여부 false로 변경
@@ -79,7 +82,10 @@ public class Tile : MonoBehaviour
 
     public virtual void TrapUse(StageUIManager uiManager)
     {
+        StartCoroutine(ClearSelectingEffect());
         uiManager.ActiveSideCutSceneUI(tileSO);
+        //trap emotion 실행
+        VFXManager.Instance.PlayVFX("TrapEmotion", uiManager.player.transform.GetChild(0).transform);
     }
 
     public virtual void Use(StageUIManager uiManager)
@@ -114,5 +120,54 @@ public class Tile : MonoBehaviour
         }
 
         return nearTiles;
+    }
+    
+    //타일 선택 effect 실행
+    public void StartSelectingEffect()
+    {
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        Debug.Log(effectAnimator + "effect animator is detected!");
+        TileID tileID = tileSO.tileID;
+        switch (tileID)
+        {
+            case TileID.General:
+                effectAnimator.SetTrigger("Select_Green");
+                break;
+            case TileID.Item:
+                effectAnimator.SetTrigger("Select_Green");
+                break;
+            case TileID.HeartStone:
+                effectAnimator.SetTrigger("Select_Green");
+                break;
+            case TileID.Joker:
+                effectAnimator.SetTrigger("Select_Green");
+                break;
+            case TileID.Trap:
+                effectAnimator.SetTrigger("Select_Red");
+                break;
+            default:
+                break;
+        }
+    }
+
+    IEnumerator ClearSelectingEffect()
+    {
+        yield return new WaitForSeconds(1.3f);
+        //타일 선택 effect 해제
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("Clear");
+    }
+
+    public IEnumerator StartTileMatchEffect()
+    {
+        yield return new WaitForSeconds(0.5f);
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.Play("TileMatch");
+    }
+
+    public void ChangeTileTexEmpty()
+    {
+        Material material = GetComponent<Renderer>().material;
+        material.SetTexture("_BottomTex",tileSO.originBottomTex);
     }
 }

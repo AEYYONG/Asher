@@ -47,6 +47,9 @@ public class PlayerInteract : MonoBehaviour
     
     //애셔 초상화
     [SerializeField] private PortraitTest _asherPortrait;
+    
+    //애셔 UI canvas
+    public GameObject asherUICanvas;
 
     public class FeverTile
     {
@@ -89,6 +92,9 @@ public class PlayerInteract : MonoBehaviour
                 Tile curTile = _hit.collider.GetComponent<Tile>();
                 if (isFever)
                 {
+                    //피버타일 이펙트 실행
+                    Vector3 vfxPos = transform.position + new Vector3(0, 0, -0.5f);
+                    VFXManager.Instance.PlayVFX("FeverTimeTileEffect", vfxPos);
                     List<Tile> nearTiles = curTile.GetNearTiles();
                     List<FeverTile> compareTiles = new List<FeverTile>();
                     List<Tile> returnTiles = new List<Tile>();
@@ -127,7 +133,7 @@ public class PlayerInteract : MonoBehaviour
         }
         
         //선택한 첫번째 카드가 함정 카드라면
-        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap)
+        if (_tiles.Count > 0 && _tiles[0].tileSO.tileID == TileID.Trap && canInteract)
         {
             canInteract = false;
             _tiles[0].TrapUse(_stageUIManager);
@@ -185,6 +191,7 @@ public class PlayerInteract : MonoBehaviour
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
+                    StartTileMatchEffect(tile1, tile2);
                     tile1.Use(_stageUIManager);
                     _asherPortrait.SetGood();
                     StartCoroutine(InvokeInitValue());
@@ -193,10 +200,11 @@ public class PlayerInteract : MonoBehaviour
                     if (tile1.tileSO.itemID == tile2.tileSO.itemID)
                     {
                         Debug.Log("Same Item Tile");
+                        StartTileMatchEffect(tile1, tile2);
                         inventory.AddItemEvent(tile1);
                         _asherPortrait.SetGood();
-                        VFXManager.Instance.PlayVFX("PickUp", this.transform.position, Quaternion.identity);
                         Debug.Log("픽업 vfx");
+                        VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                         StartCoroutine(InvokeInitValue());
                         break;
                     }
@@ -225,15 +233,19 @@ public class PlayerInteract : MonoBehaviour
             if (id1 == TileID.Joker && id2 == TileID.Item)
             {
                 Debug.Log("Joker and Item");
+                StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile2);
                 _asherPortrait.SetGood();
+                VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                 StartCoroutine(InvokeInitValue());
             }
             else if (id1 == TileID.Item && id2 == TileID.Joker)
             {
                 Debug.Log("Joker and Item");
+                StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile1);
                 _asherPortrait.SetGood();
+                VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                 StartCoroutine(InvokeInitValue());
             }
             else if (id2 == TileID.Trap)
@@ -352,5 +364,11 @@ public class PlayerInteract : MonoBehaviour
             Debug.Log(tile.name+"을 최근 리스트에 추가");
             _recentTiles.AddLast(tile);
         }
+    }
+
+    public void StartTileMatchEffect(Tile tile1, Tile tile2)
+    {
+        StartCoroutine(tile1.StartTileMatchEffect());
+        StartCoroutine(tile2.StartTileMatchEffect());
     }
 }

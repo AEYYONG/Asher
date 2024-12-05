@@ -149,6 +149,7 @@ MonoBehaviour:
   _animator: {fileID: 3761349924235490333}
   tileManager: {fileID: 0}
   playerInteract: {fileID: 0}
+  rainbowMat: {fileID: 2100000, guid: ed75086e20d4b4335b8308a713510cf4, type: 2}
 --- !u!1001 &2155488192331670200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -167,7 +168,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.5
+      value: -0.7
       objectReference: {fileID: 0}
     - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
       propertyPath: m_LocalPosition.z

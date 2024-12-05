@@ -9,12 +9,14 @@ public class MemoryItem : Tile
     {
         base.ItemUse(uiManager);
         memoryLists = uiManager.player.GetComponent<PlayerInteract>()._recentTiles;
-        StartCoroutine(ShowRecentTiles(memoryLists));
+        StartCoroutine(ShowRecentTiles(uiManager,memoryLists));
         Debug.Log("기억복원 아이템 사용");
     }
 
-    IEnumerator ShowRecentTiles(LinkedList<Tile> tiles)
+    IEnumerator ShowRecentTiles(StageUIManager uiManager, LinkedList<Tile> tiles)
     {
+        VFXManager.Instance.PlayVFX("UseBuffItem",uiManager.player.transform);
+        yield return new WaitForSeconds(1.5f);
         List<Tile> recentTiles = new List<Tile>();
         foreach (var tile in tiles)
         {
