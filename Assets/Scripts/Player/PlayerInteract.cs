@@ -48,8 +48,8 @@ public class PlayerInteract : MonoBehaviour
     //애셔 초상화
     [SerializeField] private PortraitTest _asherPortrait;
     
-    //애셔 UI canvas
-    public GameObject asherUICanvas;
+    //sfx 재생
+    public AudioSource audioSource;
 
     public class FeverTile
     {
@@ -90,6 +90,7 @@ public class PlayerInteract : MonoBehaviour
             if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
+                audioSource.Play();
                 if (isFever)
                 {
                     //피버타일 이펙트 실행
