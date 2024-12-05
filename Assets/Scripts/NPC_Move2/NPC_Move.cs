@@ -230,7 +230,27 @@ public class NPC_Move : MonoBehaviour
 
     public void Dizzy()
     {
-        ChangeAnimationState("dizzy");
+
+        if (currentAnimation == "defend_up")
+        {
+            ChangeAnimationState("up_dizzy");
+        }
+        else if (currentAnimation == "defend_left")
+        {
+            ChangeAnimationState("left_dizzy");
+        }
+        else if (currentAnimation == "defend_right")
+        {
+            ChangeAnimationState("right_dizzy");
+        }
+        else if (currentAnimation == "defend_down")
+        {
+            ChangeAnimationState("dizzy");
+        }
+        else
+        {
+            ChangeAnimationState("dizzy"); // 기본 상태
+        }
         notDizzy = false;
         isAnimationLocked = true;
         agent.isStopped = true;
