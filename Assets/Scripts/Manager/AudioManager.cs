@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
 
     [Header("BGM")]
     public AudioClip bgmClip;
-    public float bgmVolume;
+    [Range(0f, 1f)] public float bgmVolume = 1f;
     public AudioSource bgmPlayer;
 
     void Awake()
@@ -28,7 +28,11 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.loop = true;
         bgmPlayer.clip = bgmClip;
 
+        bgmPlayer.volume = Mathf.Clamp(bgmVolume, 0f, 1f); // 초기 볼륨 동기화
         PlayBgm(bgmClip);
+
+        bgmPlayer.volume = bgmVolume;
+        Debug.Log("초기 볼륨(AudioSource),init: " + bgmPlayer.volume);
 
     }
 
@@ -43,5 +47,16 @@ public class AudioManager : MonoBehaviour
         {
             bgmPlayer.Stop();
         }
+    }
+
+    // AudioSource 볼륨 변경
+    public void SetBgmVolume(float volume)
+    {
+        bgmVolume = Mathf.Clamp(volume, 0f, 1f);
+        bgmPlayer.volume = bgmVolume;
+        Debug.Log("볼륨 변경: " + bgmVolume);
+        Debug.Log("AudioSource 볼륨: " + bgmPlayer.volume);
+
+
     }
 }
