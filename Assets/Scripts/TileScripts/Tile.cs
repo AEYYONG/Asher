@@ -78,7 +78,6 @@ public class Tile : MonoBehaviour
     public virtual void ItemUse(StageUIManager uiManager)
     {
         uiManager.ActiveSideCutSceneUI(tileSO);
-        VFXManager.Instance.PlayVFX("ItemUse",uiManager.player.transform);
     }
 
     public virtual void TrapUse(StageUIManager uiManager)

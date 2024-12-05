@@ -204,6 +204,7 @@ public class PlayerInteract : MonoBehaviour
                         inventory.AddItemEvent(tile1);
                         _asherPortrait.SetGood();
                         Debug.Log("픽업 vfx");
+                        VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                         StartCoroutine(InvokeInitValue());
                         break;
                     }
@@ -235,6 +236,7 @@ public class PlayerInteract : MonoBehaviour
                 StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile2);
                 _asherPortrait.SetGood();
+                VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                 StartCoroutine(InvokeInitValue());
             }
             else if (id1 == TileID.Item && id2 == TileID.Joker)
@@ -243,6 +245,7 @@ public class PlayerInteract : MonoBehaviour
                 StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile1);
                 _asherPortrait.SetGood();
+                VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                 StartCoroutine(InvokeInitValue());
             }
             else if (id2 == TileID.Trap)
