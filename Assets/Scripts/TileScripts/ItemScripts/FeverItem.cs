@@ -13,6 +13,8 @@ public class FeverItem : Tile
 
     IEnumerator FeverTime(StageUIManager uiManager)
     {
+        VFXManager.Instance.PlayVFX("UseBuffItem",uiManager.player.transform);
+        yield return new WaitForSeconds(1.5f);
         //FeverTimeTitle 띄우기 및 피버타임 효과
         VFXManager.Instance.PlayVFX("FeverTimeTitle",uiManager.transform);
         SetRainbowMaterial(uiManager,true);

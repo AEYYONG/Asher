@@ -16,6 +16,8 @@ public class SpeedUpItem : Tile
 
     IEnumerator SpeedUp(StageUIManager uiManager)
     {
+        VFXManager.Instance.PlayVFX("UseBuffItem",uiManager.player.transform);
+        yield return new WaitForSeconds(1.5f);
         UpdateShaderProperties(true);
         Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.moveDuration *= 1/tileSO.power;
