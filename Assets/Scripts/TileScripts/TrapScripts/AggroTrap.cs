@@ -45,6 +45,8 @@ public class AggroTrap : Tile
             Debug.LogWarning("NPC_Move 스크립트를 가진 오브젝트를 찾을 수 없습니다.");
         }
 
-
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }

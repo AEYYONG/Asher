@@ -20,5 +20,8 @@ public class InverseTrap : Tile
         yield return new WaitForSeconds(tileSO.duration);
         playerMove.isInverse = false;
         Debug.Log("역방향 함정 지속 끝");
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }

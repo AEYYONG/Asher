@@ -44,5 +44,8 @@ public class GauntletTrap : Tile
                 }
             }
         }
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }
