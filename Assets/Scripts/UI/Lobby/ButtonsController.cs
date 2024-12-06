@@ -75,7 +75,8 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnClickPlay()
     {
-        SceneManager.LoadScene("StageNoaP");
+        LoadingScene.LoadScene("StageNoaP");
+            //SceneManager.LoadScene("StageNoaP");
     }
 
 

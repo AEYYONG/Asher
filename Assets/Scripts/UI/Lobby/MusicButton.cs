@@ -40,7 +40,7 @@ public class MusicButton : MonoBehaviour
             buttonImage.sprite = defaultSprite;
         }
     }
-
+    
     private void UpdateButtonImage()
     {
         // 현재 재생 중인 음악 이름과 부모의 음악 이름 비교
