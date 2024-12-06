@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 176aac27667bd4d148f17e3a9792b6e9, type: 3}
-  m_Name: PickUp
+  m_Name: TrapEmotion
   m_EditorClassIdentifier: 
-  vfxName: PickUp
-  vfxPrefab: {fileID: 4231482995727018640, guid: cd799f62aab418c4d8efed7992b9f568, type: 3}
-  duration: 1
-  scale: {x: 1, y: 1, z: 1}
+  vfxName: TrapEmotion
+  vfxPrefab: {fileID: 7373633139137029663, guid: 4cd401615fd4941ca9b5cac457627a8d, type: 3}
+  duration: 1.5
+  scale: {x: 0.5, y: 0.5, z: 0.5}
   vfxColor: {r: 1, g: 1, b: 1, a: 1}

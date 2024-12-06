@@ -14,7 +14,10 @@ public class TurtleTrap : Tile
 
     IEnumerator SpeedDown(StageUIManager uiManager)
     {
-        Player_Move_anim playerMove = uiManager.player.GetComponent<Player_Move_anim>();
+        VFXManager.Instance.PlayVFX("UseDebuffItem",uiManager.player.transform);
+        yield return new WaitForSeconds(1.5f);
+        
+        Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.moveDuration *= tileSO.power;
 
         yield return new WaitForSeconds(tileSO.duration);
