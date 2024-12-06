@@ -18,7 +18,7 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public GameObject Windows;
 
-    private bool isMoving = false;
+    public bool isMoving = false;
 
     void Start()
     {
@@ -31,6 +31,12 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
         originalScale = transform.localScale;
 
     }
+    public bool IsMoving()
+    {
+        return isMoving; // 현재 이동 중 상태를 반환
+    }
+
+
 
     // 마우스가 버튼 위로 올라갔을 때
     public void OnPointerEnter(PointerEventData eventData)

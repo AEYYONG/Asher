@@ -20,16 +20,21 @@ public class OnclickOutside : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         // 마우스 클릭이 감지되었고 포인터가 버튼 밖에 있는 경우
         if (Input.GetMouseButtonDown(0) && !isPointerInside)
         {
-            gameObject.SetActive(false);
+            // 버튼 컨트롤러가 이동 중이면 아무 작업도 하지 않음
+            if (buttonController != null && buttonController.IsMoving())
+            {
+                return;
+            }
 
+            gameObject.SetActive(false);
             buttonController.ComeBack();
         }
     }
 
 
 
-    // 마우스가 버튼 위에 올라갔을 때 호출
-    public void OnPointerEnter(PointerEventData eventData)
+        // 마우스가 버튼 위에 올라갔을 때 호출
+        public void OnPointerEnter(PointerEventData eventData)
     {
         isPointerInside = true;
     }
