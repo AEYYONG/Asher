@@ -16507,7 +16507,7 @@ MonoBehaviour:
   - tilePrefab: {fileID: 6389873552652161418, guid: 258385e5e40e845d69794df130040813, type: 3}
     count: 15
   debuffItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: c7ee8752f85794cd3a032d22bfac1fab, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: 2ddeb229a9226427d90e29e33c3112e1, type: 3}
     count: 15
   etcItemTypes:
   - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
@@ -19739,7 +19739,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8167288655205246968, guid: 2e18eaab98be8451ea49fa46f526a5fe, type: 3}
       propertyPath: vfxDataList.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8167288655205246968, guid: 2e18eaab98be8451ea49fa46f526a5fe, type: 3}
       propertyPath: vfxDataList.Array.data[0]
@@ -19769,6 +19769,10 @@ PrefabInstance:
       propertyPath: vfxDataList.Array.data[6]
       value: 
       objectReference: {fileID: 11400000, guid: e3f3f9b7487c04aad8209a584f6d6c00, type: 2}
+    - target: {fileID: 8167288655205246968, guid: 2e18eaab98be8451ea49fa46f526a5fe, type: 3}
+      propertyPath: vfxDataList.Array.data[7]
+      value: 
+      objectReference: {fileID: 11400000, guid: c80f26b64faeb42ebb49518440d52ea7, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

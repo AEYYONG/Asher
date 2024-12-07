@@ -19,12 +19,15 @@ public class GauntletTrap : Tile
         List<GameObject> _shuffledTiles = new List<GameObject>();
         _shuffledTiles = _tileManager.ShuffleTileList(_curTiles);
         //셔플한 타일 배치
-        StartCoroutine(ArrangeShuffleTileOnBoard(_tileManager,_shuffledTiles));
+        StartCoroutine(ArrangeShuffleTileOnBoard(uiManager,_tileManager,_shuffledTiles));
 
     }
 
-    IEnumerator ArrangeShuffleTileOnBoard(TileManager _tileManager, List<GameObject> tiles)
+    IEnumerator ArrangeShuffleTileOnBoard(StageUIManager uiManager, TileManager _tileManager, List<GameObject> tiles)
     {
+        yield return new WaitForSeconds(2f);
+        VFXManager.Instance.PlayVFX("ShuffleCurtain",uiManager.transform);
+        //커튼 닫기
         int index = 0;
         _tileManager._tiles.Clear();
 
@@ -44,6 +47,8 @@ public class GauntletTrap : Tile
                 }
             }
         }
+        //커튼 열기
+        yield return new WaitForSeconds(2f);
         //vfx 실행
         Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
         effectAnimator.SetTrigger("TrapMatch");
