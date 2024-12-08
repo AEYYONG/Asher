@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/BGM.meta
 guid: 2af57c2eb7c754aceb0ec004939c588c
-========
-guid: a48ab109b08014662acb0b39223ffba0
->>>>>>>> Feature/item:Assets/Materials/Materials.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RealScene/StageNoaP.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/RealScene/Loading.unity
+    guid: 36f763de566c2b74495eb471250d847f
   m_configObjects: {}
