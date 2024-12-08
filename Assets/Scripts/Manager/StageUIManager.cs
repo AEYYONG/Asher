@@ -10,7 +10,7 @@ public class StageUIManager : MonoBehaviour
     private string _triggerName = "";
     [SerializeField] private GameObject heartStonesParent;
     [SerializeField] private List<Image> _heartStonesList = new List<Image>();
-    [SerializeField] private GameObject _sideCutSceneUI;
+    public GameObject _sideCutSceneUI;
     [SerializeField] private Image _sideCutSceneImg;
     [SerializeField] private Animator _sideCutSceneImgAnimator;
     //0: 함정, 1: 아이템, 2: 마음의 조각, 3: 조커, 4: 그린존, 5: 타이머
@@ -223,5 +223,11 @@ public class StageUIManager : MonoBehaviour
             Destroy(ui.selectionUI);
         }
         _itemSelectionUIList.Clear();
+    }
+
+    public void SlideOutSideCutScene()
+    {
+        Animator animator = _sideCutSceneUI.GetComponent<Animator>();
+        animator.SetTrigger("SlideOut");
     }
 }
