@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -20,6 +21,11 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public bool isMoving = false;
 
+    private Image buttonImage; // 버튼의 이미지 컴포넌트
+    public Sprite hoverSprite; // 마우스가 위로 올라갔을 때 변경될 이미지
+    public Sprite normalSprite; // 기본 이미지
+
+
     void Start()
     {
 
@@ -29,6 +35,8 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
 
         originalScale = transform.localScale;
+
+        buttonImage = GetComponent<Image>();
 
     }
     public bool IsMoving()
@@ -41,13 +49,18 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     // 마우스가 버튼 위로 올라갔을 때
     public void OnPointerEnter(PointerEventData eventData)
     {
-        transform.DOScale(1.1f, 0.1f).SetEase(Ease.OutBack); // 부드럽게 커짐
+        transform.DOScale(0.8f, 0.1f).SetEase(Ease.OutBack); // 부드럽게 커짐
+        // 이미지 변경
+        buttonImage.sprite = hoverSprite;
+
     }
 
     // 마우스가 버튼에서 벗어났을 때
     public void OnPointerExit(PointerEventData eventData)
     {
-        transform.DOScale(1f, 0.1f).SetEase(Ease.InBack); // 원래 크기로 복귀
+        transform.DOScale(0.7f, 0.1f).SetEase(Ease.InBack); // 원래 크기로 복귀
+        // 이미지 변경
+        buttonImage.sprite = normalSprite;
     }
 
     public void OnButtonClick()
