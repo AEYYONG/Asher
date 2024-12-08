@@ -24,10 +24,14 @@ public class MusicListBackground : MonoBehaviour
            AudioManager.instance.bgmPlayer.isPlaying)
         {
             backgroundImage.sprite = activeSprite;
+            Transform child = transform.GetChild(0);
+            child.gameObject.SetActive(true);
         }
         else
         {
             backgroundImage.sprite = defaultSprite;
+            Transform child = transform.GetChild(0);
+            child.gameObject.SetActive(false);
         }
     }
 
