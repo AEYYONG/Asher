@@ -41,6 +41,11 @@ public class StageUIManager : MonoBehaviour
             script = tile;
         }
     }
+   //fog 관련
+   public GameObject fullCamera;
+   public GameObject npcIndicator;
+   public GameObject fogUI;
+    
     void Awake()
     {
         InitHeartStonesList();

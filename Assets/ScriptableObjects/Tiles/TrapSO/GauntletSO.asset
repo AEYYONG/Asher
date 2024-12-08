@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17778a9c27ed7446b9e382158b0b5da7, type: 3}
-  m_Name: TimeDownSO
+  m_Name: GauntletSO
   m_EditorClassIdentifier: 
   tileID: 4
   itemID: 0
