@@ -100,10 +100,10 @@ TextureImporter:
       name: play2_0
       rect:
         serializedVersion: 2
-        x: 89
-        y: 139
-        width: 221
-        height: 123
+        x: 63
+        y: 133
+        width: 275
+        height: 140
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 511b3626fe78bf7479c1a23a935211d6
-      internalID: -418033788
+      spriteID: 798fe68816ee83b48845adf75935726c
+      internalID: -1038633129
       vertices: []
       indices: 
       edges: []
@@ -120,7 +120,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: cb51cbe4de621154fbf31113ca044488
     internalID: 0
     vertices: []
     indices: 
@@ -128,7 +128,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      play2_0: -418033788
+      play2_0: -1038633129
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

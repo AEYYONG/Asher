@@ -100,10 +100,10 @@ TextureImporter:
       name: heart gems2_0
       rect:
         serializedVersion: 2
-        x: 108
-        y: 159
-        width: 582
-        height: 100
+        x: 105
+        y: 137
+        width: 587
+        height: 132
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b1790e29d0dba24181275e68702dd6a
-      internalID: 1075386921
+      spriteID: 3c42715cd40f5884d8b0bf219c836990
+      internalID: 877442986
       vertices: []
       indices: 
       edges: []
@@ -120,7 +120,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 80e03e79c6e60f74facd61cd1dca5981
     internalID: 0
     vertices: []
     indices: 
@@ -128,7 +128,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      heart gems2_0: 1075386921
+      heart gems2_0: 877442986
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

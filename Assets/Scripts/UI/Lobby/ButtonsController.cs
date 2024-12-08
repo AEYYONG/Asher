@@ -51,6 +51,9 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     // 마우스가 버튼 위로 올라갔을 때
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Transform child = transform.GetChild(0);
+        child.gameObject.SetActive(true);
+
         transform.DOScale(0.8f, 0.1f).SetEase(Ease.OutBack); // 부드럽게 커짐
         // 이미지 변경
         if (!isClick)
@@ -62,6 +65,9 @@ public class ButtonsController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     // 마우스가 버튼에서 벗어났을 때
     public void OnPointerExit(PointerEventData eventData)
     {
+        Transform child = transform.GetChild(0);
+        child.gameObject.SetActive(false);
+
         transform.DOScale(0.7f, 0.1f).SetEase(Ease.InBack); // 원래 크기로 복귀
         // 이미지 변경
         if (!isClick)
