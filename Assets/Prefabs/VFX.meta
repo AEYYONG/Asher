@@ -1,10 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Scenes/RealScene/Title.unity.meta
-guid: a91f52c388c27db40b5c2cb83518a148
-========
-guid: b07e25c061c344dbfa37f60c55f2114a
-folderAsset: yes
->>>>>>>> Feature/item:Assets/Prefabs/VFX.meta
+guid: 62770129930604ae18cc9bdd412d3e3f
 DefaultImporter:
   externalObjects: {}
   userData: 

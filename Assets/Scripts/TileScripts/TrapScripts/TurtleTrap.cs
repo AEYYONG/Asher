@@ -23,6 +23,10 @@ public class TurtleTrap : Tile
         yield return new WaitForSeconds(tileSO.duration);
         Debug.Log("거북이 함정 지속 시간 끝");
         playerMove.moveDuration *= 1/tileSO.power;
+        
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
     
 }

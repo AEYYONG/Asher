@@ -97,5 +97,9 @@ public class TimeBombTrap : Tile
         //제한 시간 시작
         _timer = 0f;
         _isCountDownStart = true;
+        
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }

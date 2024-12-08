@@ -13,8 +13,6 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - ETC1_EXTERNAL_ALPHA
-  - _ENABLEBRIGHTNESS_ON
-  - _ENABLEINNEROUTLINE_ON
   - _SHADERFADING_NONE
   - _SHADERSPACE_UV
   - _STRONGTINTCONTRASTTOGGLE_ON
@@ -239,7 +237,7 @@ Material:
     - _EnableAddHue: 0
     - _EnableAlphaTint: 0
     - _EnableBlackTint: 0
-    - _EnableBrightness: 1
+    - _EnableBrightness: 0
     - _EnableBurn: 0
     - _EnableCamouflage: 0
     - _EnableCheckerboard: 0
@@ -261,7 +259,7 @@ Material:
     - _EnableHologram: 0
     - _EnableHue: 0
     - _EnableInkSpread: 0
-    - _EnableInnerOutline: 1
+    - _EnableInnerOutline: 0
     - _EnableMetal: 0
     - _EnableNegative: 0
     - _EnableOuterOutline: 0

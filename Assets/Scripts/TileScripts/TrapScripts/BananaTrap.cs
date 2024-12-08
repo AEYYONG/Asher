@@ -20,5 +20,9 @@ public class BananaTrap : Tile
         {
             player.StartSlip();
         }
+        
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }

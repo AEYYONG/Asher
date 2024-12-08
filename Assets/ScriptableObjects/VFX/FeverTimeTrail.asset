@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FeverTimeTrail
   m_EditorClassIdentifier: 
   vfxName: FeverTimeTrail
-  vfxPrefab: {fileID: 8047792268031149070, guid: e49e129d6b82d430e95c000c31116898, type: 3}
+  vfxPrefab: {fileID: 5283420210466388844, guid: 8383d1b6066ae4fc287ab79061c4b490, type: 3}
   duration: 7
-  scale: {x: 1, y: 1, z: 1}
+  scale: {x: 6, y: 1.5, z: 2}
   vfxColor: {r: 1, g: 1, b: 1, a: 1}
