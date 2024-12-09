@@ -28,11 +28,13 @@ public class NPC_Move : MonoBehaviour
     public float attackRange = 1.5f;     // 공격 레이캐스트 범위
     public float attackDistance = 0.5f;  // 공격 감지 거리
     public bool isAttack = false;
+    public bool AttackAnim = false;
+    public bool isAsher = false;
 
     // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
     public bool goInGreenZone = false;
     public float greenZoneDistance = 1.2f;  // 그린존 감지 범위
-    private bool greenZoneAttack = false;
+    public bool greenZoneAttack = false;
     public bool isAnimationLocked = false;
     private bool notDizzy = true;
 
@@ -130,15 +132,29 @@ public class NPC_Move : MonoBehaviour
                 {
                     Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
                     isAttack = true;
-
+                    asher.GetComponent<Player_Move>().isAttacked = true;
+                    isAsher = true;
                     // 공격 애니메이션 실행 (필요시)
-                    ChangeAnimationState("attack");
+                    if (!AttackAnim)
+                    {
+                        Debug.Log("공격 시작");
+                        Attack();
+                    }
 
-                    // NPC를 멈추게 하려면 NavMeshAgent 멈춤
-                    agent.isStopped = true;
+                    
                 }
                 else
-                    isAttack = false;
+                {
+                    Debug.Log("Asher가 아님");
+                    isAsher = false;
+                    
+                }
+
+            }
+            else
+            {
+                // 레이캐스트가 아무것도 감지하지 못했을 경우
+                isAttack = false;
             }
             // 감지 레이 범위
             Ray ray = new Ray(rayOrigin, rayDirection);
@@ -161,7 +177,7 @@ public class NPC_Move : MonoBehaviour
                         StartCoroutine(ActivateTrailForDuration(5f));
                     }
                     isChasing = true;
-                    agent.speed = 5;
+                    agent.speed = 4;
                     
                   
                    // Invoke("ResetSpeed", 3f);
@@ -210,7 +226,7 @@ public class NPC_Move : MonoBehaviour
         Debug.Log("스피드 5");
         if (motionTrail != null && !isTrailActive)
         {
-            motionTrail.StartTrail();
+            motionTrail.StartTrail(!greenZoneAttack);
             isTrailActive = true;
         }
 
@@ -260,7 +276,41 @@ public class NPC_Move : MonoBehaviour
         Invoke("WakeUp",3f);
     }
 
-    
+    public void Attack()
+    {
+
+        if(currentAnimation == "up_npc")
+        {
+            Debug.Log("어택 위");
+            ChangeAnimationState("attack_up");
+            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+            agent.isStopped = true;
+        }
+        else if (currentAnimation == "down_npc")
+        {
+            Debug.Log("어택아래");
+            ChangeAnimationState("attack_down");
+            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+            agent.isStopped = true;
+        }
+        else if (currentAnimation == "left_npc")
+        {
+            Debug.Log("어택 왼쪽");
+            ChangeAnimationState("attack_left");
+            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+            agent.isStopped = true;
+        }
+        else if (currentAnimation == "right_npc")
+        {
+            Debug.Log("어택 오른쪽");
+            ChangeAnimationState("attack_right");
+            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
+            agent.isStopped = true;
+        }
+    }
+
+    // 잡은 경우에 애니메이션 중지 넣어야 할 것
+
     
     void ResetSpeed()
     {
@@ -403,7 +453,7 @@ public class NPC_Move : MonoBehaviour
         Vector3 velocity = agent.velocity;
         if(isAttack && notDizzy)
         {
-            ChangeAnimationState("attack");
+            Attack();
         }
 
         if (!isAttack && (Mathf.Abs(velocity.z) > Mathf.Abs(velocity.x)))
@@ -414,7 +464,7 @@ public class NPC_Move : MonoBehaviour
                 if (greenZoneAttack&&goInGreenZone)
                 {
                     ChangeAnimationState("defend_down");
-                    Debug.Log("어택후 아래 애니메이션");
+                  //  Debug.Log("어택후 아래 애니메이션");
                     goInGreenZone = false;
                     isAnimationLocked = true;
                     return;
@@ -424,7 +474,7 @@ public class NPC_Move : MonoBehaviour
                 else if (!greenZoneAttack)
                 {
                     ChangeAnimationState("up_npc");
-                    Debug.Log("위로 애니메이션");
+                 //   Debug.Log("위로 애니메이션");
                 }
 
             }
@@ -435,14 +485,14 @@ public class NPC_Move : MonoBehaviour
                     ChangeAnimationState("defend_up");
                     goInGreenZone = false;
                     isAnimationLocked = true;
-                    Debug.Log("어택후 위로 애니메이션");
+                  //  Debug.Log("어택후 위로 애니메이션");
                     return;
                     
                 }
                 else if (!greenZoneAttack)
                 {
                     ChangeAnimationState("down_npc");
-                    Debug.Log("아래로 애니메이션");
+                 //   Debug.Log("아래로 애니메이션");
                 }
             }
         }
@@ -457,12 +507,12 @@ public class NPC_Move : MonoBehaviour
                     ChangeAnimationState("defend_left");
                     goInGreenZone = false;
                     isAnimationLocked = true;
-                    Debug.Log("어택후 왼쪽 애니메이션");
+                  //  Debug.Log("어택후 왼쪽 애니메이션");
                     return;
                 }
                 else if (!greenZoneAttack)
                 {
-                    Debug.Log("오른쪽으로 애니메이션");
+                    //Debug.Log("오른쪽으로 애니메이션");
                     ChangeAnimationState("right_npc");
                    
                 }
@@ -474,13 +524,13 @@ public class NPC_Move : MonoBehaviour
                     ChangeAnimationState("defend_right");
                     goInGreenZone = false;
                     isAnimationLocked = true;
-                    Debug.Log("어택후 오른쪽 애니메이션");
+                  //  Debug.Log("어택후 오른쪽 애니메이션");
                     return;
                 }
                 else if (!greenZoneAttack)
                 {
                     ChangeAnimationState("left_npc");
-                    Debug.Log("왼쪽으로 애니메이션");
+                  //  Debug.Log("왼쪽으로 애니메이션");
                 }
             }
         }
@@ -537,22 +587,34 @@ public class NPC_Move : MonoBehaviour
    public void IsAttackClear()
     {
         Debug.Log("멈추면 안되는데");
-        ChangeAnimationState("up_npc");
    //     Debug.Log("실행");
         isAttack = false;
         //플레이어가 영역 안에 존재하면 죽음
         
         if (asher.GetComponent<Player_Move>().isAttacked)
         {
-         //   Debug.Log("죽음");
-            agent.isStopped = false;
-            asher.GetComponent<Player_Move>().isAttacked = false;
+            if (!isAsher)
+            {// 공격 거리에서 피함
+                Debug.Log("피해서 생존");
+                agent.isStopped = false;
+                asher.GetComponent<Player_Move>().isAttacked = false;
+            }
+            else
+            {
+                Debug.Log("죽음");
+                agent.isStopped = false;
+                asher.GetComponent<Player_Move>().isAttacked = false;
+            }
         }
+        
         else
         {
-        //    Debug.Log("생존");
+           
+            Debug.Log("생존");
             asher.GetComponent<Player_Move>().isAttacked = false;
-            
+
+            // 만약 회피 눌렀으면 3초 정지, 아니면 바로 움직임
+            ChangeAnimationState("dizzy");
             Invoke("WakeUp", 3f);
         }
         
@@ -564,5 +626,6 @@ public class NPC_Move : MonoBehaviour
         isAnimationLocked = false;
         agent.isStopped = false;
         notDizzy = true;
+        AttackAnim = false;
     }
 }

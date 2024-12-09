@@ -417,12 +417,24 @@ public class Player_Move : MonoBehaviour
         }
 
 
-        else if ((Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.LeftShift))&& isAttacked && !isDodge)
+        else if ((Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.LeftShift)))
         {
-            ChangeAnimationState(PLAYER_LEFT);
-            Debug.Log("회피!");
-            isAttacked = false;
-            Invoke("Dodge", 2f);
+            
+            if (isAttacked && !isDodge)
+            {
+                isAttacked = false;
+                ChangeAnimationState(PLAYER_JUMP); // 임시로 점프 애니메이션 실행
+                Debug.Log("회피 성공!");
+                Invoke("Dodge", 2f);
+            }
+            else if (!isDodge)
+            {
+                ChangeAnimationState(PLAYER_JUMP); // 임시로 점프 애니메이션 실행
+                Debug.Log("회피만!");
+                Invoke("Dodge", 2f);
+            }
+            isDodge = true;
+
         }
         else if (!Input.anyKey && !startJump)
         {
