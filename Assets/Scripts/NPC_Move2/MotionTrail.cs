@@ -16,10 +16,12 @@ public class MotionTrail : MonoBehaviour
             spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void StartTrail()
+    public void StartTrail(bool allowTrail)
     {
-        if (!isCreatingTrail)
+        if (allowTrail && !isCreatingTrail)
+        {
             StartCoroutine(CreateTrail());
+        }
     }
 
     public void StopTrail()
