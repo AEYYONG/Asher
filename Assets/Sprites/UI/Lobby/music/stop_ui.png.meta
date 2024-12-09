@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f668678b27937c542affc8c0026ab447
+guid: aabbe9db53e753d43af92488e197bcef
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,13 +97,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: play2_0
+      name: stop_ui_0
       rect:
         serializedVersion: 2
-        x: 89
-        y: 139
-        width: 221
-        height: 123
+        x: 160
+        y: 128
+        width: 116
+        height: 149
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -111,8 +111,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 511b3626fe78bf7479c1a23a935211d6
-      internalID: -418033788
+      spriteID: 66c0e3d482787e94e85c427aeffbb849
+      internalID: 1969347390
       vertices: []
       indices: 
       edges: []
@@ -128,7 +128,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      play2_0: -418033788
+      stop_ui_0: 1969347390
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
