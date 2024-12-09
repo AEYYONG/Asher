@@ -63,6 +63,7 @@ public class TimeBombTrap : Tile
                 VFXManager.Instance.PlayVFX("TimeBombFailUI",_uiManager.transform);
                 _uiManager._sideCutSceneImgAnimator.SetInteger("TrapId",0);
                 _uiManager._sideCutSceneImgAnimator.SetBool("IsSuccess",false);
+                _uiManager.LoseAllHeartStones();
             }
         }
     }
