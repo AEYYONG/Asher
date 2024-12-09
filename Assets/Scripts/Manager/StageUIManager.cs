@@ -12,7 +12,7 @@ public class StageUIManager : MonoBehaviour
     [SerializeField] private List<Image> _heartStonesList = new List<Image>();
     public GameObject _sideCutSceneUI;
     [SerializeField] private Image _sideCutSceneImg;
-    [SerializeField] private Animator _sideCutSceneImgAnimator;
+    public Animator _sideCutSceneImgAnimator;
     //0: 함정, 1: 아이템, 2: 마음의 조각, 3: 조커, 4: 그린존, 5: 타이머
     
     //외부 스크립트에서 참조하기 위한 플레이어 변수

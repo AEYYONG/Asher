@@ -31,7 +31,7 @@ public class TimeBombTrap : Tile
                 if (Input.GetButtonUp("FlipTile") && _hit.collider.GetComponent<Tile>().ReturnPos() == _targetPos)
                 {
                     _isCompleteMission = true;
-                    tileAnimator.SetBool("TimeBomb",false);
+                    tileAnimator.SetTrigger("TimeBombEnd");
                 }
             }
         }
@@ -48,7 +48,8 @@ public class TimeBombTrap : Tile
                 Debug.Log("정해진 시간 내에 타일 뒤집기를 완수함");
                 _isCompleteMission = false;
                 _isCountDownStart = false;
-                _uiManager._sideCutSceneUI.GetComponent<Animator>().SetBool("IsSuccess",true);
+                _uiManager._sideCutSceneImgAnimator.SetInteger("TrapId",0);
+                _uiManager._sideCutSceneImgAnimator.Play("TimeBombSuccessAni");
                 //vfx 실행
                 Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
                 effectAnimator.SetTrigger("TrapMatch");
@@ -59,7 +60,9 @@ public class TimeBombTrap : Tile
                 Debug.Log("정해진 시간 내에 타일을 뒤집지 못함");
                 ResetTiles();
                 _isCountDownStart = false;
-                _uiManager._sideCutSceneUI.GetComponent<Animator>().SetBool("IsSuccess",false);
+                VFXManager.Instance.PlayVFX("TimeBombFailUI",_uiManager.transform);
+                _uiManager._sideCutSceneImgAnimator.SetInteger("TrapId",0);
+                _uiManager._sideCutSceneImgAnimator.SetBool("IsSuccess",false);
             }
         }
     }
@@ -67,8 +70,8 @@ public class TimeBombTrap : Tile
     //리셋 함수
     void ResetTiles()
     {
-        tileAnimator.SetBool("TimeBomb",false);
-        _uiManager._sideCutSceneUI.GetComponent<Animator>().SetBool("IsSuccess",false);
+        tileAnimator.SetTrigger("TimeBombEnd");
+        _uiManager._sideCutSceneImgAnimator.SetBool("IsSuccess",false);
         //타일 리셋
         foreach (var tile in tileManager._tiles)
         {
@@ -97,8 +100,8 @@ public class TimeBombTrap : Tile
         _targetPos = _tile.ReturnPos();
         
         //선택한 타일의 윗면을 빛나는 텍스쳐로 변경
-        tileAnimator = _selectTile.GetComponent<Animator>();
-        tileAnimator.SetBool("TimeBomb",true);
+        tileAnimator = _selectTile.transform.GetChild(0).GetComponent<Animator>();
+        tileAnimator.SetTrigger("TimeBombStart");
         
         //제한 시간 시작
         _timer = 0f;
