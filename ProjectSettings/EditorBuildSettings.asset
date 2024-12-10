@@ -7,14 +7,14 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/RealScene/Title.unity
-    guid: 574248b707b91ef4694cef46ccfea0b7
+    guid: bb160b78935c24b649f74cc74146c129
   - enabled: 1
     path: Assets/Scenes/RealScene/Lobby.unity
     guid: f3f71792336414570af4dbb6ada8ca60
   - enabled: 1
     path: Assets/Scenes/RealScene/StageNoaP.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/RealScene/Loading.unity
     guid: 36f763de566c2b74495eb471250d847f
   m_configObjects: {}
