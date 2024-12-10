@@ -30,6 +30,8 @@ public class NPC_Move : MonoBehaviour
     public bool isAttack = false;
     public bool AttackAnim = false;
     public bool isAsher = false;
+    private bool isAttackAnimationPlaying = false;
+    public bool safe = false;
 
     // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
     public bool goInGreenZone = false;
@@ -130,7 +132,7 @@ public class NPC_Move : MonoBehaviour
                 // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
                 if (attackHit.collider.name == "Asher")
                 {
-                    Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
+                 //   Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
                     isAttack = true;
                     asher.GetComponent<Player_Move>().isAttacked = true;
                     isAsher = true;
@@ -138,7 +140,9 @@ public class NPC_Move : MonoBehaviour
                     if (!AttackAnim)
                     {
                         Debug.Log("공격 시작");
-                        Attack();
+                        AttackAnim = true;
+
+                        
                     }
 
                     
@@ -278,38 +282,40 @@ public class NPC_Move : MonoBehaviour
 
     public void Attack()
     {
-
+        
         if(currentAnimation == "up_npc")
         {
             Debug.Log("어택 위");
             ChangeAnimationState("attack_up");
-            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
             agent.isStopped = true;
         }
         else if (currentAnimation == "down_npc")
         {
             Debug.Log("어택아래");
+
             ChangeAnimationState("attack_down");
-            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
             agent.isStopped = true;
         }
         else if (currentAnimation == "left_npc")
         {
             Debug.Log("어택 왼쪽");
+            
             ChangeAnimationState("attack_left");
-            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
             agent.isStopped = true;
+
         }
         else if (currentAnimation == "right_npc")
         {
             Debug.Log("어택 오른쪽");
+            
             ChangeAnimationState("attack_right");
-            // NPC를 멈추게 하려면 NavMeshAgent 멈춤
             agent.isStopped = true;
+
         }
     }
 
     // 잡은 경우에 애니메이션 중지 넣어야 할 것
+
 
     
     void ResetSpeed()
@@ -439,24 +445,33 @@ public class NPC_Move : MonoBehaviour
     {
         return new Vector3(Mathf.Round(position.x), position.y, Mathf.Floor(position.z));
     }
-    
+
     //ischasing 중일 때만 진행방향의 앞칸의 아래로 ray, 그린존인지 확인
 
-
+    Vector3 previousVelocity;
 
 
     // 애니메이션 변경
     void UpdateAnimation()
     {
+        if (isAttack)
+        {
+            Debug.Log($"공격 상태로 애니메이션 유지 - 현재 애니메이션: {currentAnimation}");
+            Attack();
+            return;
+        }
+
         if (isAnimationLocked) return;
 
         Vector3 velocity = agent.velocity;
-        if(isAttack && notDizzy)
+        if (Vector3.Distance(previousVelocity, velocity) < 0.1f)
         {
-            Attack();
+            velocity = previousVelocity; // 갑작스러운 변화 무시
         }
+        previousVelocity = velocity;
 
-        if (!isAttack && (Mathf.Abs(velocity.z) > Mathf.Abs(velocity.x)))
+
+        if (!isAttack && (Mathf.Abs(velocity.z) >= Mathf.Abs(velocity.x)))
         {
             if (velocity.z > 0 && currentAnimation != "up_npc")
             {
@@ -478,7 +493,7 @@ public class NPC_Move : MonoBehaviour
                 }
 
             }
-            else if (velocity.z < 0 && currentAnimation != "down_npc")
+            else if (velocity.z <= 0 && currentAnimation != "down_npc")
             {
                 if (greenZoneAttack&&goInGreenZone)
                 {
@@ -534,90 +549,134 @@ public class NPC_Move : MonoBehaviour
                 }
             }
         }
+        if (isAttack && notDizzy)
+        {
+            Debug.Log($"공격 실행 조건 - 현재 애니메이션: {currentAnimation}");
+            Attack();
+            
+        }
 
-        
+
     }
 
     public void ChangeAnimationState(string newAnimation)
     {
-        if (currentAnimation == newAnimation) return;
+        // 현재 애니메이션 상태 정보 가져오기
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
+        // "attack_"으로 시작하는 애니메이션은 재생 중에는 변경 불가
+        if (stateInfo.IsName(currentAnimation) && currentAnimation.StartsWith("attack_"))
+        {
+            if (newAnimation.StartsWith("dizzy2"))
+            {
+                Debug.Log($"애니메이션 변경: {currentAnimation} -> {newAnimation}");
+                animator.Play(newAnimation);
+                currentAnimation = newAnimation;
+                return;
+            }
+            else if (stateInfo.normalizedTime < 1.0f)
+            {
+            //    Debug.Log($"현재 애니메이션: {currentAnimation}, 변경 요청: {newAnimation} -> 변경 차단");
+                return; // 애니메이션이 끝나지 않았으므로 상태 변경 차단
+            }
+        }
+
+        // 애니메이션 변경
+        Debug.Log($"애니메이션 변경: {currentAnimation} -> {newAnimation}");
         animator.Play(newAnimation);
         currentAnimation = newAnimation;
     }
 
     //공격 애니메이션 진입
-   /* bool DetectForAttack()
-    {
-        // 레이캐스트 원점 (NPC 위치)
-        Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
+    /* bool DetectForAttack()
+     {
+         // 레이캐스트 원점 (NPC 위치)
+         Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
 
-        // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
-        Vector3 rayDirection = agent.velocity.normalized;
+         // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+         Vector3 rayDirection = agent.velocity.normalized;
 
-        if (rayDirection == Vector3.zero)
-        {
-            rayDirection = transform.forward; // 기본적으로 정면으로 설정
-        }
+         if (rayDirection == Vector3.zero)
+         {
+             rayDirection = transform.forward; // 기본적으로 정면으로 설정
+         }
 
-        Ray ray = new Ray(rayOrigin, rayDirection);
-        RaycastHit hit;
+         Ray ray = new Ray(rayOrigin, rayDirection);
+         RaycastHit hit;
 
-        // 1f 거리 안에 Asher가 있는지 확인
-        if (Physics.Raycast(ray, out hit, attackDistance))
-        {
-            if (hit.collider.name == "Asher")
-            {
-                Debug.Log("Asher 감지됨! 공격 애니메이션 실행");
-                ChangeAnimationState("attack");
-                agent.isStopped = true;
-                return true;
-            }
-        }
-        return false;
-    }*/
+         // 1f 거리 안에 Asher가 있는지 확인
+         if (Physics.Raycast(ray, out hit, attackDistance))
+         {
+             if (hit.collider.name == "Asher")
+             {
+                 Debug.Log("Asher 감지됨! 공격 애니메이션 실행");
+                 ChangeAnimationState("attack");
+                 agent.isStopped = true;
+                 return true;
+             }
+         }
+         return false;
+     }*/
 
 
     // 회피 관련
-   public void IsAttackOn()
+    public void IsAttackOn()
     {
-        asher.GetComponent<Player_Move>().isAttacked = true;
+        if (!agent.isStopped)
+        {
+           //
+           //agent.isStopped = true;
+            Debug.Log("공격 애니메이션 진입");
+        }
+        
     }
 
-   public void IsAttackClear()
+   public void IsAttackSuccess()
     {
-        Debug.Log("멈추면 안되는데");
-   //     Debug.Log("실행");
-        isAttack = false;
-        //플레이어가 영역 안에 존재하면 죽음
-        
         if (asher.GetComponent<Player_Move>().isAttacked)
         {
             if (!isAsher)
             {// 공격 거리에서 피함
                 Debug.Log("피해서 생존");
-                agent.isStopped = false;
+                
                 asher.GetComponent<Player_Move>().isAttacked = false;
+                isAttack = false;
             }
             else
             {
                 Debug.Log("죽음");
-                agent.isStopped = false;
+                
                 asher.GetComponent<Player_Move>().isAttacked = false;
+                isAttack = false;
             }
         }
-        
+
         else
         {
-           
+
             Debug.Log("생존");
             asher.GetComponent<Player_Move>().isAttacked = false;
+            isAttack = false;
 
             // 만약 회피 눌렀으면 3초 정지, 아니면 바로 움직임
-            ChangeAnimationState("dizzy");
-            Invoke("WakeUp", 3f);
+            ChangeAnimationState("dizzy2");
+            isAnimationLocked = true; // 애니메이션 변경 잠금
+            safe = true;
+            Invoke("WakeUp", 2f);
         }
-        
+    }
+
+   public void IsAttackClear()
+    {
+        Debug.Log("멈추면 안되는데");
+        //     Debug.Log("실행");
+
+        //플레이어가 회피하지 못한 경우에만 움직임
+        if (!safe)
+        {
+            agent.isStopped = false;
+        }
+
     }
 
     void WakeUp()
@@ -627,5 +686,6 @@ public class NPC_Move : MonoBehaviour
         agent.isStopped = false;
         notDizzy = true;
         AttackAnim = false;
+        safe = false;
     }
 }
