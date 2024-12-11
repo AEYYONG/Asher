@@ -22,5 +22,6 @@ public class TitleToLobby : MonoBehaviour
         isSceneChanging = true;
         yield return null;
         MySceneManager.Instance.ChangeScene("Lobby");
+        AudioManager.Instance.PlayBGM(AudioManager.Instance.bgmDictionary[GameManager.Instance.lobbyBgmName]);
     }
 }
