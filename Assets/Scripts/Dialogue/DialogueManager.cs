@@ -12,7 +12,7 @@ public class DialogueData
 }
 public class DialogueManager : MonoBehaviour
 {
-    [Header("UI Elements")]
+    [Header("UI Elements")] public GameObject dialougeUI;
     public Image portraitImage; // 초상화 이미지
     public TextMeshProUGUI dialogueText; // 대화 텍스트
     public GameObject toggleButton; // 토글 버튼
@@ -113,6 +113,10 @@ public class DialogueManager : MonoBehaviour
     private void NextDialogue()
     {
         currentDialogueIndex++;
+        if (currentDialogueIndex == 1)
+        {
+            GetComponent<Animator>().SetTrigger("Transition");
+        }
         if (currentDialogueIndex < dialogues.Count)
         {
             ShowDialogue(currentDialogueIndex);
@@ -127,6 +131,7 @@ public class DialogueManager : MonoBehaviour
     {
         Debug.Log("대화가 종료되었습니다.");
         dialogueText.text = "";
-        toggleButton.SetActive(false);
+        dialougeUI.SetActive(false);
+        MySceneManager.Instance.ChangeScene("GameResult");
     }
 }
