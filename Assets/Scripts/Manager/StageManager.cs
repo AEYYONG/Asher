@@ -37,13 +37,13 @@ public class StageManager : MonoBehaviour
 
     public void StopAllCharacterMove()
     {
-        player.isMoving = false;
+        player.isStart = false;
         npc.agent.isStopped = true;
     }
 
     public void StartAllCharacterMove()
     {
-        player.isMoving = true;
+        player.isStart = true;
         npc.agent.isStopped = false;
     }
 }
