@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player_Move : MonoBehaviour
 {
+    //시작
+    public bool isStart = false;
+
     public float moveSpeed = 5f;  // 이동 속도
     public float moveDuration = 0.3f;  // 각 방향으로 이동하는 시간 (0.3초)
     public bool isMoving = false;  // 현재 이동 중인지 여부
@@ -89,6 +92,9 @@ public class Player_Move : MonoBehaviour
         if (isSlip)
         {
             Slip();
+        }
+        else if(!isStart){
+            return;
         }
         else MovePlayer();  // 이동 처리
 
