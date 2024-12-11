@@ -430,7 +430,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4301b4155f7ec0947be618ee36fb2bbc, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 283e215f0b3963641b23fc4c3fd680c7, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3238,9 +3238,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17d6ca84e016bdf488bc184fa9d7093f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmClip: {fileID: 8300000, guid: a3d8a2a51f035564990905a41afe6494, type: 3}
+  dontDestroy: 0
+  bgmDataList: []
+  sfxDataList: []
+  _bgmSource: {fileID: 0}
   bgmVolume: 1
-  bgmPlayer: {fileID: 0}
+  _maxSFXPoolSize: 10
 --- !u!4 &948017949
 Transform:
   m_ObjectHideFlags: 0

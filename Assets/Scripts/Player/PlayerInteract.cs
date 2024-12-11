@@ -90,7 +90,6 @@ public class PlayerInteract : MonoBehaviour
             if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
-                audioSource.Play();
                 if (isFever)
                 {
                     //피버타일 이펙트 실행
@@ -125,6 +124,7 @@ public class PlayerInteract : MonoBehaviour
                     //선택 여부 true로 변경
                     curTile.isSelected = true;
                     //뒤집기 애니메이션 시작
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
                     curTile._animator.SetTrigger("Select");
             
                     //타일 아이디 값 저장
@@ -192,6 +192,7 @@ public class PlayerInteract : MonoBehaviour
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_HeartGem_Success"]);
                     StartTileMatchEffect(tile1, tile2);
                     tile1.Use(_stageUIManager);
                     _asherPortrait.SetGood();
@@ -206,6 +207,7 @@ public class PlayerInteract : MonoBehaviour
                         _asherPortrait.SetGood();
                         Debug.Log("픽업 vfx");
                         VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
+                        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
                         StartCoroutine(InvokeInitValue());
                         break;
                     }
@@ -238,6 +240,7 @@ public class PlayerInteract : MonoBehaviour
                 inventory.AddItemEvent(tile2);
                 _asherPortrait.SetGood();
                 VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
                 StartCoroutine(InvokeInitValue());
             }
             else if (id1 == TileID.Item && id2 == TileID.Joker)
@@ -247,6 +250,7 @@ public class PlayerInteract : MonoBehaviour
                 inventory.AddItemEvent(tile1);
                 _asherPortrait.SetGood();
                 VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
                 StartCoroutine(InvokeInitValue());
             }
             else if (id2 == TileID.Trap)

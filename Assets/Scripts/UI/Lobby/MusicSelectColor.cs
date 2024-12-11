@@ -17,8 +17,8 @@ public class MusicSelectColor : MonoBehaviour
     void Update()
     {
         
-        if (AudioManager.instance.bgmPlayer.clip == AudioSource.clip &&
-           AudioManager.instance.bgmPlayer.isPlaying)
+        if (AudioManager.Instance._bgmSource.clip == AudioSource.clip &&
+           AudioManager.Instance._bgmSource.isPlaying)
         {
             text.color = new Color32(50, 253, 0, 255);
         }
