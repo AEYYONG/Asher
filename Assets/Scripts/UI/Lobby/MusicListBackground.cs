@@ -20,8 +20,8 @@ public class MusicListBackground : MonoBehaviour
 
     private void Update()
     {
-        if (AudioManager.instance.bgmPlayer.clip == AudioSource.clip &&
-           AudioManager.instance.bgmPlayer.isPlaying)
+        if (AudioManager.Instance._bgmSource.clip == AudioSource.clip &&
+           AudioManager.Instance._bgmSource.isPlaying)
         {
             backgroundImage.sprite = activeSprite;
            

@@ -26,14 +26,14 @@ public class MusicButton : MonoBehaviour
     }
     private void Update()
     {
-        if (AudioManager.instance.bgmPlayer.clip == parentAudioSource.clip &&
-           AudioManager.instance.bgmPlayer.isPlaying)
+        if (AudioManager.Instance._bgmSource.clip == parentAudioSource.clip &&
+           AudioManager.Instance._bgmSource.isPlaying)
         {
             buttonImage.sprite = activeSprite;
-            progressBar.value = AudioManager.instance.bgmPlayer.time / AudioManager.instance.bgmPlayer.clip.length;
+            progressBar.value = AudioManager.Instance._bgmSource.time / AudioManager.Instance._bgmSource.clip.length;
 
             // 현재 시간 업데이트
-            currentTimeText.text = FormatTime(AudioManager.instance.bgmPlayer.time);
+            currentTimeText.text = FormatTime(AudioManager.Instance._bgmSource.time);
         }
         else
         {
@@ -44,7 +44,7 @@ public class MusicButton : MonoBehaviour
     private void UpdateButtonImage()
     {
         // 현재 재생 중인 음악 이름과 부모의 음악 이름 비교
-        if (AudioManager.instance.bgmPlayer.clip.name == parentAudioSource.clip.name)
+        if (AudioManager.Instance._bgmSource.clip.name == parentAudioSource.clip.name)
         {
             buttonImage.sprite = activeSprite;
         }
@@ -60,8 +60,8 @@ public class MusicButton : MonoBehaviour
         ResetAllButtons();
 
         // AudioManager를 통해 음악 변경
-        AudioManager.instance.bgmPlayer.clip = parentAudioSource.clip;
-        AudioManager.instance.bgmPlayer.Play();
+        AudioManager.Instance._bgmSource.clip = parentAudioSource.clip;
+        AudioManager.Instance._bgmSource.Play();
         Debug.Log(parentAudioSource.clip.name);
 
         
