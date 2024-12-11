@@ -21,7 +21,7 @@ public class StageManager : MonoBehaviour
     {
         //3,2,1 후 게임 시작
         VFXManager.Instance.PlayVFX("StartTimer",FindObjectOfType<StageUIManager>().transform);
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(4.5f);
         //BGM 재생 시작
         AudioData bgm1 = AudioManager.Instance.bgmDictionary[stageSO.bgm1];
         AudioData bgm2 = AudioManager.Instance.bgmDictionary[stageSO.bgm2];
