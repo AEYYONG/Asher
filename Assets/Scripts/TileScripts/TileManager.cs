@@ -188,6 +188,7 @@ public class TileManager : MonoBehaviour
 
     public void ReturnTile(List<Tile> tiles)
     {
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Fail"]);
         foreach (var tile in tiles)
         {
             StartCoroutine(tile.ReturnTile());

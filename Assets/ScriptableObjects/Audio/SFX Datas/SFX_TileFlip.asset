@@ -16,4 +16,4 @@ MonoBehaviour:
   audioClip: {fileID: 8300000, guid: 8626924d977e24b449f3e1dffa76eee9, type: 3}
   loop: 0
   playOnAwake: 0
-  volume: 1
+  volume: 2
