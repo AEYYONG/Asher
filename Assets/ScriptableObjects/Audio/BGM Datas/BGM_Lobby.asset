@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af1830949e254935a41d0eb417fea1b, type: 3}
   m_Name: BGM_Lobby
   m_EditorClassIdentifier: 
-  audioName: BGM_Lobby
+  audioName: One Step Forward
   audioClip: {fileID: 8300000, guid: a3d8a2a51f035564990905a41afe6494, type: 3}
   loop: 1
   playOnAwake: 1

@@ -5,8 +5,8 @@ using UnityEngine;
 public class AudioManager : Singleton<AudioManager>
 {
     // 딕셔너리로 오디오 관리
-    private Dictionary<string, AudioData> bgmDictionary = new Dictionary<string, AudioData>();
-    private Dictionary<string, AudioData> sfxDictionary = new Dictionary<string, AudioData>();
+    public Dictionary<string, AudioData> bgmDictionary = new Dictionary<string, AudioData>();
+    public Dictionary<string, AudioData> sfxDictionary = new Dictionary<string, AudioData>();
 
     [SerializeField]
     private List<AudioData> bgmDataList; //bgm 데이터 리스트
@@ -41,7 +41,7 @@ public class AudioManager : Singleton<AudioManager>
         // BGM 소스 생성
         _bgmSource = gameObject.AddComponent<AudioSource>();
         _bgmSource.loop = true;
-        PlayBGM(bgmDictionary["BGM_Title"]);
+        PlayBGM(bgmDictionary["Asher Main Theme"]);
     }
     public void PlayBGM(AudioData audioData)
     {

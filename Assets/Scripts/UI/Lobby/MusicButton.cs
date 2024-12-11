@@ -60,10 +60,9 @@ public class MusicButton : MonoBehaviour
         ResetAllButtons();
 
         // AudioManager를 통해 음악 변경
-        AudioManager.Instance._bgmSource.clip = parentAudioSource.clip;
-        AudioManager.Instance._bgmSource.Play();
+        AudioManager.Instance.PlayBGM(AudioManager.Instance.bgmDictionary[parentAudioSource.clip.name]);
         Debug.Log(parentAudioSource.clip.name);
-
+        GameManager.Instance.lobbyBgmName = parentAudioSource.clip.name;
         
         
         SetToActive();
