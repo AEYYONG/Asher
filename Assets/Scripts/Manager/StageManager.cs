@@ -17,6 +17,11 @@ public class StageManager : MonoBehaviour
         StartCoroutine(GameStart());
     }
 
+    void Update()
+    {
+        
+    }
+
     IEnumerator GameStart()
     {
         //3,2,1 후 게임 시작

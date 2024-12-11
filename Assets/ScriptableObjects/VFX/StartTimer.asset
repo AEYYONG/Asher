@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxName: StartTimer
   vfxPrefab: {fileID: 5885308965439732230, guid: c71e30772fbbb4c3fbf423f50e93c79b, type: 3}
-  duration: 3.5
+  duration: 4.5
   scale: {x: 1, y: 1, z: 1}
   vfxColor: {r: 1, g: 1, b: 1, a: 1}
