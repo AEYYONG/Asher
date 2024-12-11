@@ -72,6 +72,15 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
+    public IEnumerator PlaySequentialBGM(AudioData audio1, AudioData audio2)
+    {
+        Debug.Log("audio1 시작");
+        PlayBGM(audio1);
+        yield return new WaitForSeconds(audio1.audioClip.length);
+        Debug.Log("audio2 시작");
+        PlayBGM(audio2);
+    }
+
     public void PlaySFX(AudioData audioData)
     {
         if (audioData == null || audioData.audioClip == null)

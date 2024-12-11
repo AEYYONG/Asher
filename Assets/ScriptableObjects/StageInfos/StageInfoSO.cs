@@ -9,6 +9,8 @@ public class StageInfoSO : ScriptableObject
     public int heartStoneTotalCnt;
     public float limitedTime;
     [SerializeField] private int heartStoneCurCnt;
+    public string bgm1;
+    public string bgm2;
     
     public int GetHeartStoneCnt() { return heartStoneCurCnt; }
     public void IncreaseHeartStoneCnt() { heartStoneCurCnt++; }
