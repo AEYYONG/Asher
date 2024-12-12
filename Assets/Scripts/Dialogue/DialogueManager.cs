@@ -139,7 +139,7 @@ public class DialogueManager : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().name == "GameOver")
         {
-            
+            GetComponent<Animator>().SetTrigger("Gray");
         }
     }
 }
