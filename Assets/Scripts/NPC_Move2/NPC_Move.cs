@@ -633,7 +633,7 @@ public class NPC_Move : MonoBehaviour
 
    public void IsAttackSuccess()
     {
-        if (asher.GetComponent<Player_Move>().isAttacked)
+        if (asher.GetComponent<Player_Move>().isAttacked && !StageManager.Instance.isGameOver)
         {
             if (!isAsher)
             {// 공격 거리에서 피함
@@ -648,6 +648,7 @@ public class NPC_Move : MonoBehaviour
                 
                 asher.GetComponent<Player_Move>().isAttacked = false;
                 isAttack = false;
+                StartCoroutine(StageManager.Instance.GameOver());
             }
         }
 

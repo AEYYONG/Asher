@@ -3,12 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StageManager : MonoBehaviour
+public class StageManager : Singleton<StageManager>
 {
     public StageInfoSO stageSO;
     private Player_Move player;
     private NPC_Move npc;
     private bool isEnd = false;
+    public RectTransform circleMask;
+    public GameObject gameOverTransition;
+    public bool isGameOver = false;
+    public Timer timer;
 
     void Start()
     {
@@ -31,6 +35,7 @@ public class StageManager : MonoBehaviour
         //3,2,1 후 게임 시작
         VFXManager.Instance.PlayVFX("StartTimer",FindObjectOfType<StageUIManager>().transform);
         yield return new WaitForSeconds(4.5f);
+        StartCoroutine(timer.TimerStart(timer._time));
         //BGM 재생 시작
         AudioData bgm1 = AudioManager.Instance.bgmDictionary[stageSO.bgm1];
         AudioData bgm2 = AudioManager.Instance.bgmDictionary[stageSO.bgm2];
@@ -58,5 +63,26 @@ public class StageManager : MonoBehaviour
         VFXManager.Instance.PlayVFX("GameClearTransition",FindObjectOfType<StageUIManager>().transform);
         yield return new WaitForSeconds(1.4f);
         MySceneManager.Instance.ChangeScene("GameClear");
+    }
+
+    public IEnumerator GameOver()
+    {
+        isGameOver = true;
+        StopAllCharacterMove();
+        //현재 플레이어 위치 스크린 좌표로 가져오기
+        gameOverTransition.SetActive(true);
+        Vector3 playerPosition = player.transform.position;
+        Vector3 screenPosition = Camera.main.WorldToScreenPoint(playerPosition);
+        Vector2 uiPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            FindObjectOfType<StageUIManager>().GetComponent<RectTransform>(),
+            screenPosition, 
+            FindObjectOfType<StageUIManager>().GetComponent<Canvas>().worldCamera, 
+            out uiPosition 
+        );
+        circleMask.anchoredPosition = uiPosition;
+        gameOverTransition.GetComponent<Animator>().SetTrigger("Start Transition");
+        yield return new WaitForSeconds(2.5f);
+        MySceneManager.Instance.ChangeScene("GameOver");
     }
 }

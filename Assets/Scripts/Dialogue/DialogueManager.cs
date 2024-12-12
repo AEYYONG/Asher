@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -132,6 +133,13 @@ public class DialogueManager : MonoBehaviour
         Debug.Log("대화가 종료되었습니다.");
         dialogueText.text = "";
         dialougeUI.SetActive(false);
-        MySceneManager.Instance.ChangeScene("GameResult");
+        if (SceneManager.GetActiveScene().name == "GameClear")
+        {
+            MySceneManager.Instance.ChangeScene("GameResult");
+        }
+        else if (SceneManager.GetActiveScene().name == "GameOver")
+        {
+            
+        }
     }
 }
