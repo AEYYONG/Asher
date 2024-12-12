@@ -196,6 +196,7 @@ public class PlayerInteract : MonoBehaviour
                     StartTileMatchEffect(tile1, tile2);
                     tile1.Use(_stageUIManager);
                     _asherPortrait.SetGood();
+                    StageManager.Instance.UpdateHeartStoneScore();
                     StartCoroutine(InvokeInitValue());
                     break;
                 case TileID.Item:
@@ -206,6 +207,7 @@ public class PlayerInteract : MonoBehaviour
                         inventory.AddItemEvent(tile1);
                         _asherPortrait.SetGood();
                         Debug.Log("픽업 vfx");
+                        StageManager.Instance.UpdateItemScore();
                         VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
                         StartCoroutine(InvokeInitValue());
@@ -239,6 +241,7 @@ public class PlayerInteract : MonoBehaviour
                 StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile2);
                 _asherPortrait.SetGood();
+                StageManager.Instance.UpdateItemScore();
                 VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
                 StartCoroutine(InvokeInitValue());
@@ -249,6 +252,7 @@ public class PlayerInteract : MonoBehaviour
                 StartTileMatchEffect(tile1, tile2);
                 inventory.AddItemEvent(tile1);
                 _asherPortrait.SetGood();
+                StageManager.Instance.UpdateItemScore();
                 VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
                 StartCoroutine(InvokeInitValue());
@@ -318,6 +322,7 @@ public class PlayerInteract : MonoBehaviour
         {
             foreach (var item in items)
             {
+                StageManager.Instance.UpdateItemScore();
                 inventory.AddItemEvent(item);
             }
         }

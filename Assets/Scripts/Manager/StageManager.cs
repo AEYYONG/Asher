@@ -14,6 +14,10 @@ public class StageManager : Singleton<StageManager>
     public bool isGameOver = false;
     public Timer timer;
 
+    void Awake()
+    {
+        stageSO.score = 0;
+    }
     void Start()
     {
         player = FindObjectOfType<Player_Move>();
@@ -84,5 +88,15 @@ public class StageManager : Singleton<StageManager>
         gameOverTransition.GetComponent<Animator>().SetTrigger("Start Transition");
         yield return new WaitForSeconds(2.5f);
         MySceneManager.Instance.ChangeScene("GameOver");
+    }
+    
+    public void UpdateHeartStoneScore()
+    {
+        stageSO.score += 10000;
+    }
+    
+    public void UpdateItemScore()
+    {
+        stageSO.score += 8000;
     }
 }

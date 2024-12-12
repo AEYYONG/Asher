@@ -9,6 +9,7 @@ public class StageInfoSO : ScriptableObject
     public int heartStoneTotalCnt;
     public float limitedTime;
     [SerializeField] private int heartStoneCurCnt;
+    public int score;
     public string bgm1;
     public string bgm2;
     

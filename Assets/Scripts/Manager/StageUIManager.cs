@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +31,8 @@ public class StageUIManager : MonoBehaviour
     private float _timer = 0f;
     [SerializeField] private InventoryManager _inventoryManager;
     public TileManager tileManager;
+
+    [Header("점수 관련 UI")] [SerializeField] private TextMeshProUGUI scoreUI;
     class ItemSelectUI
     {
         public GameObject selectionUI;
@@ -48,6 +51,7 @@ public class StageUIManager : MonoBehaviour
     
     void Awake()
     {
+        scoreUI.text = StageManager.Instance.stageSO.score.ToString();
         InitHeartStonesList();
     }
 
@@ -85,10 +89,13 @@ public class StageUIManager : MonoBehaviour
 
             if (_selectItem != null)
             {
+                StageManager.Instance.UpdateItemScore();
                 _inventoryManager.SelectFeverTimeItem(_selectItem);
                 Debug.Log(_selectItem.name + "아이템 선택");
             }
         }
+
+        scoreUI.text = $"{StageManager.Instance.stageSO.score}";
     }
 
     void FixedUpdate()
