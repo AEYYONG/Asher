@@ -8,6 +8,7 @@ public class StageManager : MonoBehaviour
     public StageInfoSO stageSO;
     private Player_Move player;
     private NPC_Move npc;
+    private bool isEnd = false;
 
     void Start()
     {
@@ -19,7 +20,10 @@ public class StageManager : MonoBehaviour
 
     void Update()
     {
-        
+        if (stageSO.GetHeartStoneCnt() >= stageSO.heartStoneTotalCnt && !isEnd)
+        {
+            StartCoroutine(GameClear());
+        }
     }
 
     IEnumerator GameStart()
@@ -45,5 +49,14 @@ public class StageManager : MonoBehaviour
     {
         player.isStart = true;
         npc.agent.isStopped = false;
+    }
+
+    IEnumerator GameClear()
+    {
+        isEnd = true;
+        StopAllCharacterMove();
+        VFXManager.Instance.PlayVFX("GameClearTransition",FindObjectOfType<StageUIManager>().transform);
+        yield return new WaitForSeconds(1.4f);
+        MySceneManager.Instance.ChangeScene("GameClear");
     }
 }
