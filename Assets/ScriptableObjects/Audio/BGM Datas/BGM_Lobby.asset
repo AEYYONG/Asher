@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0af1830949e254935a41d0eb417fea1b, type: 3}
+  m_Name: BGM_Lobby
+  m_EditorClassIdentifier: 
+  audioName: One Step Forward
+  audioClip: {fileID: 8300000, guid: a3d8a2a51f035564990905a41afe6494, type: 3}
+  loop: 1
+  playOnAwake: 1
+  volume: 1

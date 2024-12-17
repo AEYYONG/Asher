@@ -178,6 +178,7 @@ MonoBehaviour:
   useGreenZone: 0
   _maxRecentTile: 5
   isFever: 1
+  _asherPortrait: {fileID: 0}
 --- !u!114 &385565235384987310
 MonoBehaviour:
   m_ObjectHideFlags: 0

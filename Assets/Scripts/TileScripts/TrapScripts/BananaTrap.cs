@@ -8,11 +8,21 @@ public class BananaTrap : Tile
     {
         base.TrapUse(uiManager);
         Debug.Log("바나나 아이템 사용");
-        Player_Move player = FindObjectOfType<Player_Move>();
+        StartCoroutine(StartSlip(uiManager));
+    }
+
+    IEnumerator StartSlip(StageUIManager uiManager)
+    {
+        VFXManager.Instance.PlayVFX("UseDebuffItem",uiManager.player.transform);
+        yield return new WaitForSeconds(1.5f);
+        Player_Move player = uiManager.player.GetComponent<Player_Move>();
         if (!player.isSlip)
         {
             player.StartSlip();
         }
-
+        
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }

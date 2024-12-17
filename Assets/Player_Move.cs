@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player_Move : MonoBehaviour
 {
+    //시작
+    public bool isStart = false;
+
     public float moveSpeed = 5f;  // 이동 속도
     public float moveDuration = 0.3f;  // 각 방향으로 이동하는 시간 (0.3초)
     public bool isMoving = false;  // 현재 이동 중인지 여부
@@ -89,6 +92,9 @@ public class Player_Move : MonoBehaviour
         if (isSlip)
         {
             Slip();
+        }
+        else if(!isStart){
+            return;
         }
         else MovePlayer();  // 이동 처리
 
@@ -291,7 +297,7 @@ public class Player_Move : MonoBehaviour
         // 레이를 쏴서 해당 방향에 장애물이 있는지 확인
         if (Physics.Raycast(rayOrigin, localDirection, out hit, rayDistance))
         {
-            if (hit.collider.CompareTag("Obstacle"))
+            if (hit.collider.CompareTag("Obstacle") || hit.collider.CompareTag("NPC"))
             {
                 Debug.Log("장애물 감지: " + hit.collider.name);
                 isColliding = true;
@@ -314,7 +320,7 @@ public class Player_Move : MonoBehaviour
         // 레이를 쏴서 해당 방향에 장애물이 있는지 확인
         if (Physics.Raycast(rayOrigin, localDirection, out hit, rayDistance))
         {
-            if (hit.collider.CompareTag("Obstacle"))
+            if (hit.collider.CompareTag("Obstacle") || hit.collider.CompareTag("NPC"))
             {
                 Debug.Log("장애물 감지: " + hit.collider.name);
                 isColliding = true;
@@ -417,12 +423,24 @@ public class Player_Move : MonoBehaviour
         }
 
 
-        else if (Input.GetKey(KeyCode.Space) && isAttacked && !isDodge)
+        else if ((Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.LeftShift)))
         {
-            ChangeAnimationState(PLAYER_LEFT);
-            Debug.Log("회피!");
-            isAttacked = false;
-            Invoke("Dodge", 2f);
+            
+            if (isAttacked && !isDodge)
+            {
+                isAttacked = false;
+                ChangeAnimationState(PLAYER_JUMP); // 임시로 점프 애니메이션 실행
+                Debug.Log("회피 성공!");
+                Invoke("Dodge", 2f);
+            }
+            else if (!isDodge)
+            {
+                ChangeAnimationState(PLAYER_JUMP); // 임시로 점프 애니메이션 실행
+                Debug.Log("회피만!");
+                Invoke("Dodge", 2f);
+            }
+            isDodge = true;
+
         }
         else if (!Input.anyKey && !startJump)
         {

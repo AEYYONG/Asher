@@ -46,5 +46,9 @@ public class BlackHoleTrap : Tile
         uiManager.npc.transform.position = new Vector3(_playerPos.x, _npcPos.y, _playerPos.z);
         uiManager.player.transform.position = new Vector3(_npcPos.x, _playerPos.y, _npcPos.z);
         //플레이어와 NPC 다시 움직이게 하기
+        
+        //vfx 실행
+        Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
+        effectAnimator.SetTrigger("TrapMatch");
     }
 }

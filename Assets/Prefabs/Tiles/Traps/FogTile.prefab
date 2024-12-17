@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3299938877987277406}
   - component: {fileID: 6620057068993517578}
   - component: {fileID: 1617044052681711701}
-  - component: {fileID: 3333316692948346135}
   - component: {fileID: 3761349924235490333}
+  - component: {fileID: 9002596196379521199}
   m_Layer: 0
   m_Name: FogTile
   m_TagString: Ground
@@ -33,7 +33,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6401645125516479869}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3299938877987277406
@@ -107,24 +108,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3333316692948346135
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6389873552652161418}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a500d9937784cf782ac6f874bcd7d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileSO: {fileID: 11400000, guid: ebe75ce35af4d442ab345b5ee6bef7fa, type: 2}
-  _x: 0
-  _z: 0
-  isSelected: 0
-  tileType: 1
-  _animator: {fileID: 3761349924235490333}
 --- !u!95 &3761349924235490333
 Animator:
   serializedVersion: 5
@@ -146,3 +129,85 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &9002596196379521199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6389873552652161418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14db9e1d450524cbcad086a0e19da014, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileSO: {fileID: 11400000, guid: ebe75ce35af4d442ab345b5ee6bef7fa, type: 2}
+  _x: 0
+  _z: 0
+  isSelected: 0
+  tileType: 0
+  _animator: {fileID: 3761349924235490333}
+  tileManager: {fileID: 0}
+  playerInteract: {fileID: 0}
+--- !u!1001 &2397983932805727213
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5543279923838609234}
+    m_Modifications:
+    - target: {fileID: 2990151823857733577, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_Name
+      value: TileEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+--- !u!4 &6401645125516479869 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
+  m_PrefabInstance: {fileID: 2397983932805727213}
+  m_PrefabAsset: {fileID: 0}

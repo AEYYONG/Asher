@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17778a9c27ed7446b9e382158b0b5da7, type: 3}
-  m_Name: TimeDownSO
+  m_Name: GauntletSO
   m_EditorClassIdentifier: 
   tileID: 4
   itemID: 0
@@ -18,8 +18,10 @@ MonoBehaviour:
   trapID: 7
   itemImg: {fileID: 0}
   sideCutSceneImg: {fileID: 21300000, guid: 9815872bd26034bf0bf2e4658552c6ad, type: 3}
-  selectNum: 1
+  selectNum: 2
   duration: 2
   power: 0
-  originTopTex: {fileID: 0}
+  originTopTex: {fileID: 2800000, guid: ae59fae6092ac492297bf5ff5d1a28bf, type: 3}
   transTopTex: {fileID: 0}
+  originBottomTex: {fileID: 2800000, guid: e47ecf620ce5a4c56bee1f4cbc32354f, type: 3}
+  timeBombTopTex: {fileID: 0}

@@ -18,8 +18,10 @@ MonoBehaviour:
   trapID: 8
   itemImg: {fileID: 0}
   sideCutSceneImg: {fileID: 21300000, guid: a99a87ff9e3fc492d93a6cf6ecff7e1e, type: 3}
-  selectNum: 0
+  selectNum: 1
   duration: 10
   power: 1.5
-  originTopTex: {fileID: 2800000, guid: a00df048c84d64538b02ee2e75c64a4f, type: 3}
+  originTopTex: {fileID: 2800000, guid: ae59fae6092ac492297bf5ff5d1a28bf, type: 3}
   transTopTex: {fileID: 2800000, guid: 225b38f577b7d4e4d90fcef03daf8b73, type: 3}
+  originBottomTex: {fileID: 2800000, guid: e47ecf620ce5a4c56bee1f4cbc32354f, type: 3}
+  timeBombTopTex: {fileID: 0}

@@ -9,7 +9,7 @@ public class Timer : MonoBehaviour
 {
     //타이머 값
     [SerializeField] private float timer;
-    private float _time;
+    public float _time;
     
     //UI 연결
     [SerializeField] private Image timeBar;
@@ -18,10 +18,9 @@ public class Timer : MonoBehaviour
     void Start()
     {
         _time = timer;
-        StartCoroutine(TimerStart(_time));
     }
 
-    IEnumerator TimerStart(float time)
+    public IEnumerator TimerStart(float time)
     {
         while (time > 0)
         {
@@ -37,5 +36,6 @@ public class Timer : MonoBehaviour
         }
         time = 0;
         Debug.Log("Time Over");
+        StartCoroutine(StageManager.Instance.GameOver());
     }
 }

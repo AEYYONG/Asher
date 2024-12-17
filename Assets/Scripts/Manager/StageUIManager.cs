@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,13 +11,9 @@ public class StageUIManager : MonoBehaviour
     private string _triggerName = "";
     [SerializeField] private GameObject heartStonesParent;
     [SerializeField] private List<Image> _heartStonesList = new List<Image>();
-    [SerializeField] private GameObject _sideCutSceneUI;
+    public GameObject _sideCutSceneUI;
     [SerializeField] private Image _sideCutSceneImg;
-    [SerializeField] private Animator _sideCutSceneImgAnimator;
-    [SerializeField] private Image _sideCutSceneFrameTop;
-    [SerializeField] private Image _sideCutSceneFrameBottom;
-    [SerializeField] private List<Sprite> _sideCutSceneFrameTopList;
-    [SerializeField] private List<Sprite> _sideCutSceneFrameBottomList;
+    public Animator _sideCutSceneImgAnimator;
     //0: 함정, 1: 아이템, 2: 마음의 조각, 3: 조커, 4: 그린존, 5: 타이머
     
     //외부 스크립트에서 참조하기 위한 플레이어 변수
@@ -34,6 +31,8 @@ public class StageUIManager : MonoBehaviour
     private float _timer = 0f;
     [SerializeField] private InventoryManager _inventoryManager;
     public TileManager tileManager;
+
+    [Header("점수 관련 UI")] [SerializeField] private TextMeshProUGUI scoreUI;
     class ItemSelectUI
     {
         public GameObject selectionUI;
@@ -45,8 +44,14 @@ public class StageUIManager : MonoBehaviour
             script = tile;
         }
     }
+   //fog 관련
+   public GameObject fullCamera;
+   public GameObject npcIndicator;
+   public GameObject fogUI;
+    
     void Awake()
     {
+        scoreUI.text = StageManager.Instance.stageSO.score.ToString();
         InitHeartStonesList();
     }
 
@@ -84,10 +89,13 @@ public class StageUIManager : MonoBehaviour
 
             if (_selectItem != null)
             {
+                StageManager.Instance.UpdateItemScore();
                 _inventoryManager.SelectFeverTimeItem(_selectItem);
                 Debug.Log(_selectItem.name + "아이템 선택");
             }
         }
+
+        scoreUI.text = $"{StageManager.Instance.stageSO.score}";
     }
 
     void FixedUpdate()
@@ -151,24 +159,22 @@ public class StageUIManager : MonoBehaviour
             case TileID.Item:
                 _curImgId = (int)tileSO.itemID;
                 _triggerName = "ItemId";
-                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[1];
-                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[1];
                 break;
             case TileID.Joker:
+                _curImgId = 1;
+                _triggerName = "Joker";
                 break;
             case TileID.Trap:
                 _curImgId = (int)tileSO.trapID;
                 _triggerName = "TrapId";
-                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[0];
-                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[0];
                 break;
             case TileID.HeartStone:
+                _curImgId = 1;
+                _triggerName = "HeartStone";
                 break;
             case TileID.GreenZone:
                 _curImgId = 1;
                 _triggerName = "GreenZone";
-                _sideCutSceneFrameTop.sprite = _sideCutSceneFrameTopList[4];
-                _sideCutSceneFrameBottom.sprite = _sideCutSceneFrameBottomList[4];
                 break;
                 
         }
@@ -224,5 +230,11 @@ public class StageUIManager : MonoBehaviour
             Destroy(ui.selectionUI);
         }
         _itemSelectionUIList.Clear();
+    }
+
+    public void SlideOutSideCutScene()
+    {
+        Animator animator = _sideCutSceneUI.GetComponent<Animator>();
+        animator.SetTrigger("SlideOut");
     }
 }
