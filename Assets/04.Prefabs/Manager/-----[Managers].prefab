@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4089624567629026755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3956365584259141498}
+  - component: {fileID: 3581560936939244106}
+  - component: {fileID: 3705929418997772579}
+  m_Layer: 0
+  m_Name: -----[Managers]
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3956365584259141498
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089624567629026755}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3581560936939244106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089624567629026755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17d6ca84e016bdf488bc184fa9d7093f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroy: 1
+  bgmDataList:
+  - {fileID: 11400000, guid: 1d4bd1f41b40d4026a9fe884b1fa1cae, type: 2}
+  - {fileID: 11400000, guid: ec20261e30f984f6aa191974222b74dc, type: 2}
+  - {fileID: 11400000, guid: 3ff9e1ffdd5334fbaacec3795892e5f7, type: 2}
+  - {fileID: 11400000, guid: fc7eb57a7cf2b48cba96421c84f9e7a7, type: 2}
+  sfxDataList:
+  - {fileID: 11400000, guid: 3e764e49e52174ea9904f114fc35493b, type: 2}
+  - {fileID: 11400000, guid: 5c35ae9b64db048218c139693cdd2adc, type: 2}
+  - {fileID: 11400000, guid: 55bce7aaff7104f018f35bf10e2d817c, type: 2}
+  - {fileID: 11400000, guid: c66f4f0bbe9c04b70a06ae1fce013911, type: 2}
+  _bgmSource: {fileID: 0}
+  bgmVolume: 1
+  _maxSFXPoolSize: 10
+--- !u!114 &3705929418997772579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4089624567629026755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3a85e52e0e72049a6b064cfeaa8295, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dontDestroy: 1
+  lobbyBgmName: One Step Forward

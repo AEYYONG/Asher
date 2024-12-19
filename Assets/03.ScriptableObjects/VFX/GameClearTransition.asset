@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameClearTransition
   m_EditorClassIdentifier: 
   vfxName: GameClearTransition
-  vfxPrefab: {fileID: 7095677975439643245, guid: f99cb9d20c867458d9c25bdfb81c850a, type: 3}
-  duration: 1.4
+  vfxPrefab: {fileID: 7162403705455718399, guid: 9bf9b33a35d804b89b4127992e0e4d0e, type: 3}
+  duration: 2
   scale: {x: 1, y: 1, z: 1}
   vfxColor: {r: 1, g: 1, b: 1, a: 1}

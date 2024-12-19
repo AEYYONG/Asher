@@ -44,4 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b871e656e06064102b4680def791a9d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vfxDataList: []
+  dontDestroy: 0
+  vfxDataList:
+  - {fileID: 11400000, guid: abff7c82f8592d7428244d79bdd481e0, type: 2}
+  - {fileID: 11400000, guid: 399710ca388e54029aa140c4d5b5a418, type: 2}
+  - {fileID: 11400000, guid: 961f0fe112ea94e7aa09ae6bd227633b, type: 2}
+  - {fileID: 11400000, guid: 1a3190b1114da43f596615ae07190a3c, type: 2}
+  - {fileID: 11400000, guid: 4fe57347c497a48f3ba792e1490c0fc9, type: 2}
+  - {fileID: 11400000, guid: f24aa589de8d8484dabc4011292f74f6, type: 2}
+  - {fileID: 11400000, guid: e3f3f9b7487c04aad8209a584f6d6c00, type: 2}
+  - {fileID: 11400000, guid: c80f26b64faeb42ebb49518440d52ea7, type: 2}
+  - {fileID: 11400000, guid: 519005bbd7f8f413484a0636fdb314c0, type: 2}
+  - {fileID: 11400000, guid: 602a27b0a1ddc44ffbe2aa1be3bc489d, type: 2}
+  - {fileID: 11400000, guid: d3a1df9341d8e479086722431bc9b015, type: 2}
