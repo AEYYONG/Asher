@@ -6,24 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/RealScene/Title.unity
+    path: Assets/01.Scenes/RealScene/Title.unity
     guid: bb160b78935c24b649f74cc74146c129
   - enabled: 1
-    path: Assets/Scenes/RealScene/Lobby.unity
+    path: Assets/01.Scenes/RealScene/Lobby.unity
     guid: f3f71792336414570af4dbb6ada8ca60
   - enabled: 1
-    path: Assets/Scenes/RealScene/StageNoaP.unity
+    path: Assets/01.Scenes/RealScene/StageNoaP.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
-    path: Assets/Scenes/RealScene/Loading.unity
+    path: Assets/01.Scenes/RealScene/Loading.unity
     guid: 36f763de566c2b74495eb471250d847f
   - enabled: 1
-    path: Assets/Scenes/RealScene/GameClear.unity
+    path: Assets/01.Scenes/RealScene/GameClear.unity
     guid: e7398271ef6424aa084419554c2a539b
   - enabled: 1
-    path: Assets/Scenes/RealScene/GameResult.unity
+    path: Assets/01.Scenes/RealScene/GameResult.unity
     guid: 40b358e1f9d53404ab5caf3271fd1196
   - enabled: 1
-    path: Assets/Scenes/RealScene/GameOver.unity
+    path: Assets/01.Scenes/RealScene/GameOver.unity
     guid: 6d43c706761e04f23bd1393683c3862f
   m_configObjects: {}
