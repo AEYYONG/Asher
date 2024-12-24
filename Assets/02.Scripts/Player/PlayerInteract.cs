@@ -239,6 +239,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 Debug.Log("Joker and Item");
                 StartTileMatchEffect(tile1, tile2);
+                tile1.Use(_stageUIManager);
                 inventory.AddItemEvent(tile2);
                 _asherPortrait.SetGood();
                 StageManager.Instance.UpdateItemScore();
@@ -250,6 +251,7 @@ public class PlayerInteract : MonoBehaviour
             {
                 Debug.Log("Joker and Item");
                 StartTileMatchEffect(tile1, tile2);
+                tile2.Use(_stageUIManager);
                 inventory.AddItemEvent(tile1);
                 _asherPortrait.SetGood();
                 StageManager.Instance.UpdateItemScore();
