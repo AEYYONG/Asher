@@ -77,11 +77,13 @@ public class Tile : MonoBehaviour
     //타일이 사용될 경우 발동되는 가상 함수
     public virtual void ItemUse(StageUIManager uiManager)
     {
+        Debug.Log("ItemUse Function Debug");
         uiManager.ActiveSideCutSceneUI(tileSO);
     }
 
     public virtual void TrapUse(StageUIManager uiManager)
     {
+        Debug.Log("TrapUse Function Debug");
         StartCoroutine(ClearSelectingEffect());
         uiManager.ActiveSideCutSceneUI(tileSO);
         //trap emotion 실행
@@ -90,6 +92,7 @@ public class Tile : MonoBehaviour
 
     public virtual void Use(StageUIManager uiManager)
     {
+        Debug.Log("HeartStone Use Function Debug");
         uiManager.ActiveSideCutSceneUI(tileSO);
     }
     

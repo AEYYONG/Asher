@@ -6,7 +6,7 @@ public class HeartStoneTile : Tile
 {
     public override void Use(StageUIManager uiManager)
     {
-        //base.Use(uiManager);
+        base.Use(uiManager);
         uiManager.UpdateHeartStoneUI();
     }
 }
