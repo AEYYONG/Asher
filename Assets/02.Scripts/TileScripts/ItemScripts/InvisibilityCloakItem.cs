@@ -9,6 +9,7 @@ public class InvisibilityCloakItem : Tile
         base.ItemUse(uiManager);
         Debug.Log("투명망토 아이템 사용");
         StartCoroutine(SetInvisible(uiManager));
+        StartCoroutine(ExpiryWarningEffect(tileSO.duration, 3f));
     }
 
     IEnumerator SetInvisible(StageUIManager uiManager)
