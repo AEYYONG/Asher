@@ -9,7 +9,7 @@ public class TurtleTrap : Tile
         base.TrapUse(uiManager);
         Debug.Log("거북이 함정 발동");
         StartCoroutine(SpeedDown(uiManager));
-        StartCoroutine(ExpiryWarningEffect(tileSO.duration, 3f));
+        StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration, 3f));
     }
 
 

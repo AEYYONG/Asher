@@ -173,35 +173,4 @@ public class Tile : MonoBehaviour
         Material material = GetComponent<Renderer>().material;
         material.SetTexture("_BottomTex",tileSO.originBottomTex);
     }
-
-
-    private Coroutine blinkCoroutine;
-    public IEnumerator ExpiryWarningEffect(float duration, float warningTime)
-    {
-        // 지속 시간 동안 대기
-        yield return new WaitForSeconds(duration - warningTime);
-
-        // 종료 N초 전부터 깜빡이기 시작
-        blinkCoroutine = StartCoroutine(BlinkPlayer());
-
-        // N초 대기 후 효과 종료
-        yield return new WaitForSeconds(warningTime);
-
-        // 종료 처리
-        StopCoroutine(blinkCoroutine);
-        playerInteract.GetComponent<SpriteRenderer>().color = new Color(1f,1f,1f,1f); // 깜빡임 멈추고 원래 상태로 복원
-        Debug.Log("지속효과 종료 이펙트 끝");
-    }
-
-    IEnumerator BlinkPlayer()
-    {
-        bool isBlinking = true;
-        while (isBlinking)
-        {
-            playerInteract.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
-            yield return new WaitForSeconds(0.2f);
-            playerInteract.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-            yield return new WaitForSeconds(0.2f);
-        }
-    }
 }

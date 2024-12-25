@@ -9,7 +9,7 @@ public class FogTrap : Tile
         base.TrapUse(uiManager);
         Debug.Log("안개 아이템 사용");
         StartCoroutine(SetFogSight(uiManager));
-        StartCoroutine(ExpiryWarningEffect(tileSO.duration, 3f));
+        StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration, 3f));
     }
 
     IEnumerator SetFogSight(StageUIManager uiManager)
