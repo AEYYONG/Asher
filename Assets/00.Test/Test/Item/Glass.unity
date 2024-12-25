@@ -543,6 +543,11 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 0
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &62581485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7491834639744302382, guid: 56487d47fb6364149a586c458513e301, type: 3}
+  m_PrefabInstance: {fileID: 1913025152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &64613086
 GameObject:
   m_ObjectHideFlags: 0
@@ -1164,10 +1169,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroy: 0
   stageSO: {fileID: 11400000, guid: c577c60a0c3f14239b5b20ee87c9e340, type: 2}
-  circleMask: {fileID: 0}
-  gameOverTransition: {fileID: 0}
+  circleMask: {fileID: 695121762}
+  gameOverTransition: {fileID: 62581485}
   isGameOver: 0
-  timer: {fileID: 0}
+  timer: {fileID: 292063775}
 --- !u!4 &201353109
 Transform:
   m_ObjectHideFlags: 0
@@ -1889,6 +1894,28 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 268800485}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &273816615 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7029848671301995821, guid: 56487d47fb6364149a586c458513e301, type: 3}
+  m_PrefabInstance: {fileID: 1913025152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea187e8f8ba34453c83b07702cc75d9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &292063775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8196240375797051246, guid: 56487d47fb6364149a586c458513e301, type: 3}
+  m_PrefabInstance: {fileID: 1913025152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7066ae89ee961446f84839f742a9c034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &304483336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4502,6 +4529,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 584996eee05094359843a3efe9f33c2e, type: 3}
+--- !u!224 &695121762 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 195779552674577528, guid: 56487d47fb6364149a586c458513e301, type: 3}
+  m_PrefabInstance: {fileID: 1913025152}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5747,6 +5779,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
   m_PrefabInstance: {fileID: 855106037}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &856499555 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3745568681065511515, guid: 56487d47fb6364149a586c458513e301, type: 3}
+  m_PrefabInstance: {fileID: 1913025152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95ce047ddd3094b5d8e493a5bd26ae6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &868785028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12768,9 +12811,11 @@ MonoBehaviour:
   tileParent: {fileID: 1135192898}
   buffItemTypes:
   - tilePrefab: {fileID: 6389873552652161418, guid: 6cdcb4e80195b424fbb780d55d2e6ce7, type: 3}
-    count: 90
+    count: 45
   debuffItemTypes: []
-  etcItemTypes: []
+  etcItemTypes:
+  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+    count: 45
   furnitureTilePosList: []
   _tileShuffleList: []
   tileEntries:
@@ -13342,6 +13387,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4253393283853299629, guid: 56487d47fb6364149a586c458513e301, type: 3}
+      propertyPath: fogCamera
+      value: 
+      objectReference: {fileID: 963194227}
+    - target: {fileID: 4253393283853299629, guid: 56487d47fb6364149a586c458513e301, type: 3}
+      propertyPath: npcTransform
+      value: 
+      objectReference: {fileID: 1199174932}
     - target: {fileID: 8011192701188467863, guid: 56487d47fb6364149a586c458513e301, type: 3}
       propertyPath: m_Name
       value: -----[Canvas]
@@ -14932,7 +14985,7 @@ PrefabInstance:
     - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: _asherPortrait
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 856499555}
     - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: _maxRecentTile
       value: 5
@@ -14940,7 +14993,7 @@ PrefabInstance:
     - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: _stageUIManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 273816615}
     - target: {fileID: 2791380705674465803, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_Color.a
       value: 1
