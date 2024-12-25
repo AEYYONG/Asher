@@ -9,6 +9,7 @@ public class AggroTrap : Tile
     {
         base.TrapUse(uiManager);
         StartCoroutine(ActivateAggroTrap());
+        StartCoroutine(uiManager.npc.GetComponent<NPC_Move>().ExpiryWarningEffect(tileSO.duration));
     }
 
     private IEnumerator ActivateAggroTrap()
@@ -35,7 +36,7 @@ public class AggroTrap : Tile
                 Debug.LogWarning("NPC에서 NavMeshAgent 컴포넌트를 찾을 수 없습니다.");
             }
 
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(tileSO.duration);
             npc.detectionRange = originalDetectionRange;
             agent.speed = originalSpeed;
             Debug.Log("NPC 속도 복구");
