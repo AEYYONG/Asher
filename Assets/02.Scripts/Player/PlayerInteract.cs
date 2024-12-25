@@ -7,9 +7,9 @@ using UnityEngine;
 public class PlayerInteract : MonoBehaviour
 {
     [Header("플레이어 상태 변수")]
-    private Coroutine _blinkCoroutine;
     [SerializeField] private bool _isBlinking = false;
     [SerializeField] private float _blinkTime = 3f;
+    public int activeTransparencyCount = 0; // 투명 아이템 중첩 횟수
     
     
     [Space(5)][Header("타일 관련 변수")]
@@ -427,21 +427,21 @@ public class PlayerInteract : MonoBehaviour
         StartCoroutine(tile2.StartTileMatchEffect());
     }
     
-    public IEnumerator ExpiryWarningEffect(float duration, float warningTime)
+    public IEnumerator ExpiryWarningEffect(float duration)
     {
         // 지속 시간 동안 대기
-        yield return new WaitForSeconds(duration - warningTime);
+        yield return new WaitForSeconds(duration - _blinkTime);
 
         // 종료 N초 전부터 깜빡이기 시작
-        _blinkCoroutine = StartCoroutine(BlinkPlayer());
+        Coroutine _blinkCoroutine = StartCoroutine(BlinkPlayer());
 
         // N초 대기 후 효과 종료
-        yield return new WaitForSeconds(warningTime);
+        yield return new WaitForSeconds(_blinkTime);
 
         // 종료 처리
         StopCoroutine(_blinkCoroutine);
         _isBlinking = false;
-        GetComponent<SpriteRenderer>().color = new Color(1f,1f,1f,1f); // 깜빡임 멈추고 원래 상태로 복원
+        GetComponent<SpriteRenderer>().enabled = true; // 깜빡임 멈추고 원래 상태로 복원
         Debug.Log("지속효과 종료 이펙트 끝");
     }
 
@@ -450,9 +450,7 @@ public class PlayerInteract : MonoBehaviour
         _isBlinking = true;
         while (_isBlinking)
         {
-            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.5f);
-            yield return new WaitForSeconds(0.2f);
-            GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+            GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
             yield return new WaitForSeconds(0.2f);
         }
     }

@@ -12,7 +12,7 @@ public class SpeedUpItem : Tile
         base.ItemUse(uiManager);
         Debug.Log("속도증가 아이템 사용");
         StartCoroutine(SpeedUp(uiManager));
-        StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration, 3f));
+        StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration));
     }
 
     IEnumerator SpeedUp(StageUIManager uiManager)
