@@ -339,6 +339,7 @@ public class PlayerInteract : MonoBehaviour
                 {
                     tiles[i].isComplete = true;
                     tiles[j].isComplete = true;
+                    
                     //획득 아이템 리스트에 추가
                     itemList.Add(tiles[i].tile);
                     break;
@@ -350,6 +351,7 @@ public class PlayerInteract : MonoBehaviour
         {
             if (!tiles[i].isComplete)
             {
+                AddRecentTileList(tiles[i].tile);
                 returnTiles.Add(tiles[i].tile);
             }
         }
@@ -367,6 +369,7 @@ public class PlayerInteract : MonoBehaviour
         {
             foreach (var item in items)
             {
+                
                 StageManager.Instance.UpdateItemScore();
                 inventory.AddItemEvent(item);
             }

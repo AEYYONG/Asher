@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-public class SlowMotionEffect : MonoBehaviour
+public class SlowMotionEffect : Singleton<SlowMotionEffect>
 {
     public bool isSlowMotionEnd = false;
     public float slowFactor;
