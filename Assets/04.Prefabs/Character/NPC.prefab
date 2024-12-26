@@ -94,7 +94,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 3569308853951841298}
-  detectionRange: 2
   minRange: {x: 0, y: 0, z: 0}
   maxRange: {x: 12, y: 0, z: 7}
   animator: {fileID: 2282351621111218893}
@@ -104,9 +103,17 @@ MonoBehaviour:
   attackRange: 1
   attackDistance: 0.5
   isAttack: 0
+  AttackAnim: 0
+  isAsher: 0
+  safe: 0
   goInGreenZone: 0
   greenZoneDistance: 0.7
+  greenZoneAttack: 0
   isAnimationLocked: 0
+  detectionRange: 2
+  detectionAngle: 30
+  fanMaterial: {fileID: 2100000, guid: ee6943563a1b1724daa9a7783149be87, type: 2}
+  heightOffset: 0.3
 --- !u!212 &1619662974807616425
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -127,7 +134,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 92518805e77bb4d77a0d180f84d41765, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

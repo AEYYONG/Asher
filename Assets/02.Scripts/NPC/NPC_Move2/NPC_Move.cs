@@ -7,8 +7,6 @@ public class NPC_Move : MonoBehaviour
 {
     public NavMeshAgent agent;
     private Vector3 targetPosition;
-    private bool moveInXAxis = true;
-    public float detectionRange = 3f;
 
     // 이동 가능한 범위 설정
     public Vector3 minRange = new Vector3(0, 0, 0);  // 최소 좌표
@@ -44,6 +42,17 @@ public class NPC_Move : MonoBehaviour
     private MotionTrail motionTrail; // MotionTrail 스크립트
     private bool isTrailActive = false;
 
+    // npc 시야 관련
+    private LineRenderer lineRenderer;
+    public float detectionRange = 3f; // 감지 거리
+    public float detectionAngle = 30f; // 시야각 
+    public Material fanMaterial; // 부채꼴 표시를 위한 머티리얼
+    public float heightOffset = 0.3f; // 부채꼴 높이
+    public int segments = 50;
+
+    private List<LineRenderer> lineRenderers = new List<LineRenderer>();
+    public Material lineMaterial;
+    public bool SensorON = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,11 +61,15 @@ public class NPC_Move : MonoBehaviour
         asher = GameObject.Find("Asher");
         motionTrail = GetComponent<MotionTrail>();
         SetRandomDestination();
+
+        CreateLineRenderers();
+
     }
 
-    // Update is called once per frame
-    void Update()
+        // Update is called once per frame
+        void Update()
     {
+        
         DetectInFront();
         if (isChasing)
         {
@@ -69,13 +82,14 @@ public class NPC_Move : MonoBehaviour
             SetRandomDestination();
         }
 
-
+        
         UpdateAnimation();
         transform.rotation = Quaternion.Euler(70, 0, 0);
 
     }
-    //헤어볼에 맞으면 잠깐 멈춤
-    public void AttackedHairBall()
+
+//헤어볼에 맞으면 잠깐 멈춤
+public void AttackedHairBall()
     {
         Debug.Log("AttackedHairBall 호출됨");
         //NPC 잠깐 멈춤 현재는 IEnumerator로 2초간 정지처리하지만 추후 애니메이션 종료 후 agent.isStopped = false;로 변경해야 함
@@ -106,6 +120,42 @@ public class NPC_Move : MonoBehaviour
         return isXCloseEnough && isZCloseEnough;
     }
 
+
+    void CreateLineRenderers()
+    {
+       
+        for (int i = 0; i <= segments; i++)
+        {
+            LineRenderer lr = new GameObject("LineSegment").AddComponent<LineRenderer>();
+            lr.transform.parent = this.transform; // NPC 객체에 부모화
+            lr.material = lineMaterial;
+            lr.widthMultiplier = 0.1f; // 선의 두께
+            lr.useWorldSpace = true; // 월드 좌표 사용 (게임 화면에서도 보이도록 설정)
+            lr.positionCount = 2; // 시작점과 끝점
+
+            // 투명도 설정 (기본값: 50% 투명)
+            Color lineColor = lr.material.color;
+            lineColor.a = 0.4f; // 50% 투명도
+            lr.material.color = lineColor;
+
+
+            lineRenderers.Add(lr);
+        }
+    }
+    void SetLineRendererTransparency(float alpha = 0.4f)
+    {
+        alpha = Mathf.Clamp01(alpha); // 0 (완전 투명) ~ 1 (완전 불투명)
+        foreach (var lr in lineRenderers)
+        {
+            if (lr != null && lr.material != null)
+            {
+                Color lineColor = lr.material.color;
+                lineColor.a = alpha; // 투명도 적용
+                lr.material.color = lineColor;
+            }
+        }
+    }
+
     void DetectInFront()
     {
         if (!notDizzy)
@@ -114,14 +164,70 @@ public class NPC_Move : MonoBehaviour
         }
         else
         {
-            Vector3 rayOrigin = transform.position + new Vector3(0, 0f, 0);
-
-            // NPC의 현재 이동 방향에 따라 레이캐스트 방향을 설정
+            Vector3 rayOrigin = transform.position;
             Vector3 rayDirection = agent.velocity.normalized;
-            // velocity가 0일 때를 대비한 기본값
+
+            // velocity가 0일 때 기본 방향 설정
             if (rayDirection == Vector3.zero)
             {
-                rayDirection = transform.forward; // 기본적으로 정면으로 설정
+                rayDirection = transform.forward;
+            }
+
+            // 부채꼴 설정
+            float detectionAngle = 30f; // 각도
+            float detectionRadius = 2f; // 반경
+            int segmentCount = segments; // 세그먼트 수
+
+            bool targetDetected = false;
+
+            // 부채꼴 라인별 감지
+            float step = detectionAngle / segmentCount;
+
+            for (int i = 0; i <= segmentCount; i++)
+            {
+                float currentAngle = -detectionAngle / 2 + step * i;
+                Vector3 rayDirectionSegment = Quaternion.Euler(0, currentAngle, 0) * rayDirection;
+
+
+                Ray ray = new Ray(rayOrigin, rayDirectionSegment);
+                if (Physics.Raycast(ray, out RaycastHit hit, detectionRadius))
+                {
+                    // 장애물 감지: 끝점을 hit.point로 조정
+                    Vector3 end = hit.point;
+
+                    // LineRenderer 업데이트 (시각화)
+                    if (SensorON)
+                    {
+                        SetLineRendererTransparency(0.4f);
+                        lineRenderers[i].enabled = true;
+                        lineRenderers[i].SetPosition(0, rayOrigin);
+                        lineRenderers[i].SetPosition(1, end);
+                    }
+
+                    // 감지 대상 처리
+                    if (hit.collider.name == "Asher")
+                    {
+                        targetDetected = true;
+                        Vector3 asherPosition = SnapToGrid(hit.collider.transform.position);
+                        SetDestination(asherPosition);
+
+                        if (!isChasing)
+                        {
+                            StartCoroutine(ActivateTrailForDuration(5f));
+                        }
+                        isChasing = true;
+                        agent.speed = 4;
+                    }
+                }
+
+                else
+                {
+                   // Debug.Log("Asher가 아님");
+                    isAsher = false;
+
+                }
+
+
             }
 
             Ray attackRay = new Ray(rayOrigin, rayDirection);
@@ -132,7 +238,7 @@ public class NPC_Move : MonoBehaviour
                 // 공격 범위 내에서 Asher를 감지하면 isAttack true로 설정
                 if (attackHit.collider.name == "Asher")
                 {
-                 //   Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
+                    //   Debug.Log("Asher가 공격 범위 내에 있습니다! 공격 시작");
                     isAttack = true;
                     asher.GetComponent<Player_Move>().isAttacked = true;
                     isAsher = true;
@@ -142,57 +248,17 @@ public class NPC_Move : MonoBehaviour
                         Debug.Log("공격 시작");
                         AttackAnim = true;
 
-                        
+
                     }
 
-                    
-                }
-                else
-                {
-                    Debug.Log("Asher가 아님");
-                    isAsher = false;
-                    
+
                 }
 
             }
-            else
-            {
-                // 레이캐스트가 아무것도 감지하지 못했을 경우
-                isAttack = false;
-            }
-            // 감지 레이 범위
-            Ray ray = new Ray(rayOrigin, rayDirection);
-            RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, detectionRange))
-            {
-                // 감지된 물체의 이름이 "Asher"라면
-                if (hit.collider.name == "Asher" && canDetect)
-                {
-                    // Debug.Log("Asher 감지됨: " + hit.collider.name);
-
-                    // Asher의 위치 좌표를 그리드에 스냅
-                    Vector3 asherPosition = SnapToGrid(hit.transform.position);
-
-                    // 스냅된 좌표를 목표 지점으로 설정
-                    SetDestination(asherPosition);
-                    if (!isChasing)
-                    {
-                        StartCoroutine(ActivateTrailForDuration(5f));
-                    }
-                    isChasing = true;
-                    agent.speed = 4;
-                    
-                  
-                   // Invoke("ResetSpeed", 3f);
-                    //   Debug.Log("asherPosition: " + asherPosition);
-                    //   Debug.Log("애셔 위치: " + targetPosition);
-                }
-            }
             if (isChasing)
             {
-
-                Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down); // 진행 방향으로 한 칸 앞에서 아래로
+                Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down);
                 RaycastHit downwardHit;
 
                 if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
@@ -202,29 +268,65 @@ public class NPC_Move : MonoBehaviour
                         Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
                         goInGreenZone = true;
                         greenZoneAttack = true;
-                        Vector3 backwardDirection = -rayDirection; // 이동 방향의 반대 방향
-                        agent.velocity = backwardDirection * 0.3f; // 0.3 유닛만큼 후진
 
-                        Debug.Log("멈춤");
+                        // 후진 처리
+                        Vector3 backwardDirection = -rayDirection;
+                        agent.velocity = backwardDirection * 0.3f;
+                        Debug.Log("그린존 멈춤");
                     }
-                    else
-                    {
-                        // Debug.Log("타일 감지됨: " + downwardHit.collider.name);
+                }
+            }
 
+            // 디버그 시각화
+            if (SensorON)
+            {
+                DrawFanShape(rayOrigin, rayDirection, detectionRadius, detectionAngle, segmentCount);
+            }
+            else
+            {
+                foreach (var lr in lineRenderers)
+                {
+                    lr.enabled = false; // LineRenderer 비활성화
+                }
+            }
+
+        }
+
+        void DrawFanShape(Vector3 origin, Vector3 direction, float radius, float angle, int segments)
+        {
+            float step = angle / segments;
+
+            for (int i = 0; i <= segments; i++)
+            {
+                float currentAngle = -angle / 2 + step * i;
+                Vector3 start = origin; // 부채꼴 중심 (월드 좌표 사용)
+                Vector3 end = origin + Quaternion.Euler(0, currentAngle, 0) * direction * radius;
+
+                // Raycast로 장애물 확인
+                Ray ray = new Ray(origin, (end - origin).normalized);
+                if (Physics.Raycast(ray, out RaycastHit hit, radius))
+                {
+                    if (hit.collider.CompareTag("Obstacle"))
+                    {
+                        // 장애물에 닿으면 끝점을 Raycast 충돌 지점으로 설정
+                        end = hit.point;
                     }
                 }
 
+                // LineRenderer 활성화 및 설정
+                lineRenderers[i].enabled = true;
+                lineRenderers[i].SetPosition(0, start); // 시작점 (부채꼴 중심)
+                lineRenderers[i].SetPosition(1, end);   // 끝점 (장애물에 닿으면 해당 지점, 아니면 원래 끝점)
             }
 
-            // 디버그 레이
-            Debug.DrawRay(rayOrigin, rayDirection * detectionRange, Color.red); // 정면
-            Debug.DrawRay(rayOrigin + rayDirection * greenZoneDistance, Vector3.down * greenZoneDistance, Color.green); // 아래 방향
+
+            // 전방 아래 방향 레이 디버그
+            Debug.DrawRay(origin + direction * greenZoneDistance, Vector3.down * detectionRange, Color.yellow);
         }
     }
 
-
-    // MotionTrail을 일정 시간 동안 활성화
-    private IEnumerator ActivateTrailForDuration(float duration)
+        // MotionTrail을 일정 시간 동안 활성화
+        private IEnumerator ActivateTrailForDuration(float duration)
     {
         agent.speed = 5;
         Debug.Log("스피드 5");
