@@ -154,6 +154,13 @@ public class StageUIManager : MonoBehaviour
     public void ActiveSideCutSceneUI(TileSO tileSO)
     {
         _sideCutSceneImg.sprite = tileSO.sideCutSceneImg;
+        
+        //사이드 컷신 사용하지 않는 특정 아이템 및 함정은 바로 리턴
+        if (tileSO.itemID == ItemID.FeverTime || tileSO.trapID == TrapID.Gauntlet)
+        {
+            return;
+        }
+        
         switch (tileSO.tileID)
         {
             case TileID.Item:

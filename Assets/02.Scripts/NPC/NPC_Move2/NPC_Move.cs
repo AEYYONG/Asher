@@ -5,6 +5,10 @@ using UnityEngine.AI;
 
 public class NPC_Move : MonoBehaviour
 {
+    [Header("NPC 상태 변수")]
+    [SerializeField] private bool _isBlinking = false;
+    [SerializeField] private float _blinkTime = 3f;
+    
     public NavMeshAgent agent;
     private Vector3 targetPosition;
     private bool moveInXAxis = true;
@@ -688,5 +692,33 @@ public class NPC_Move : MonoBehaviour
         notDizzy = true;
         AttackAnim = false;
         safe = false;
+    }
+    
+    public IEnumerator ExpiryWarningEffect(float duration)
+    {
+        // 지속 시간 동안 대기
+        yield return new WaitForSeconds(duration - _blinkTime);
+
+        // 종료 N초 전부터 깜빡이기 시작
+        Coroutine _blinkCoroutine = StartCoroutine(BlinkNPC());
+
+        // N초 대기 후 효과 종료
+        yield return new WaitForSeconds(_blinkTime);
+
+        // 종료 처리
+        StopCoroutine(_blinkCoroutine);
+        _isBlinking = false;
+        GetComponent<SpriteRenderer>().enabled = true; // 깜빡임 멈추고 원래 상태로 복원
+        Debug.Log("지속효과 종료 이펙트 끝");
+    }
+
+    IEnumerator BlinkNPC()
+    {
+        _isBlinking = true;
+        while (_isBlinking)
+        {
+            GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }

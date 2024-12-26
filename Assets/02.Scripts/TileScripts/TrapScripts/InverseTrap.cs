@@ -8,6 +8,7 @@ public class InverseTrap : Tile
     {
         base.TrapUse(uiManager);
         StartCoroutine(SetKeyInverse(uiManager));
+        StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration));
     }
 
     IEnumerator SetKeyInverse(StageUIManager uiManager)

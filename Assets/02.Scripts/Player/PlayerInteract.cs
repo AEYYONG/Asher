@@ -2,13 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using Random = System.Random;
 
 public class PlayerInteract : MonoBehaviour
 {
+    [Header("플레이어 상태 변수")]
+    [SerializeField] private bool _isBlinking = false;
+    [SerializeField] private float _blinkTime = 3f;
+    public int activeTransparencyCount = 0; // 투명 아이템 중첩 횟수
+    
+    
+    [Space(5)][Header("타일 관련 변수")]
     //최대 타일 선택 횟수
     [SerializeField] private int maxSelectCnt = 2;
     //현재 타일 선택 횟수
@@ -20,36 +24,37 @@ public class PlayerInteract : MonoBehaviour
     public bool canInteract;
     //타일 검사 flag
     private bool _compareStart;
+    
+    [Space(5)][Header("다른 스크립트 참조")]
     //타일 매니저 스크립트
     private TileManager _tileManager;
-    
     //아이템 추가 이벤트
     public InventorySO inventory;
-    
     //Stage UI Manager
     [SerializeField] private StageUIManager _stageUIManager;
+    //애셔 초상화
+    [SerializeField] private PortraitTest _asherPortrait;
+    //sfx 재생
+    public AudioSource audioSource;
     
     //타일을 뒤집기 위한 레이캐스트
     private RaycastHit _hit;
     private Vector3 _rayPos;
     
+    [Space(5)][Header("그린존")]
     //그린존 사용여부 flag 변수
     //한번 사용하면 더는 추격 상황에서 그린존이 활성화되지 않음.
     public bool useGreenZone = false;
     
+    [Space(5)][Header("투명 안경 아이템")]
     //최근 타일 리스트
     [SerializeField] private int _maxRecentTile;
     public LinkedList<Tile> _recentTiles = new LinkedList<Tile>();
     
+    [Space(5)][Header("피버타임")]
     //피버 타임인지
     private InventoryManager _inventoryManager;
     public bool isFever = false;
-    
-    //애셔 초상화
-    [SerializeField] private PortraitTest _asherPortrait;
-    
-    //sfx 재생
-    public AudioSource audioSource;
 
     public class FeverTile
     {
@@ -59,7 +64,6 @@ public class PlayerInteract : MonoBehaviour
 
     void Awake()
     {
-        _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
         _curSelectCnt = 0;
         canInteract = true;
         _compareStart = false;
@@ -67,6 +71,7 @@ public class PlayerInteract : MonoBehaviour
 
     void Start()
     {
+        _tileManager = GameObject.Find("TileManager").GetComponent<TileManager>();
         _inventoryManager = FindObjectOfType<InventoryManager>();
     }
 
@@ -90,16 +95,23 @@ public class PlayerInteract : MonoBehaviour
             if (Physics.Raycast(_rayPos, Vector3.down, out _hit, 1f))
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
+                
+                //피버타일이라면
                 if (isFever)
                 {
                     //피버타일 이펙트 실행
                     Vector3 vfxPos = transform.position + new Vector3(0, 0, -0.5f);
                     VFXManager.Instance.PlayVFX("FeverTimeTileEffect", vfxPos);
+                    
+                    //인접한 8개의 타일 가져오기
                     List<Tile> nearTiles = curTile.GetNearTiles();
                     List<FeverTile> compareTiles = new List<FeverTile>();
                     List<Tile> returnTiles = new List<Tile>();
+                    
+                    //인접한 타일들 조사하기
                     foreach (var tile in nearTiles)
                     {
+                        //뒤집히지 않은 타일이고 상호작용할 수 있는 타일이라면 뒤집기
                         if (!tile.isSelected && canInteract && tile.tileType != TileType.RandomNotAvail)
                         {
                             //선택 여부 true로 변경
@@ -192,27 +204,40 @@ public class PlayerInteract : MonoBehaviour
                     break;
                 case TileID.HeartStone:
                     Debug.Log("Heart Piece Tile");
+                    //마음의 조각 sfx 재생
                     AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_HeartGem_Success"]);
+                    //타일 맞췄다는 이펙트 재생
                     StartTileMatchEffect(tile1, tile2);
+                    //마음의 조각 사이드 컷신 재생
                     tile1.Use(_stageUIManager);
+                    //애셔 초상화 설정
                     _asherPortrait.SetGood();
+                    //마음의 조각 점수 업데이트
                     StageManager.Instance.UpdateHeartStoneScore();
+                    //타일 초기화 코루틴 호출
                     StartCoroutine(InvokeInitValue());
                     break;
                 case TileID.Item:
                     if (tile1.tileSO.itemID == tile2.tileSO.itemID)
                     {
                         Debug.Log("Same Item Tile");
-                        StartTileMatchEffect(tile1, tile2);
-                        inventory.AddItemEvent(tile1);
-                        _asherPortrait.SetGood();
-                        Debug.Log("픽업 vfx");
-                        StageManager.Instance.UpdateItemScore();
+                        //아이템 획득 vfx 실행
                         VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
+                        //아이템 맞춤 sfx 재생
                         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
+                        //타일 맞췄다는 이펙트 재생
+                        StartTileMatchEffect(tile1, tile2);
+                        //아이템 인벤토리에 추가하기
+                        inventory.AddItemEvent(tile1);
+                        //애셔 초상화 설정
+                        _asherPortrait.SetGood();
+                        //아이템 점수 업데이트
+                        StageManager.Instance.UpdateItemScore();
+                        //타일 초기화 코루틴 호출
                         StartCoroutine(InvokeInitValue());
                         break;
                     }
+                    //같은 아이템이 아니라면
                     Debug.Log("Not Same Item Tile"); 
                     _tileManager.ReturnTile(_tiles);
                     AddRecentTileList(tile1);
@@ -230,7 +255,6 @@ public class PlayerInteract : MonoBehaviour
                     AddRecentTileList(tile2);
                     break;
             }
-            //InitValue();
         }
         else
         {
@@ -238,30 +262,52 @@ public class PlayerInteract : MonoBehaviour
             if (id1 == TileID.Joker && id2 == TileID.Item)
             {
                 Debug.Log("Joker and Item");
-                StartTileMatchEffect(tile1, tile2);
-                inventory.AddItemEvent(tile2);
-                _asherPortrait.SetGood();
-                StageManager.Instance.UpdateItemScore();
+                //아이템 획득 vfx 실행
                 VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
+                //아이템 맞춤 sfx 재생
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
+                //타일 맞춤 효과 재생
+                StartTileMatchEffect(tile1, tile2);
+                //조커 사이드 컷신 실행
+                tile1.Use(_stageUIManager);
+                //아이템 인벤토리에 저장
+                inventory.AddItemEvent(tile2);
+                //애셔 초상화 설정
+                _asherPortrait.SetGood();
+                //아이템 획득 점수 업데이트
+                StageManager.Instance.UpdateItemScore();
+                //타일 값 초기화 코루틴 호출
                 StartCoroutine(InvokeInitValue());
             }
             else if (id1 == TileID.Item && id2 == TileID.Joker)
             {
                 Debug.Log("Joker and Item");
-                StartTileMatchEffect(tile1, tile2);
-                inventory.AddItemEvent(tile1);
-                _asherPortrait.SetGood();
-                StageManager.Instance.UpdateItemScore();
+                //아이템 획득 vfx 실행
                 VFXManager.Instance.PlayVFX("GetItem",_stageUIManager.player.transform);
+                //아이템 맞춤 sfx 재생
                 AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Matching_Item_Success"]);
+                //타일 맞춤 효과 실행
+                StartTileMatchEffect(tile1, tile2);
+                //조커 사이드 컷신 실행
+                tile2.Use(_stageUIManager);
+                //아이템 인벤토리에 추가
+                inventory.AddItemEvent(tile1);
+                //애셔 초상화 설정
+                _asherPortrait.SetGood();
+                //아이템 획득 점수 업데이트
+                StageManager.Instance.UpdateItemScore();
+                //값 초기화 코루틴 호출
                 StartCoroutine(InvokeInitValue());
             }
             else if (id2 == TileID.Trap)
             {
+                //함정 발동 함수 호출
                 tile2.TrapUse(_stageUIManager);
+                //다시 뒤집힐 리스트에서 함정 타일 제거
                 _tiles.Remove(tile2);
+                //나머지 타일 뒤집기
                 _tileManager.ReturnTile(_tiles);
+                AddRecentTileList(tile1);
             }
             else
             {
@@ -269,7 +315,6 @@ public class PlayerInteract : MonoBehaviour
                 AddRecentTileList(tile1);
                 AddRecentTileList(tile2);
             }
-            //InitValue();
         }
     }
 
@@ -294,6 +339,7 @@ public class PlayerInteract : MonoBehaviour
                 {
                     tiles[i].isComplete = true;
                     tiles[j].isComplete = true;
+                    
                     //획득 아이템 리스트에 추가
                     itemList.Add(tiles[i].tile);
                     break;
@@ -305,6 +351,7 @@ public class PlayerInteract : MonoBehaviour
         {
             if (!tiles[i].isComplete)
             {
+                AddRecentTileList(tiles[i].tile);
                 returnTiles.Add(tiles[i].tile);
             }
         }
@@ -322,6 +369,7 @@ public class PlayerInteract : MonoBehaviour
         {
             foreach (var item in items)
             {
+                
                 StageManager.Instance.UpdateItemScore();
                 inventory.AddItemEvent(item);
             }
@@ -380,5 +428,33 @@ public class PlayerInteract : MonoBehaviour
     {
         StartCoroutine(tile1.StartTileMatchEffect());
         StartCoroutine(tile2.StartTileMatchEffect());
+    }
+    
+    public IEnumerator ExpiryWarningEffect(float duration)
+    {
+        // 지속 시간 동안 대기
+        yield return new WaitForSeconds(duration - _blinkTime);
+
+        // 종료 N초 전부터 깜빡이기 시작
+        Coroutine _blinkCoroutine = StartCoroutine(BlinkPlayer());
+
+        // N초 대기 후 효과 종료
+        yield return new WaitForSeconds(_blinkTime);
+
+        // 종료 처리
+        StopCoroutine(_blinkCoroutine);
+        _isBlinking = false;
+        GetComponent<SpriteRenderer>().enabled = true; // 깜빡임 멈추고 원래 상태로 복원
+        Debug.Log("지속효과 종료 이펙트 끝");
+    }
+
+    IEnumerator BlinkPlayer()
+    {
+        _isBlinking = true;
+        while (_isBlinking)
+        {
+            GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 }

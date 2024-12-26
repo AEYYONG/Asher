@@ -9,6 +9,7 @@ public class FeverItem : Tile
         base.ItemUse(uiManager);
         Debug.Log("피버타임 아이템 사용");
         StartCoroutine(FeverTime(uiManager));
+        StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration));
     }
 
     IEnumerator FeverTime(StageUIManager uiManager)
