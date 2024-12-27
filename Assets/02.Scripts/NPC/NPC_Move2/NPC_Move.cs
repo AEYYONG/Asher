@@ -562,7 +562,7 @@ public void AttackedHairBall()
     {
         if (isAttack)
         {
-            Debug.Log($"공격 상태로 애니메이션 유지 - 현재 애니메이션: {currentAnimation}");
+           // Debug.Log($"공격 상태로 애니메이션 유지 - 현재 애니메이션: {currentAnimation}");
             Attack();
             return;
         }
@@ -728,16 +728,33 @@ public void AttackedHairBall()
     // 회피 관련
     public void IsAttackOn()
     {
+        Debug.Log("어택온 함수 호출");
+        SlowMotionEffect.Instance.DoSlowMotion(0.6f);
         if (!agent.isStopped)
         {
-           //
-           //agent.isStopped = true;
+            animator.speed = 1 / 0.6f;
+            StartCoroutine(ResetAnimatorSpeed(animator, 0.75f));
+
+            Dodge_Key textDisplay = FindObjectOfType<Dodge_Key>();
+
+            textDisplay.gameObject.SetActive(true);
+            textDisplay.ShowRandomKey();
+
+            //agent.isStopped = true;
             Debug.Log("공격 애니메이션 진입");
+            
         }
         
     }
+    private IEnumerator ResetAnimatorSpeed(Animator animator, float originalDuration)
+    {
+        float adjustedDuration = originalDuration / 0.6f; // 슬로우 적용된 길이
+        yield return new WaitForSecondsRealtime(adjustedDuration); // 슬로우 상태에서도 정상 대기
+        animator.speed = 1.0f; // 애니메이터 속도 복구
+        Debug.Log("Animator Speed Reset");
+    }
 
-   public void IsAttackSuccess()
+    public void IsAttackSuccess()
     {
         if (asher.GetComponent<Player_Move>().isAttacked && !StageManager.Instance.isGameOver)
         {
