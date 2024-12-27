@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class NPC_Move : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class NPC_Move : MonoBehaviour
     public bool isAsher = false;
     private bool isAttackAnimationPlaying = false;
     public bool safe = false;
+    public GameObject Circle;
+    public Dodge_Key textDisplay;
 
     // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
     public bool goInGreenZone = false;
@@ -61,6 +64,7 @@ public class NPC_Move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Circle.SetActive(false);
         agent.updateRotation = false;
         asher = GameObject.Find("Asher");
         motionTrail = GetComponent<MotionTrail>();
@@ -729,15 +733,16 @@ public void AttackedHairBall()
     public void IsAttackOn()
     {
         Debug.Log("어택온 함수 호출");
+        Circle.SetActive(true);
         SlowMotionEffect.Instance.DoSlowMotion(0.6f);
         if (!agent.isStopped)
         {
             animator.speed = 1 / 0.6f;
             StartCoroutine(ResetAnimatorSpeed(animator, 0.75f));
 
-            Dodge_Key textDisplay = FindObjectOfType<Dodge_Key>();
-
             textDisplay.gameObject.SetActive(true);
+            Circle.SetActive(true);
+            Debug.Log("Circle 활성화됨!");
             textDisplay.ShowRandomKey();
 
             //agent.isStopped = true;
@@ -794,7 +799,7 @@ public void AttackedHairBall()
     {
         Debug.Log("멈추면 안되는데");
         //     Debug.Log("실행");
-
+        WakeUp();
         //플레이어가 회피하지 못한 경우에만 움직임
         if (!safe)
         {

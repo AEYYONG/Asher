@@ -48,6 +48,8 @@ AnimationClip:
       value: {fileID: 21300000, guid: f1007eacf15d57e46befbc05bcfbcd48, type: 3}
     - time: 1.0833334
       value: {fileID: 21300000, guid: eec0dba71db3d204583f41ce1b6ddb29, type: 3}
+    - time: 1.25
+      value: {fileID: 21300000, guid: eec0dba71db3d204583f41ce1b6ddb29, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -84,17 +86,18 @@ AnimationClip:
     - {fileID: 21300000, guid: fee27f1264de0094badc269fb5836c51, type: 3}
     - {fileID: 21300000, guid: f1007eacf15d57e46befbc05bcfbcd48, type: 3}
     - {fileID: 21300000, guid: eec0dba71db3d204583f41ce1b6ddb29, type: 3}
+    - {fileID: 21300000, guid: eec0dba71db3d204583f41ce1b6ddb29, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.1666667
+    m_StopTime: 1.3333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 1
+    m_LoopTime: 0
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0
@@ -123,7 +126,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1
+  - time: 1.1666666
     functionName: IsAttackClear
     data: 
     objectReferenceParameter: {fileID: 0}
