@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,49 +7,57 @@ public class BlackHoleTrap : Tile
 {
     private Vector3 _playerPos;
     private Vector3 _npcPos;
-    private Vector3 _npcRayPos;
-    private RaycastHit _npcRayHit;
-    private bool _isDetect = false;
-    void Update()
-    {
-        if (_isDetect)
-        {
-            _npcRayPos = new Vector3(_npcPos.x, _npcPos.y, _npcPos.z);
-            Debug.DrawRay(_npcRayPos,Vector3.down * 1f, Color.blue);
-            if (Physics.Raycast(_npcRayPos, Vector3.down, out _npcRayHit, 1f))
-            {
-                if (_npcRayHit.collider.CompareTag("Ground"))
-                {
-                    Vector2Int npcTilePos = _npcRayHit.collider.GetComponent<Tile>().ReturnPos();
-                    _npcPos = new Vector3(npcTilePos.x, _npcPos.y, npcTilePos.y);
-                    _isDetect = false;
-                }
-            }
-        }
-    }
+    
     public override void TrapUse(StageUIManager uiManager)
     {
         base.TrapUse(uiManager);
         Debug.Log("블랙홀 아이템 사용");
+        
+        //NPC 옆에 느낌표 띄우기
+        VFXManager.Instance.PlayVFX("TrapEmotion", uiManager.npc.transform.GetChild(0).transform);
+        
         StartCoroutine(SwitchPosition(uiManager));
     }
 
     IEnumerator SwitchPosition(StageUIManager uiManager)
     {
         //플레이어와 NPC 위치 읽어오기
-        _npcPos = uiManager.npc.transform.position;
+        //플레이어도 딱 타일 위치로 이동하기
+        uiManager.player.transform.position = new Vector3(transform.position.x, uiManager.player.transform.position.y, transform.position.z+0.5f);
         _playerPos = uiManager.player.transform.position;
-        _isDetect = true;
+        //npc의 경우 위치를 정수로 반올림해주고, 해당 위치로 이동시키기
+        uiManager.npc.GetComponent<NPC_Move>().agent.enabled = false;
+        _npcPos = uiManager.npc.transform.position;
+        _npcPos = new Vector3((float)Math.Round(_npcPos.x), _npcPos.y, (float)Math.Round(_npcPos.z)-0.3f);
+        uiManager.npc.transform.position = _npcPos;
+        uiManager.npc.GetComponent<NPC_Move>().agent.enabled = true;
+        Debug.Log($"#npc pos : {uiManager.npc.transform.position.x},{uiManager.npc.transform.position.y},{uiManager.npc.transform.position.z}");
         //플레이어와 NPC 움직임 멈추기
-
+        StageManager.Instance.StopAllCharacterMove();
+        
+        //플레이어와 NPC 발 밑에 블랙홀 나타나기
+        ShowBlackHole(_npcPos, _playerPos);
+        
         yield return new WaitForSeconds(tileSO.duration);
+        
         //플레이어와 NPC 위치 바꾸기
         uiManager.npc.transform.position = new Vector3(_playerPos.x, _npcPos.y, _playerPos.z);
         uiManager.player.transform.position = new Vector3(_npcPos.x, _playerPos.y, _npcPos.z);
+        
         //플레이어와 NPC 다시 움직이게 하기
+        StageManager.Instance.StartAllCharacterMove();
         
         //vfx 실행
         Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();
         effectAnimator.SetTrigger("TrapMatch");
+    }
+
+    //블랙홀 나타나게 하는 함수
+    void ShowBlackHole(Vector3 npcPos, Vector3 playerPos)
+    {
+        Vector3 npcBlackholePos = new Vector3(npcPos.x, 0.4f, npcPos.z+0.3f);
+        Vector3 playerBlackholePos = new Vector3(playerPos.x, 0.4f, playerPos.z-0.5f);
+        VFXManager.Instance.PlayVFX("BlackHole",npcBlackholePos);
+        VFXManager.Instance.PlayVFX("BlackHole",playerBlackholePos);
     }
 }
