@@ -560,4 +560,10 @@ public class Player_Move : MonoBehaviour
 
     }
 
+    public void StartRemove(Vector3 position)
+    {
+        targetPosition = position;
+        startPosition = position;
+    }
+
 }

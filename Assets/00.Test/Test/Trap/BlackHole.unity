@@ -13987,14 +13987,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2373049636420588434, guid: 291408fa427bc43c685492fdba59072a, type: 3}
-      propertyPath: vfxDataList.Array.size
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2373049636420588434, guid: 291408fa427bc43c685492fdba59072a, type: 3}
-      propertyPath: vfxDataList.Array.data[11]
-      value: 
-      objectReference: {fileID: 11400000, guid: ce3906ba0d7fd4f51a89d675faf537d4, type: 2}
     - target: {fileID: 4980435471791130560, guid: 291408fa427bc43c685492fdba59072a, type: 3}
       propertyPath: m_Name
       value: -----[Managers]

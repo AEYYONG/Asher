@@ -496,7 +496,7 @@ public void AttackedHairBall()
     }
 
     // 랜덤한 목적지를 설정하고 스냅하는 함수
-    void SetRandomDestination()
+    public void SetRandomDestination()
     {
         bool validPositionFound = false;
 
@@ -822,5 +822,12 @@ public void AttackedHairBall()
             GetComponent<SpriteRenderer>().enabled = !GetComponent<SpriteRenderer>().enabled;
             yield return new WaitForSeconds(0.2f);
         }
+    }
+
+    public void StartRemove()
+    {
+        agent.updateRotation = false;
+        SetRandomDestination();
+        CreateLineRenderers();
     }
 }

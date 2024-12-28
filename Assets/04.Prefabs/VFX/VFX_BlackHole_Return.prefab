@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1576042794538415377}
   - component: {fileID: 152269999426166543}
   m_Layer: 0
-  m_Name: VFX_BlackHole
+  m_Name: VFX_BlackHole_Return
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   castParticle: {fileID: 4640773132741601684}
   castFXDuration: 0.34
   loopingParticle: {fileID: 7496705828469710259}
-  loopDuration: 1.5
+  loopDuration: 0.15
   endParticle: {fileID: 6071272576209294446}
 --- !u!1001 &2705078739606762958
 PrefabInstance:
