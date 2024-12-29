@@ -37,6 +37,7 @@ public class NPC_Move : MonoBehaviour
     public bool safe = false;
     public GameObject Circle;
     public Dodge_Key textDisplay;
+    private float SlowDuration = 2f;
 
     // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
     public bool goInGreenZone = false;
@@ -735,40 +736,52 @@ public void AttackedHairBall()
     {
         Debug.Log("어택온 함수 호출");
         SensorON = false;
-        SlowMotionEffect.Instance.DoSlowMotion(0.6f);
+        Player_Move.Instance.isStart = false;
+        Player_Move.Instance.SlowStart();
         Circle.SetActive(true);
-        if (!agent.isStopped)
-        {
-            animator.speed = 1 / 0.6f;
-            StartCoroutine(ResetAnimatorSpeed(animator, 0.75f));
+        // 슬로우 모션 
+        float startFrame = 1f; // 시작 프레임 (0:01)
+        float endFrame = 9f; // 종료 프레임 (0:09)
+        float duration = 2f; // 2초 동안 재생
 
-            textDisplay.gameObject.SetActive(true);
-            Circle.SetActive(true);
-            
-            Debug.Log("Circle 활성화됨!");
-            Player_Move.Instance.isStart = false;
-            textDisplay.ShowRandomKey();
-
-            //agent.isStopped = true;
-            Debug.Log("공격 애니메이션 진입");
-            
-        }
-        
+        StartCoroutine(PlayAnimationWithSlowMotion(startFrame, endFrame, duration));
     }
-    private IEnumerator ResetAnimatorSpeed(Animator animator, float originalDuration)
+
+
+
+    private IEnumerator PlayAnimationWithSlowMotion(float startFrame, float endFrame, float duration)
     {
-        float adjustedDuration = originalDuration / 0.6f; // 슬로우 적용된 길이
-        yield return new WaitForSecondsRealtime(adjustedDuration); // 슬로우 상태에서도 정상 대기
-        animator.speed = 1.0f; // 애니메이터 속도 복구
-        Debug.Log("Animator Speed Reset");
+        // 총 프레임 수와 FPS
+        float totalFrames = 12f; // 총 프레임 수 (샘플 수)
+        float startNormalizedTime = startFrame / totalFrames; 
+        float endNormalizedTime = endFrame / totalFrames;
+
+        // 슬로우 속도 계산
+        float animationSpeed = (endNormalizedTime - startNormalizedTime) / duration;
+
+        // 현재 애니메이션 상태 유지
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
+        animator.Play(currentState.shortNameHash, -1, startNormalizedTime); // 시작 위치 설정
+        animator.speed = animationSpeed; 
+
+        // 슬로우 지속 시간 대기
+        yield return new WaitForSeconds(duration);
+
+        // 애니메이션 속도 복구
+        animator.speed = 1.0f;
+        Debug.Log($"슬로우 모션 종료 및 애니메이션 완료 - 애니메이션: {currentState.shortNameHash}");
     }
+
+
 
     public void IsAttackSuccess()
     {
+        // 애니메이션 슬로우 해제
+
         if (asher.GetComponent<Player_Move>().isAttacked && !StageManager.Instance.isGameOver)
         {
             Debug.Log("죽음");
-
+            Dodge_Ring.Instance.OffEnable();
             asher.GetComponent<Player_Move>().isAttacked = false;
             isAttack = false;
             StartCoroutine(StageManager.Instance.GameOver());
@@ -796,7 +809,7 @@ public void AttackedHairBall()
             Debug.Log("생존");
             asher.GetComponent<Player_Move>().isAttacked = false;
             isAttack = false;
-            Circle.SetActive(false);
+            Dodge_Ring.Instance.OffEnable();
             // 만약 회피 눌렀으면 3초 정지, 아니면 바로 움직임
             ChangeAnimationState("dizzy2");
             isAnimationLocked = true; // 애니메이션 변경 잠금

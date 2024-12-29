@@ -35,8 +35,7 @@ public class Player_Move : MonoBehaviour
     //회피 관련
     public bool isAttacked = false;
     private bool isDodge = false;
-    // Dodge_Key와 연결
-    public Dodge_Key dodgeKey;
+
 
     //점프 시작했는지
     public bool startJump = false;
@@ -105,7 +104,7 @@ public class Player_Move : MonoBehaviour
     {
         if (isAttacked && !isDodge)
         {
-            dodgeKey.ShowRandomKey(); // Dodge_Key에서 랜덤 키 표시
+            
             isDodge = true;
         }
 
@@ -145,10 +144,12 @@ public class Player_Move : MonoBehaviour
         {
             isAttacked = false;
             startJump = true;
+            animator.speed = 1.0f;
             ChangeAnimationState(PLAYER_JUMP);
             
             Debug.Log("회피 성공!");
             isStart = true;
+            
             Invoke("Dodge", 2f);
         }
         else
@@ -158,7 +159,10 @@ public class Player_Move : MonoBehaviour
         isDodge = false; // 회피 상태 초기화
     }
     
-
+    public void SlowStart()
+    {
+        animator.speed = 0.5f;
+    }
 
     void CreateDirectionalLines()
     {
