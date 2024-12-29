@@ -149,12 +149,13 @@ public class Player_Move : MonoBehaviour
             
             Debug.Log("회피 성공!");
             isStart = true;
-            
+            Dodge_Ring.Instance.OffEnable();
             Invoke("Dodge", 2f);
         }
         else
         {
             Debug.Log("회피 실패!");
+            Dodge_Ring.Instance.OffEnable();
         }
         isDodge = false; // 회피 상태 초기화
     }
