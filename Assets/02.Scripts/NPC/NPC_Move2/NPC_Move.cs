@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class NPC_Move : MonoBehaviour
 {
@@ -34,6 +35,8 @@ public class NPC_Move : MonoBehaviour
     public bool isAsher = false;
     private bool isAttackAnimationPlaying = false;
     public bool safe = false;
+    public GameObject Circle;
+    public Dodge_Key textDisplay;
 
     // 그린존 감지 관련 // ischasing일 때로 통일해도 될 듯
     public bool goInGreenZone = false;
@@ -48,6 +51,7 @@ public class NPC_Move : MonoBehaviour
 
     // npc 시야 관련
     private LineRenderer lineRenderer;
+    public float greenZoneRange = 1f;
     public float detectionRange = 3f; // 감지 거리
     public float detectionAngle = 30f; // 시야각 
     public Material fanMaterial; // 부채꼴 표시를 위한 머티리얼
@@ -61,6 +65,7 @@ public class NPC_Move : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Circle.SetActive(false);
         agent.updateRotation = false;
         asher = GameObject.Find("Asher");
         motionTrail = GetComponent<MotionTrail>();
@@ -265,14 +270,14 @@ public void AttackedHairBall()
                 Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down);
                 RaycastHit downwardHit;
 
-                if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
+                if (Physics.Raycast(downwardRay, out downwardHit, greenZoneRange))
                 {
                     if (downwardHit.collider.CompareTag("GreenZone"))
                     {
                         Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
                         goInGreenZone = true;
                         greenZoneAttack = true;
-
+                        SensorON = false;
                         // 후진 처리
                         Vector3 backwardDirection = -rayDirection;
                         agent.velocity = backwardDirection * 0.3f;
@@ -562,7 +567,7 @@ public void AttackedHairBall()
     {
         if (isAttack)
         {
-            Debug.Log($"공격 상태로 애니메이션 유지 - 현재 애니메이션: {currentAnimation}");
+           // Debug.Log($"공격 상태로 애니메이션 유지 - 현재 애니메이션: {currentAnimation}");
             Attack();
             return;
         }
@@ -728,34 +733,61 @@ public void AttackedHairBall()
     // 회피 관련
     public void IsAttackOn()
     {
+        Debug.Log("어택온 함수 호출");
+        SensorON = false;
+        SlowMotionEffect.Instance.DoSlowMotion(0.6f);
+        Circle.SetActive(true);
         if (!agent.isStopped)
         {
-           //
-           //agent.isStopped = true;
+            animator.speed = 1 / 0.6f;
+            StartCoroutine(ResetAnimatorSpeed(animator, 0.75f));
+
+            textDisplay.gameObject.SetActive(true);
+            Circle.SetActive(true);
+            
+            Debug.Log("Circle 활성화됨!");
+            Player_Move.Instance.isStart = false;
+            textDisplay.ShowRandomKey();
+
+            //agent.isStopped = true;
             Debug.Log("공격 애니메이션 진입");
+            
         }
         
     }
+    private IEnumerator ResetAnimatorSpeed(Animator animator, float originalDuration)
+    {
+        float adjustedDuration = originalDuration / 0.6f; // 슬로우 적용된 길이
+        yield return new WaitForSecondsRealtime(adjustedDuration); // 슬로우 상태에서도 정상 대기
+        animator.speed = 1.0f; // 애니메이터 속도 복구
+        Debug.Log("Animator Speed Reset");
+    }
 
-   public void IsAttackSuccess()
+    public void IsAttackSuccess()
     {
         if (asher.GetComponent<Player_Move>().isAttacked && !StageManager.Instance.isGameOver)
         {
-            if (!isAsher)
-            {// 공격 거리에서 피함
-                Debug.Log("피해서 생존");
-                
-                asher.GetComponent<Player_Move>().isAttacked = false;
-                isAttack = false;
-            }
-            else
-            {
-                Debug.Log("죽음");
-                
-                asher.GetComponent<Player_Move>().isAttacked = false;
-                isAttack = false;
-                StartCoroutine(StageManager.Instance.GameOver());
-            }
+            Debug.Log("죽음");
+
+            asher.GetComponent<Player_Move>().isAttacked = false;
+            isAttack = false;
+            StartCoroutine(StageManager.Instance.GameOver());
+
+            /* if (!isAsher)
+             {// 공격 거리에서 피함
+                 Debug.Log("피해서 생존");
+
+                 asher.GetComponent<Player_Move>().isAttacked = false;
+                 isAttack = false;
+             }
+             else
+             {
+                 Debug.Log("죽음");
+
+                 asher.GetComponent<Player_Move>().isAttacked = false;
+                 isAttack = false;
+                 StartCoroutine(StageManager.Instance.GameOver());
+             }*/
         }
 
         else
@@ -764,7 +796,7 @@ public void AttackedHairBall()
             Debug.Log("생존");
             asher.GetComponent<Player_Move>().isAttacked = false;
             isAttack = false;
-
+            Circle.SetActive(false);
             // 만약 회피 눌렀으면 3초 정지, 아니면 바로 움직임
             ChangeAnimationState("dizzy2");
             isAnimationLocked = true; // 애니메이션 변경 잠금
@@ -777,12 +809,11 @@ public void AttackedHairBall()
     {
         Debug.Log("멈추면 안되는데");
         //     Debug.Log("실행");
-
-        //플레이어가 회피하지 못한 경우에만 움직임
+       /* //플레이어가 회피하지 못한 경우에만 움직임
         if (!safe)
         {
             agent.isStopped = false;
-        }
+        }*/
 
     }
 

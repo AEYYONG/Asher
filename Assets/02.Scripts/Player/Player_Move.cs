@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Player_Move : MonoBehaviour
 {
+    public static Player_Move Instance;
     //시작
     public bool isStart = false;
 
@@ -34,6 +35,8 @@ public class Player_Move : MonoBehaviour
     //회피 관련
     public bool isAttacked = false;
     private bool isDodge = false;
+    // Dodge_Key와 연결
+    public Dodge_Key dodgeKey;
 
     //점프 시작했는지
     public bool startJump = false;
@@ -62,6 +65,11 @@ public class Player_Move : MonoBehaviour
 
     void Start()
     {
+        Instance = this;
+
+
+        Dodge_Key.OnDodgeComplete += HandleDodgeResult;
+
         // "Obstacle" 레이어를 LayerMask로 가져오기
         obstacleLayer = LayerMask.GetMask("Obstacle");
 
@@ -87,8 +95,20 @@ public class Player_Move : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Dodge_Key.OnDodgeComplete -= HandleDodgeResult;
+    }
+
+
     void Update()
     {
+        if (isAttacked && !isDodge)
+        {
+            dodgeKey.ShowRandomKey(); // Dodge_Key에서 랜덤 키 표시
+            isDodge = true;
+        }
+
         if (isSlip)
         {
             Slip();
@@ -118,6 +138,27 @@ public class Player_Move : MonoBehaviour
    
 
     }
+
+    private void HandleDodgeResult(bool success)
+    {
+        if (success)
+        {
+            isAttacked = false;
+            startJump = true;
+            ChangeAnimationState(PLAYER_JUMP);
+            
+            Debug.Log("회피 성공!");
+            isStart = true;
+            Invoke("Dodge", 2f);
+        }
+        else
+        {
+            Debug.Log("회피 실패!");
+        }
+        isDodge = false; // 회피 상태 초기화
+    }
+    
+
 
     void CreateDirectionalLines()
     {
@@ -423,7 +464,7 @@ public class Player_Move : MonoBehaviour
         }
 
 
-        else if ((Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.LeftShift)))
+     /*   else if ((Input.GetKey(KeyCode.RightShift)||Input.GetKey(KeyCode.LeftShift)))
         {
             
             if (isAttacked && !isDodge)
@@ -441,7 +482,7 @@ public class Player_Move : MonoBehaviour
             }
             isDodge = true;
 
-        }
+        }*/
         else if (!Input.anyKey && !startJump)
         {
             ChangeAnimationState(PLAYER_IDLE);
