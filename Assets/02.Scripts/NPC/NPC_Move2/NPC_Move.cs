@@ -51,6 +51,7 @@ public class NPC_Move : MonoBehaviour
 
     // npc 시야 관련
     private LineRenderer lineRenderer;
+    public float greenZoneRange = 1f;
     public float detectionRange = 3f; // 감지 거리
     public float detectionAngle = 30f; // 시야각 
     public Material fanMaterial; // 부채꼴 표시를 위한 머티리얼
@@ -269,14 +270,14 @@ public void AttackedHairBall()
                 Ray downwardRay = new Ray(rayOrigin + rayDirection * greenZoneDistance, Vector3.down);
                 RaycastHit downwardHit;
 
-                if (Physics.Raycast(downwardRay, out downwardHit, detectionRange))
+                if (Physics.Raycast(downwardRay, out downwardHit, greenZoneRange))
                 {
                     if (downwardHit.collider.CompareTag("GreenZone"))
                     {
                         Debug.Log("그린존 감지됨: " + downwardHit.collider.name);
                         goInGreenZone = true;
                         greenZoneAttack = true;
-
+                        SensorON = false;
                         // 후진 처리
                         Vector3 backwardDirection = -rayDirection;
                         agent.velocity = backwardDirection * 0.3f;
@@ -733,8 +734,9 @@ public void AttackedHairBall()
     public void IsAttackOn()
     {
         Debug.Log("어택온 함수 호출");
-        Circle.SetActive(true);
+        SensorON = false;
         SlowMotionEffect.Instance.DoSlowMotion(0.6f);
+        Circle.SetActive(true);
         if (!agent.isStopped)
         {
             animator.speed = 1 / 0.6f;
@@ -742,7 +744,9 @@ public void AttackedHairBall()
 
             textDisplay.gameObject.SetActive(true);
             Circle.SetActive(true);
+            
             Debug.Log("Circle 활성화됨!");
+            Player_Move.Instance.isStart = false;
             textDisplay.ShowRandomKey();
 
             //agent.isStopped = true;
@@ -763,21 +767,27 @@ public void AttackedHairBall()
     {
         if (asher.GetComponent<Player_Move>().isAttacked && !StageManager.Instance.isGameOver)
         {
-            if (!isAsher)
-            {// 공격 거리에서 피함
-                Debug.Log("피해서 생존");
-                
-                asher.GetComponent<Player_Move>().isAttacked = false;
-                isAttack = false;
-            }
-            else
-            {
-                Debug.Log("죽음");
-                
-                asher.GetComponent<Player_Move>().isAttacked = false;
-                isAttack = false;
-                StartCoroutine(StageManager.Instance.GameOver());
-            }
+            Debug.Log("죽음");
+
+            asher.GetComponent<Player_Move>().isAttacked = false;
+            isAttack = false;
+            StartCoroutine(StageManager.Instance.GameOver());
+
+            /* if (!isAsher)
+             {// 공격 거리에서 피함
+                 Debug.Log("피해서 생존");
+
+                 asher.GetComponent<Player_Move>().isAttacked = false;
+                 isAttack = false;
+             }
+             else
+             {
+                 Debug.Log("죽음");
+
+                 asher.GetComponent<Player_Move>().isAttacked = false;
+                 isAttack = false;
+                 StartCoroutine(StageManager.Instance.GameOver());
+             }*/
         }
 
         else
@@ -786,7 +796,7 @@ public void AttackedHairBall()
             Debug.Log("생존");
             asher.GetComponent<Player_Move>().isAttacked = false;
             isAttack = false;
-
+            Circle.SetActive(false);
             // 만약 회피 눌렀으면 3초 정지, 아니면 바로 움직임
             ChangeAnimationState("dizzy2");
             isAnimationLocked = true; // 애니메이션 변경 잠금
@@ -799,12 +809,11 @@ public void AttackedHairBall()
     {
         Debug.Log("멈추면 안되는데");
         //     Debug.Log("실행");
-        WakeUp();
-        //플레이어가 회피하지 못한 경우에만 움직임
+       /* //플레이어가 회피하지 못한 경우에만 움직임
         if (!safe)
         {
             agent.isStopped = false;
-        }
+        }*/
 
     }
 

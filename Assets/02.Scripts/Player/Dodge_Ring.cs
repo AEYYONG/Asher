@@ -16,6 +16,12 @@ public class Dodge_Ring : MonoBehaviour
         ringImage.fillAmount = 0f;
     }
 
+    private void OnEnable()
+    {
+        elapsedTime = 0f;
+        ringImage.fillAmount = 0f;
+    }
+
     void Update()
     {
         // 시간이 지나면서 링을 채우는 로직

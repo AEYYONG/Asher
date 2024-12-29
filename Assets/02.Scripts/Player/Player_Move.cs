@@ -106,7 +106,7 @@ public class Player_Move : MonoBehaviour
         if (isAttacked && !isDodge)
         {
             dodgeKey.ShowRandomKey(); // Dodge_Key에서 랜덤 키 표시
-            isDodge = true; // 중복 표시 방지
+            isDodge = true;
         }
 
         if (isSlip)
@@ -144,8 +144,11 @@ public class Player_Move : MonoBehaviour
         if (success)
         {
             isAttacked = false;
+            startJump = true;
             ChangeAnimationState(PLAYER_JUMP);
+            
             Debug.Log("회피 성공!");
+            isStart = true;
             Invoke("Dodge", 2f);
         }
         else
