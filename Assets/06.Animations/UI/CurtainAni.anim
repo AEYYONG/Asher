@@ -70,7 +70,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2.4166667
+        time: 3
         value: 0
         inSlope: Infinity
         outSlope: Infinity
@@ -109,17 +109,17 @@ AnimationClip:
       value: {fileID: 21300000, guid: b5e466a2275c74639b64a938aa360973, type: 3}
     - time: 1.4166666
       value: {fileID: 21300000, guid: b5e466a2275c74639b64a938aa360973, type: 3}
-    - time: 2.4166667
+    - time: 3
       value: {fileID: 21300000, guid: 7f0f29abc61a44d07bee6ab175c8addd, type: 3}
-    - time: 2.5
+    - time: 3.0833333
       value: {fileID: 21300000, guid: 82278e9d1bc344740a50057c2a422437, type: 3}
-    - time: 2.5833333
+    - time: 3.1666667
       value: {fileID: 21300000, guid: b29e2c4b7a22c4353877ba9a5e4e42bc, type: 3}
-    - time: 2.6666667
+    - time: 3.25
       value: {fileID: 21300000, guid: c1a9bdde418394a6c87896ac070f4091, type: 3}
-    - time: 2.75
+    - time: 3.3333333
       value: {fileID: 21300000, guid: b82da7d69b5a8433891d276187ee1343, type: 3}
-    - time: 2.8333333
+    - time: 3.4166667
       value: {fileID: 21300000, guid: 22a20556284ee4f938b5d2369923a320, type: 3}
     attribute: m_Sprite
     path: LeftCurtain
@@ -148,17 +148,17 @@ AnimationClip:
       value: {fileID: 21300000, guid: 8cb2d2431f1ee4810961faede83bfdb1, type: 3}
     - time: 1.4166666
       value: {fileID: 21300000, guid: 8cb2d2431f1ee4810961faede83bfdb1, type: 3}
-    - time: 2.4166667
+    - time: 3
       value: {fileID: 21300000, guid: 06ae5b0776dec4f6f9604beb9870a222, type: 3}
-    - time: 2.5
+    - time: 3.0833333
       value: {fileID: 21300000, guid: cc892ffa4d0d54839b57d57e596c9db3, type: 3}
-    - time: 2.5833333
+    - time: 3.1666667
       value: {fileID: 21300000, guid: 1b8e50a8687f8441ca9a4e74c7a5e117, type: 3}
-    - time: 2.6666667
+    - time: 3.25
       value: {fileID: 21300000, guid: 429bef9c370d14711a1ed082800a6fd8, type: 3}
-    - time: 2.75
+    - time: 3.3333333
       value: {fileID: 21300000, guid: 5fe5496435d694409a0442091a8bbb62, type: 3}
-    - time: 2.8333333
+    - time: 3.4166667
       value: {fileID: 21300000, guid: 22a20556284ee4f938b5d2369923a320, type: 3}
     attribute: m_Sprite
     path: RightCurtain
@@ -246,7 +246,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 2.9166665
+    m_StopTime: 3.5
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -315,7 +315,7 @@ AnimationClip:
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
-        time: 2.4166667
+        time: 3
         value: 0
         inSlope: Infinity
         outSlope: Infinity
