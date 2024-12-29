@@ -39,17 +39,27 @@ public class Dodge_Key : MonoBehaviour
         keyPromptText.gameObject.SetActive(true);
         isKeyPromptActive = true;
 
-        // 0.2초 동안 활성화
-        float timer = 1.6f;
+        // 2초 동안 활성화
+        float timer =2f;
         while (timer > 0f)
         {
-            if (Input.GetKeyDown(currentKey.ToLower())) // 올바른 키 입력
+            if (Input.anyKeyDown) // 사용자가 키를 누름
             {
-                OnDodgeComplete?.Invoke(true); // 회피 성공 알림
-                ClearPrompt();
-                yield break;
+                if (Input.GetKeyDown(currentKey.ToLower())) // 올바른 키 입력
+                {
+                    OnDodgeComplete?.Invoke(true); // 회피 성공 알림
+                    ClearPrompt();
+                    yield break; // 성공 시 코루틴 종료
+                }
+                else
+                {
+                    OnDodgeComplete?.Invoke(false); // 잘못된 키 입력으로 실패
+                    ClearPrompt();
+                    yield break; // 실패 시 코루틴 종료
+                }
             }
-            timer -= Time.deltaTime;
+
+            timer -= Time.deltaTime; // 시간 감소
             yield return null;
         }
 
