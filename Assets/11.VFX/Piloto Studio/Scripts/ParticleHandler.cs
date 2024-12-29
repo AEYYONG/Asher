@@ -83,7 +83,7 @@ namespace PilotoStudio
             yield return new WaitForSeconds(duration);
             var particleSystemMain = particleSystem.emission;
             particleSystemMain.rateOverTimeMultiplier = 0;
-            //   particleSystem.gameObject.SetActive(false);
+            particleSystem.gameObject.SetActive(false);
         }
     }
 
