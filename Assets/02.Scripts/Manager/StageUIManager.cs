@@ -33,6 +33,10 @@ public class StageUIManager : MonoBehaviour
     public TileManager tileManager;
 
     [Header("점수 관련 UI")] [SerializeField] private TextMeshProUGUI scoreUI;
+
+    [Space(5)] [Header("셔플(무대정리) UI")] [SerializeField]
+    private GameObject _shuffleCanvas;
+    [SerializeField] private GameObject _defaultUI;
     class ItemSelectUI
     {
         public GameObject selectionUI;
@@ -243,5 +247,12 @@ public class StageUIManager : MonoBehaviour
     {
         Animator animator = _sideCutSceneUI.GetComponent<Animator>();
         animator.SetTrigger("SlideOut");
+    }
+
+    public void SetShuffleTrap()
+    {
+        //default ui 끄기
+        //타이머 멈추기
+        //npc 멈추기
     }
 }
