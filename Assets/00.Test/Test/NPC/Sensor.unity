@@ -9412,6 +9412,9 @@ MonoBehaviour:
   _inventoryManager: {fileID: 83493234}
   tileManager: {fileID: 0}
   scoreUI: {fileID: 1069695683}
+  shuffleCanvas: {fileID: 0}
+  defaultUI: {fileID: 0}
+  screenSpaceCamera: {fileID: 0}
   fullCamera: {fileID: 1605910125}
   npcIndicator: {fileID: 1853268666}
   fogUI: {fileID: 728839924}
