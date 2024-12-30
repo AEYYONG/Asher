@@ -79,6 +79,10 @@ public class NPC_Move : MonoBehaviour
         // Update is called once per frame
         void Update()
     {
+        //R을 누르면 센서 보임
+        if (Input.GetKeyDown(KeyCode.R)){
+            SensorON = true;
+        }
         
         DetectInFront();
         if (isChasing)
@@ -185,7 +189,7 @@ public void AttackedHairBall()
 
             // 부채꼴 설정
             float detectionAngle = 30f; // 각도
-            float detectionRadius = 2f; // 반경
+
             int segmentCount = segments; // 세그먼트 수
 
             bool targetDetected = false;
@@ -200,18 +204,17 @@ public void AttackedHairBall()
 
 
                 Ray ray = new Ray(rayOrigin, rayDirectionSegment);
-                if (Physics.Raycast(ray, out RaycastHit hit, detectionRadius))
+                if (Physics.Raycast(ray, out RaycastHit hit, detectionRange))
                 {
                     // 장애물 감지: 끝점을 hit.point로 조정
                     Vector3 end = hit.point;
 
                     // LineRenderer 업데이트 (시각화)
+
                     if (SensorON)
                     {
-                        SetLineRendererTransparency(0.4f);
-                        lineRenderers[i].enabled = true;
-                        lineRenderers[i].SetPosition(0, rayOrigin);
-                        lineRenderers[i].SetPosition(1, end);
+                        // 5초 동안 라인 활성화
+                        StartCoroutine(EnableSingleLineRendererForDuration(lineRenderers[i], rayOrigin, end, 5f));
                     }
 
                     // 감지 대상 처리
@@ -290,7 +293,7 @@ public void AttackedHairBall()
             // 디버그 시각화
             if (SensorON)
             {
-                DrawFanShape(rayOrigin, rayDirection, detectionRadius, detectionAngle, segmentCount);
+                DrawFanShape(rayOrigin, rayDirection, detectionRange, detectionAngle, segmentCount);
             }
             else
             {
@@ -335,8 +338,23 @@ public void AttackedHairBall()
         }
     }
 
-        // MotionTrail을 일정 시간 동안 활성화
-        private IEnumerator ActivateTrailForDuration(float duration)
+    private IEnumerator EnableSingleLineRendererForDuration(LineRenderer lineRenderer, Vector3 start, Vector3 end, float duration)
+    {
+        // LineRenderer 활성화 및 설정
+        SetLineRendererTransparency(0.4f);
+        lineRenderer.enabled = true;
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+
+        yield return new WaitForSeconds(duration); // 지정된 시간 대기
+
+        // LineRenderer 비활성화
+        lineRenderer.enabled = false;
+        SensorON = false;
+    }
+
+    // MotionTrail을 일정 시간 동안 활성화
+    private IEnumerator ActivateTrailForDuration(float duration)
     {
         agent.speed = 5;
         Debug.Log("스피드 5");

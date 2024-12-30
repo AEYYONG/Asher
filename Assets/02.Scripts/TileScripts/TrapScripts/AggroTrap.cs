@@ -25,7 +25,8 @@ public class AggroTrap : Tile
             NavMeshAgent agent = npc.GetComponent<NavMeshAgent>();
             float originalSpeed = agent != null ? agent.speed : 1.5f;
 
-            npc.detectionRange = 4.5f;
+            npc.detectionRange = 3.5f;
+            npc.SensorON = true;
             Debug.Log("NPC의 detectionRange가 4.5로 변경");
 
 

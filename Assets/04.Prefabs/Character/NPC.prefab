@@ -109,16 +109,19 @@ MonoBehaviour:
   AttackAnim: 0
   isAsher: 0
   safe: 0
+  Circle: {fileID: 0}
+  textDisplay: {fileID: 0}
   goInGreenZone: 0
   greenZoneDistance: 0.7
   greenZoneAttack: 0
   isAnimationLocked: 0
+  greenZoneRange: 1
   detectionRange: 2
   detectionAngle: 30
-  fanMaterial: {fileID: 2100000, guid: ee6943563a1b1724daa9a7783149be87, type: 2}
+  fanMaterial: {fileID: 2100000, guid: 6965665615c6e614f9e58de4ae5372c3, type: 2}
   heightOffset: 0.3
-  segments: 50
-  lineMaterial: {fileID: 0}
+  segments: 45
+  lineMaterial: {fileID: 2100000, guid: 6965665615c6e614f9e58de4ae5372c3, type: 2}
   SensorON: 0
 --- !u!212 &1619662974807616425
 SpriteRenderer:
@@ -160,7 +163,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 1e769dee8910bfa4cb49d70aed8417fc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

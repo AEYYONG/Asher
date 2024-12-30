@@ -8,6 +8,7 @@ public class Player_Move : MonoBehaviour
 {
     public static Player_Move Instance;
     //시작
+    [HideInInspector]
     public bool isStart = false;
 
     public float moveSpeed = 5f;  // 이동 속도
@@ -64,11 +65,13 @@ public class Player_Move : MonoBehaviour
     public bool useBall = false;
 
 
-
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     void Start()
     {
-        Instance = this;
 
 
         Dodge_Key.OnDodgeComplete += HandleDodgeResult;
@@ -106,6 +109,7 @@ public class Player_Move : MonoBehaviour
 
     void Update()
     {
+
         if (isAttacked && !isDodge)
         {
             
@@ -117,6 +121,7 @@ public class Player_Move : MonoBehaviour
             Slip();
         }
         else if(!isStart){
+            Debug.Log("플레이어가 정지 상태입니다.");
             return;
         }
         else MovePlayer();  // 이동 처리
@@ -153,12 +158,13 @@ public class Player_Move : MonoBehaviour
             
             Debug.Log("회피 성공!");
             isStart = true;
-            
+            Dodge_Ring.Instance.OffEnable();
             Invoke("Dodge", 2f);
         }
         else
         {
             Debug.Log("회피 실패!");
+            Dodge_Ring.Instance.OffEnable();
         }
         isDodge = false; // 회피 상태 초기화
     }
@@ -300,6 +306,12 @@ public class Player_Move : MonoBehaviour
         slipping = true;
     }
 
+    public void Sliptrue()
+    {
+        Debug.Log("변수 제발 바뀌어라");
+        isStart = false;
+        ChangeAnimationState(PLAYER_IDLE);
+    }
     void Slip()
     {
         // 미끄러짐 이동 처리
@@ -313,6 +325,7 @@ public class Player_Move : MonoBehaviour
             isSlip = false;  // isSlip을 false로 설정하여 미끄러짐 중지
             isMoving = true;
             Debug.Log("미끄러짐 종료 - 장애물에 부딪힘");
+            isStart = true;
             OnSlipEnd?.Invoke();
 
             // 목표 위치 설정 및 애니메이션 업데이트
@@ -492,7 +505,7 @@ public class Player_Move : MonoBehaviour
             isDodge = true;
 
         }*/
-        else if (!Input.anyKey && !startJump)
+        else if (!Input.anyKey && !startJump &&!isSlip)
         {
             ChangeAnimationState(PLAYER_IDLE);
         }
