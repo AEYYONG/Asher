@@ -15,7 +15,7 @@ public class AudioManager : Singleton<AudioManager>
     
     public AudioSource _bgmSource; // BGM을 재생하는 AudioSource
     private List<AudioSource> _sfxSources = new List<AudioSource>(); // SFX를 재생하는 AudioSource 리스트
-    [Range(0f, 1f)] public float bgmVolume = 1f;
+    [Range(0f, 1f)] public float bgmVolume = 0.1f;
     [SerializeField] private int _maxSFXPoolSize = 10;
 
     void Start()
@@ -41,7 +41,7 @@ public class AudioManager : Singleton<AudioManager>
         // BGM 소스 생성
         _bgmSource = gameObject.AddComponent<AudioSource>();
         _bgmSource.loop = true;
-        PlayBGM(bgmDictionary["Asher Main Theme"]);
+        PlayBGM(bgmDictionary["Asher Title Theme"]);
     }
     public void PlayBGM(AudioData audioData)
     {
@@ -61,7 +61,7 @@ public class AudioManager : Singleton<AudioManager>
         // 기존 BGM 중지 후 새 BGM 설정
         _bgmSource.Stop();
         _bgmSource.clip = audioData.audioClip;
-        _bgmSource.volume = Mathf.Clamp(bgmVolume, 0f, 1f); //option에서 초기 볼륨 동기화
+        _bgmSource.volume = audioData.volume; //option에서 초기 볼륨 동기화
         _bgmSource.loop = audioData.loop;
         _bgmSource.playOnAwake = audioData.playOnAwake;
 

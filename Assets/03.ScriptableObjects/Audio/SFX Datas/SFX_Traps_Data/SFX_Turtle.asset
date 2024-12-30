@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0af1830949e254935a41d0eb417fea1b, type: 3}
-  m_Name: BGM_Lobby
+  m_Name: SFX_Turtle
   m_EditorClassIdentifier: 
-  audioName: Asher Main Theme
-  audioClip: {fileID: 8300000, guid: c1f1a9d1f52904121b8bab5dd7a4b5f3, type: 3}
-  loop: 1
-  playOnAwake: 1
-  volume: 0.1
+  audioName: SFX_BlackHole
+  audioClip: {fileID: 8300000, guid: 137cede797e55408d84ee8cb46ae25c9, type: 3}
+  loop: 0
+  playOnAwake: 0
+  volume: 0.5

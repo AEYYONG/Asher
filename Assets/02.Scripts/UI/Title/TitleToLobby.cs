@@ -19,6 +19,8 @@ public class TitleToLobby : MonoBehaviour
 
     IEnumerator LoadNextScene(float delay)
     {
+        //sfx 실행
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_PressToStart"]);
         isSceneChanging = true;
         yield return null;
         MySceneManager.Instance.ChangeScene("Lobby");
