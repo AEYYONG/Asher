@@ -55,7 +55,6 @@ public class Dodge_Ring : MonoBehaviour
             elapsedTime += Time.deltaTime;
             float fill = elapsedTime / duration; // 현재 시간 비율
             ringImage.fillAmount = fill;
-            Debug.Log($"Elapsed Time: {elapsedTime}, Fill Amount: {ringImage.fillAmount}");
         }
         
     }

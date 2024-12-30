@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 182253446604268967}
   - component: {fileID: 6913778308079264940}
   - component: {fileID: 907695079208561728}
-  - component: {fileID: 385565235384987310}
+  - component: {fileID: 1736629935702495738}
   m_Layer: 0
   m_Name: Asher
   m_TagString: Player
@@ -180,7 +180,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
   m_LocalPosition: {x: 5, y: 0.5, z: 7.5}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0}
+  m_LocalScale: {x: 0.2, y: 0.19999999, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4132541015221275243}
@@ -206,7 +206,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ed75086e20d4b4335b8308a713510cf4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -226,7 +226,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 290b646c8307344f3831ad0879554085, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -331,8 +331,8 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   useGreenZone: 0
   _maxRecentTile: 5
-  isFever: 1
---- !u!114 &385565235384987310
+  isFever: 0
+--- !u!114 &1736629935702495738
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -354,7 +354,7 @@ MonoBehaviour:
   isSlip: 0
   HairBall: {fileID: 7744802067183723968, guid: c46f5b56fe5e6f6418491300439b3f52, type: 3}
   isfire: 0
-  lineRendererPrefab: {fileID: 0}
+  lineRendererPrefab: {fileID: 9152889682401962708, guid: 9201adcbed10b8a46b8971fde0aba024, type: 3}
   lineLength: 5
   obstacleLayer:
     serializedVersion: 2

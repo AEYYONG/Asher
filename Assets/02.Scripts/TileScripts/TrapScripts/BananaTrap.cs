@@ -8,9 +8,13 @@ public class BananaTrap : Tile
     public GameObject stunVFX;
     public override void TrapUse(StageUIManager uiManager)
     {
+        Player_Move.Instance.Sliptrue();
+
         base.TrapUse(uiManager);
+       
         Debug.Log("바나나 아이템 사용");
         StartCoroutine(StartSlip(uiManager));
+        
     }
 
     IEnumerator StartSlip(StageUIManager uiManager)
