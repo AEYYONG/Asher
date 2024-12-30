@@ -36,10 +36,6 @@ public class BlackHoleTrap : Tile
         //플레이어와 NPC 움직임 멈추기
         StageManager.Instance.StopAllCharacterMove();
         
-        //플레이어와 NPC의 애니메이션 강제 변경
-        uiManager.player.GetComponent<Animator>().Play("idle");
-        uiManager.npc.GetComponent<Animator>().Play("down_npc");
-        
         //플레이어와 NPC 발 밑에 블랙홀 나타나기
         ShowBlackHole(_npcPos, _playerPos);
         
@@ -68,13 +64,7 @@ public class BlackHoleTrap : Tile
         
         yield return new WaitForSeconds(0.5f);
         
-        //플레이어와 NPC의 애니메이션 강제 변경
-        uiManager.player.GetComponent<Animator>().Play("idle");
-        uiManager.npc.GetComponent<Animator>().Play("down_npc");
-        
         //플레이어와 NPC 다시 움직이게 하기
-        uiManager.player.GetComponent<Player_Move>().StartRemove(_playerPos);
-        uiManager.npc.GetComponent<NPC_Move>().StartRemove();
         StageManager.Instance.StartAllCharacterMove();
         
         //vfx 실행

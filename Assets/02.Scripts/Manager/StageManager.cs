@@ -52,10 +52,29 @@ public class StageManager : Singleton<StageManager>
     {
         player.isStart = false;
         npc.agent.isStopped = true;
+        
+        //플레이어와 NPC의 애니메이션 강제 변경
+        player.GetComponent<Animator>().Play("idle");
+        npc.GetComponent<Animator>().Play("down_npc");
+        
+        //타이머 일시 중지
+        timer.StopTimer();
     }
 
     public void StartAllCharacterMove()
     {
+        //플레이어와 NPC의 애니메이션 강제 변경
+        player.GetComponent<Animator>().Play("idle");
+        npc.GetComponent<Animator>().Play("down_npc");
+        
+        //이동 지점 재설정
+        player.StartRemove(player.transform.position);
+        npc.StartRemove();
+        
+        //타이머 재개하기
+        timer.RestartTimer();
+        
+        //플레이어와 NPC 움직임 재개하기
         player.isStart = true;
         npc.agent.isStopped = false;
     }

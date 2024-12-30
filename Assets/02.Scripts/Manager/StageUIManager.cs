@@ -33,6 +33,12 @@ public class StageUIManager : MonoBehaviour
     public TileManager tileManager;
 
     [Header("점수 관련 UI")] [SerializeField] private TextMeshProUGUI scoreUI;
+
+    [Space(5)] [Header("셔플(무대정리) UI")] 
+    public GameObject shuffleCanvas;
+    public GameObject defaultUI;
+    public Camera screenSpaceCamera;
+    
     class ItemSelectUI
     {
         public GameObject selectionUI;
