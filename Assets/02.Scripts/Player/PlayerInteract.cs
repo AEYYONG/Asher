@@ -102,6 +102,8 @@ public class PlayerInteract : MonoBehaviour
                     //피버타일 이펙트 실행
                     Vector3 vfxPos = transform.position + new Vector3(0, 0, -0.5f);
                     VFXManager.Instance.PlayVFX("FeverTimeTileEffect", vfxPos);
+                    //sfx
+                    AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Fever_Hammer"]);
                     
                     //인접한 8개의 타일 가져오기
                     List<Tile> nearTiles = curTile.GetNearTiles();
