@@ -15,6 +15,7 @@ public class StageInfoSO : ScriptableObject
     
     public int GetHeartStoneCnt() { return heartStoneCurCnt; }
     public void IncreaseHeartStoneCnt() { heartStoneCurCnt++; }
+    public void InitHeartStoneCnt() { heartStoneCurCnt = 0;}
     
 
     private void OnEnable()

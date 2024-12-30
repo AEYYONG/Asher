@@ -36,6 +36,8 @@ public class BlackHoleTrap : Tile
         //플레이어와 NPC 움직임 멈추기
         StageManager.Instance.StopAllCharacterMove();
         
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_BlackHole"]);
         //플레이어와 NPC 발 밑에 블랙홀 나타나기
         ShowBlackHole(_npcPos, _playerPos);
         

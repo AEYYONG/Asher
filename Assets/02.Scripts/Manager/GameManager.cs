@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public string lobbyBgmName = "One Step Forward";
+    public string lobbyBgmName = "Asher Main Theme";
 }

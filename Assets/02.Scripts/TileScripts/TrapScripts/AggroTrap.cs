@@ -14,6 +14,8 @@ public class AggroTrap : Tile
 
     private IEnumerator ActivateAggroTrap(StageUIManager uiManager)
     {
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Aggro"]);
         //어그로 vfx 실행
         VFXManager.Instance.PlayVFX("Aggro", uiManager.npc.transform);
         

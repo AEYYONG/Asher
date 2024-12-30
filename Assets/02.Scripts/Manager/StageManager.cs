@@ -20,6 +20,7 @@ public class StageManager : Singleton<StageManager>
     }
     void Start()
     {
+        stageSO.InitHeartStoneCnt();
         player = FindObjectOfType<Player_Move>();
         npc = FindObjectOfType<NPC_Move>();
         StopAllCharacterMove();
@@ -84,15 +85,18 @@ public class StageManager : Singleton<StageManager>
 
     IEnumerator GameClear()
     {
+        stageSO.InitHeartStoneCnt();
         isEnd = true;
         StopAllCharacterMove();
         VFXManager.Instance.PlayVFX("GameClearTransition",FindObjectOfType<StageUIManager>().transform);
         yield return new WaitForSeconds(1.4f);
         MySceneManager.Instance.ChangeScene("GameClear");
+        AudioManager.Instance.PlayBGM(AudioManager.Instance.bgmDictionary["Asher Talk Theme"]);
     }
 
     public IEnumerator GameOver()
     {
+        stageSO.InitHeartStoneCnt();
         isGameOver = true;
         StopAllCharacterMove();
         //현재 플레이어 위치 스크린 좌표로 가져오기
@@ -110,6 +114,7 @@ public class StageManager : Singleton<StageManager>
         gameOverTransition.GetComponent<Animator>().SetTrigger("Start Transition");
         yield return new WaitForSeconds(2.5f);
         MySceneManager.Instance.ChangeScene("GameOver");
+        AudioManager.Instance.PlayBGM(AudioManager.Instance.bgmDictionary["Asher Talk Theme"]);
     }
     
     public void UpdateHeartStoneScore()
