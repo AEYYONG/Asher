@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player_Move : MonoBehaviour
 {
@@ -43,9 +45,11 @@ public class Player_Move : MonoBehaviour
     //혼란 함정 flag
     public bool isInverse = false;
 
+    //바나나 trap
     public bool isSlip = false;
     private Vector3 randomDirection;
     private bool slipping = false;
+    public Action OnSlipEnd;
 
     // 헤어볼
     public GameObject HairBall;
@@ -310,6 +314,7 @@ public class Player_Move : MonoBehaviour
             isSlip = false;  // isSlip을 false로 설정하여 미끄러짐 중지
             isMoving = true;
             Debug.Log("미끄러짐 종료 - 장애물에 부딪힘");
+            OnSlipEnd?.Invoke();
 
             // 목표 위치 설정 및 애니메이션 업데이트
             targetPosition = transform.position;

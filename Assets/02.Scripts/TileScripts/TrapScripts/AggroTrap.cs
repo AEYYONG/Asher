@@ -8,12 +8,15 @@ public class AggroTrap : Tile
     public override void TrapUse(StageUIManager uiManager)
     {
         base.TrapUse(uiManager);
-        StartCoroutine(ActivateAggroTrap());
+        StartCoroutine(ActivateAggroTrap(uiManager));
         StartCoroutine(uiManager.npc.GetComponent<NPC_Move>().ExpiryWarningEffect(tileSO.duration));
     }
 
-    private IEnumerator ActivateAggroTrap()
+    private IEnumerator ActivateAggroTrap(StageUIManager uiManager)
     {
+        //어그로 vfx 실행
+        VFXManager.Instance.PlayVFX("Aggro", uiManager.npc.transform);
+        
         NPC_Move npc = FindObjectOfType<NPC_Move>();
         if (npc != null)
         {

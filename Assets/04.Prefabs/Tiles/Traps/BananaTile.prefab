@@ -149,6 +149,8 @@ MonoBehaviour:
   _animator: {fileID: 3761349924235490333}
   tileManager: {fileID: 0}
   playerInteract: {fileID: 0}
+  bananaVFX: {fileID: 7218650483858176857, guid: 4db6dbe0d4d97420498c76889e3291b7, type: 3}
+  stunVFX: {fileID: 1703367692747339382, guid: 0fe93bac6d3fd406fbb06d388a27ef9e, type: 3}
 --- !u!1001 &8602036361611741554
 PrefabInstance:
   m_ObjectHideFlags: 0
