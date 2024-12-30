@@ -40,6 +40,9 @@ public class StageManager : Singleton<StageManager>
         VFXManager.Instance.PlayVFX("StartTimer",FindObjectOfType<StageUIManager>().transform);
         yield return new WaitForSeconds(4.5f);
         StartCoroutine(timer.TimerStart(timer._time));
+        // 감지범위 시각화
+        NPC_Move npc = FindObjectOfType<NPC_Move>();
+        npc.SensorON = true;
         //BGM 재생 시작
         AudioData bgm1 = AudioManager.Instance.bgmDictionary[stageSO.bgm1];
         AudioData bgm2 = AudioManager.Instance.bgmDictionary[stageSO.bgm2];
