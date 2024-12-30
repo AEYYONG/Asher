@@ -7356,6 +7356,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 400996753}
     - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
       propertyPath: tileEntries.Array.data[0].tile
       value: 
       objectReference: {fileID: 995431504}
@@ -7756,6 +7768,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1871719675}
     - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[0].count
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[1].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[2].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[3].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[4].count
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
       propertyPath: tileEntries.Array.data[100].tile
       value: 
       objectReference: {fileID: 964688462}
@@ -7771,6 +7803,122 @@ PrefabInstance:
       propertyPath: tileEntries.Array.data[103].tile
       value: 
       objectReference: {fileID: 1118098019}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[0].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[1].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[2].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[3].count
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[0].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[1].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[2].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[3].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[4].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[5].count
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[6].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[7].count
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[0].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[1].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[2].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 45595952f62b54bd68078067e978d9b2, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[3].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 1042344d2fcd346a7b0b08bf63e39c8c, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: etcItemTypes.Array.data[4].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 75212366308cb4730b0912fe6d252373, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[0].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 258385e5e40e845d69794df130040813, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[1].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 6cdcb4e80195b424fbb780d55d2e6ce7, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[2].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 1513a6b1414da42efa03a07287afd77a, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: buffItemTypes.Array.data[3].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 369ca2d01d78c4bc99a95458cc1dc775, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[0].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: f2f51a2ad95804c51b00a7a038adaeb8, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[1].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: c434de3bac5a248bdb90447f8168d604, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[2].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: c7ee8752f85794cd3a032d22bfac1fab, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[3].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 2ddeb229a9226427d90e29e33c3112e1, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[4].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 0157fdf4d3e21402da38d6c36bf6e304, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[5].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: c2949e42b637b405ebfadd3dbe97e6fe, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[6].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 67319481a678c4abfa6b38740ab443bf, type: 3}
+    - target: {fileID: 6077694645542270232, guid: 291408fa427bc43c685492fdba59072a, type: 3}
+      propertyPath: debuffItemTypes.Array.data[7].tilePrefab
+      value: 
+      objectReference: {fileID: 6389873552652161418, guid: 4c6c1b72b58dd48e9999d2b35e3f3650, type: 3}
     - target: {fileID: 6442556011307208348, guid: 291408fa427bc43c685492fdba59072a, type: 3}
       propertyPath: timer
       value: 
