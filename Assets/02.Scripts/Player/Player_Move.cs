@@ -310,6 +310,7 @@ public class Player_Move : MonoBehaviour
     {
         Debug.Log("변수 제발 바뀌어라");
         isStart = false;
+        ChangeAnimationState(PLAYER_IDLE);
     }
     void Slip()
     {
