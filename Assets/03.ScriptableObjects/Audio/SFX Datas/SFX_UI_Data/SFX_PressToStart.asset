@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0af1830949e254935a41d0eb417fea1b, type: 3}
-  m_Name: BGM_Lobby
+  m_Name: SFX_PressToStart
   m_EditorClassIdentifier: 
-  audioName: Asher Main Theme
-  audioClip: {fileID: 8300000, guid: c1f1a9d1f52904121b8bab5dd7a4b5f3, type: 3}
-  loop: 1
-  playOnAwake: 1
-  volume: 0.1
+  audioName: SFX_PressToStart
+  audioClip: {fileID: 8300000, guid: 546f1d09d2b0b4e2283fc1aa51e0fbf6, type: 3}
+  loop: 0
+  playOnAwake: 0
+  volume: 0.5
