@@ -18,6 +18,8 @@ public class MemoryItem : Tile
     IEnumerator ShowRecentTiles(StageUIManager uiManager, LinkedList<Tile> tiles)
     {
         VFXManager.Instance.PlayVFX("UseBuffItem",uiManager.player.transform);
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Goggles"]);
         //파칭하는 vfx 실행하기
         GameObject vfx = Instantiate(_paChingVFX);
         

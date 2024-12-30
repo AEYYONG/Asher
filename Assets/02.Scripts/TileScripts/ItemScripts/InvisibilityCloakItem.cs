@@ -10,6 +10,9 @@ public class InvisibilityCloakItem : Tile
         Debug.Log("투명망토 아이템 사용");
         StartCoroutine(SetInvisible(uiManager));
         StartCoroutine(uiManager.player.GetComponent<PlayerInteract>().ExpiryWarningEffect(tileSO.duration));
+        
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Cat_Box"]);
     }
 
     IEnumerator SetInvisible(StageUIManager uiManager)
