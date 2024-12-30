@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 176aac27667bd4d148f17e3a9792b6e9, type: 3}
+  m_Name: Item_Jet_Wind
+  m_EditorClassIdentifier: 
+  vfxName: Jet_Wind
+  vfxPrefab: {fileID: 900446163392801402, guid: 97e9a0a3a607d408d9a0836eb8466b78, type: 3}
+  duration: 10
+  scale: {x: 2.5, y: 10, z: 3.3}
+  vfxColor: {r: 1, g: 1, b: 1, a: 1}
