@@ -149,6 +149,7 @@ MonoBehaviour:
   _animator: {fileID: 3761349924235490333}
   tileManager: {fileID: 0}
   playerInteract: {fileID: 0}
+  _paChingVFX: {fileID: 1200847492419932019, guid: d9da8823432734c799b6cda917c527f6, type: 3}
 --- !u!1001 &7264358238752359428
 PrefabInstance:
   m_ObjectHideFlags: 0

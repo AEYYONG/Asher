@@ -29,9 +29,12 @@ public class BananaTrap : Tile
         
         VFXManager.Instance.PlayVFX("UseDebuffItem",uiManager.player.transform);
         yield return new WaitForSeconds(1.5f);
+        
         Player_Move player = uiManager.player.GetComponent<Player_Move>();
         if (!player.isSlip)
         {
+            //sfx
+            AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Banana"]);
             player.StartSlip();
         }
 

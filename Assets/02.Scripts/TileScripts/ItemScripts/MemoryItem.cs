@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MemoryItem : Tile
 {
+    public GameObject _paChingVFX;
     private bool _isBlinking = false;
     private LinkedList<Tile> memoryLists = new LinkedList<Tile>();
     public override void ItemUse(StageUIManager uiManager)
@@ -17,6 +18,11 @@ public class MemoryItem : Tile
     IEnumerator ShowRecentTiles(StageUIManager uiManager, LinkedList<Tile> tiles)
     {
         VFXManager.Instance.PlayVFX("UseBuffItem",uiManager.player.transform);
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Goggles"]);
+        //파칭하는 vfx 실행하기
+        GameObject vfx = Instantiate(_paChingVFX);
+        
         yield return new WaitForSeconds(1.5f);
         List<Tile> recentTiles = new List<Tile>();
         foreach (var tile in tiles)
@@ -38,6 +44,8 @@ public class MemoryItem : Tile
         {
             tile.GetComponent<Renderer>().material.SetTexture("_TopTex",tile.tileSO.originTopTex);
         }
+        //파칭 vfx 파괴하기
+        Destroy(vfx);
     }
     
     public IEnumerator ExpiryWarningEffect(float duration, List<Tile> recentTiles)

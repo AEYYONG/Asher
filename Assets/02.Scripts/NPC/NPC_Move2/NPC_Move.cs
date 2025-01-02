@@ -215,6 +215,7 @@ public void AttackedHairBall()
                     {
                         // 5초 동안 라인 활성화
                         StartCoroutine(EnableSingleLineRendererForDuration(lineRenderers[i], rayOrigin, end, 5f));
+
                     }
 
                     // 감지 대상 처리

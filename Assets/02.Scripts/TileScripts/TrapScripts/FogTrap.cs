@@ -17,10 +17,13 @@ public class FogTrap : Tile
         uiManager.fullCamera.SetActive(false);
         uiManager.npcIndicator.SetActive(true);
         uiManager.fogUI.SetActive(true);
+        uiManager.defaultUI.SetActive(false);
+        
         yield return new WaitForSeconds(tileSO.duration);
         uiManager.fullCamera.SetActive(true);
         uiManager.npcIndicator.SetActive(false);
         uiManager.fogUI.SetActive(false);
+        uiManager.defaultUI.SetActive(true);
         
         //vfx 실행
         Animator effectAnimator = transform.GetChild(0).GetComponent<Animator>();

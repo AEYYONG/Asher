@@ -192,6 +192,8 @@ public class StageUIManager : MonoBehaviour
                 
         }
         _sideCutSceneUI.SetActive(true);
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_Turn_SideCutScene"]);
         StartCoroutine(SetSideCutSceneUIImg(_triggerName, _curImgId));
     }
 

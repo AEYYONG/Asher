@@ -19,6 +19,11 @@ public class SpeedUpItem : Tile
     {
         VFXManager.Instance.PlayVFX("UseBuffItem",uiManager.player.transform);
         yield return new WaitForSeconds(1.5f);
+        //sfx
+        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_JetPack"]);
+        //wind vfx 실행
+        VFXManager.Instance.PlayVFX("Jet_Wind",uiManager.player.transform);
+        
         UpdateShaderProperties(true);
         Player_Move playerMove = uiManager.player.GetComponent<Player_Move>();
         playerMove.moveDuration *= 1/tileSO.power;
