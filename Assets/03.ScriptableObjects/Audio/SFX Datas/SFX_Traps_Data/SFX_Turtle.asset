@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0af1830949e254935a41d0eb417fea1b, type: 3}
   m_Name: SFX_Turtle
   m_EditorClassIdentifier: 
-  audioName: SFX_BlackHole
-  audioClip: {fileID: 8300000, guid: 137cede797e55408d84ee8cb46ae25c9, type: 3}
+  audioName: SFX_Turtle
+  audioClip: {fileID: 8300000, guid: eda409f3e861d4ab7aa553775839667c, type: 3}
   loop: 0
   playOnAwake: 0
   volume: 0.5

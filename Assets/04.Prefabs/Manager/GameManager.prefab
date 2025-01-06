@@ -51,13 +51,25 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ec20261e30f984f6aa191974222b74dc, type: 2}
   - {fileID: 11400000, guid: 3ff9e1ffdd5334fbaacec3795892e5f7, type: 2}
   - {fileID: 11400000, guid: fc7eb57a7cf2b48cba96421c84f9e7a7, type: 2}
+  - {fileID: 11400000, guid: 9032404763ac742c385669677b9103ef, type: 2}
   sfxDataList:
   - {fileID: 11400000, guid: 3e764e49e52174ea9904f114fc35493b, type: 2}
   - {fileID: 11400000, guid: 5c35ae9b64db048218c139693cdd2adc, type: 2}
   - {fileID: 11400000, guid: 55bce7aaff7104f018f35bf10e2d817c, type: 2}
   - {fileID: 11400000, guid: c66f4f0bbe9c04b70a06ae1fce013911, type: 2}
+  - {fileID: 11400000, guid: 80ad01602256a4386a32c93945c4c70c, type: 2}
+  - {fileID: 11400000, guid: 12e8a15150d304628b051e318f114e87, type: 2}
+  - {fileID: 11400000, guid: fca10aa39086e40228fa0a128d52e963, type: 2}
+  - {fileID: 11400000, guid: f37427b331149454eb8673f4d6bae464, type: 2}
+  - {fileID: 11400000, guid: dff7d484d39234d58ac844060d6c0828, type: 2}
+  - {fileID: 11400000, guid: a48f95a5e5d584e98940f1938a3de8c9, type: 2}
+  - {fileID: 11400000, guid: 662a7503b3bef4448853f0a7208f5d8f, type: 2}
+  - {fileID: 11400000, guid: 73bdb9d4768fa4e45b81158d74e0f944, type: 2}
+  - {fileID: 11400000, guid: ec65c19e8b97841a994c115b088af753, type: 2}
+  - {fileID: 11400000, guid: 679f1108afaa84745b6444c308a3796e, type: 2}
+  - {fileID: 11400000, guid: 54db8d5eef3624ab5b3616d2b8e00240, type: 2}
   _bgmSource: {fileID: 0}
-  bgmVolume: 1
+  bgmVolume: 0.1
   _maxSFXPoolSize: 10
 --- !u!114 &3705929418997772579
 MonoBehaviour:
@@ -72,4 +84,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroy: 1
-  lobbyBgmName: One Step Forward
+  lobbyBgmName: Asher Main Theme
