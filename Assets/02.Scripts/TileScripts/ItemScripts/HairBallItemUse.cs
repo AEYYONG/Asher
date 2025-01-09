@@ -6,13 +6,20 @@ public class HairBallItemUse : MonoBehaviour
 {
     public int BallDirection = -1;
     private NPC_Move npcMove;
+    private bool isFiring = false;
+    private bool isFollowingPlayer = true;
+
     void Start()
     {
         npcMove = FindObjectOfType<NPC_Move>();
     }
     public void StartDirectionInput()
     {
-        StartCoroutine(WaitForDirectionInput());
+        if (!isFiring)
+        {
+            isFiring = true;
+            StartCoroutine(WaitForDirectionInput());
+        }
     }
 
     private IEnumerator WaitForDirectionInput()
@@ -21,6 +28,12 @@ public class HairBallItemUse : MonoBehaviour
         float timer = 0f;
         while (timer < waitTime)
         {
+            if (isFollowingPlayer && Player_Move.Instance != null)
+            {
+                FollowPlayer();
+            }
+
+
             // 방향 입력을 즉시 감지하여 발사
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
@@ -42,6 +55,7 @@ public class HairBallItemUse : MonoBehaviour
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
+                Debug.Log("아래로");
                 BallDirection = 3;
                 FireImmediately();
                 yield break; // 코루틴 종료
@@ -51,19 +65,54 @@ public class HairBallItemUse : MonoBehaviour
             yield return null;
         }
 
+
         // 2초 동안 입력이 없으면 기본 방향으로 발사
         if (BallDirection == -1)
         {
             BallDirection = 0;
             FireImmediately();
-            Player_Move player_Move = FindObjectOfType<Player_Move>();
-            player_Move.useBall = false;
         }
     }
 
+    private void FollowPlayer()
+    {
+        if (Player_Move.Instance != null)
+        {
+            // 현재 플레이어 위치를 따라감
+            transform.position = Player_Move.Instance.transform.position;
+        }
+
+    }
     private void FireImmediately()
     {
-        FindObjectOfType<Player_Move>().StartFire(BallDirection);
+        Player_Move.Instance.useBall = false;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Vector3 force = Vector3.zero;
+            
+            switch (BallDirection)
+            {
+                case 0:
+                    force = Vector3.forward;
+                    break;
+                case 1:
+                    force = Vector3.left;
+                    break;
+                case 2:
+                    force = Vector3.right;
+                    break;
+                case 3:
+                    force = Vector3.back;
+                    break;
+            }
+
+            rb.AddForce(force * 5f, ForceMode.Impulse);
+        }
+        else
+        {
+            Debug.LogError("Rigidbody가 없습니다.");
+        }
     }
 
 
