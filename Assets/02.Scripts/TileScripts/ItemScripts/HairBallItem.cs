@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class HairBallItem : Tile
 {
-    HairBallItemUse hairBallItemUse = FindObjectOfType<HairBallItemUse>();
     [SerializeField] private GameObject hairBallPrefab;
 
     public override void ItemUse(StageUIManager uiManager)
@@ -14,10 +13,9 @@ public class HairBallItem : Tile
         base.ItemUse(uiManager);
         Debug.Log("헤어볼 아이템 사용");
 
-        hairBallPrefab.SetActive(true);
+        GameObject hairBallInstance = Instantiate(hairBallPrefab, player_Move.transform.position, Quaternion.identity);
 
-        hairBallItemUse =hairBallPrefab.GetComponent<HairBallItemUse>();
-        
+        HairBallItemUse hairBallItemUse = hairBallInstance.GetComponent<HairBallItemUse>();
         hairBallItemUse.StartDirectionInput();
         Debug.Log("호출이 되고있나요");
         /*GameObject hairBallObject = null;

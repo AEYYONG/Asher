@@ -309,14 +309,15 @@ public class Player_Move : MonoBehaviour
     }
 
 
-
+    /*
     public void StartFire(int newDirection)
     {
+        Debug.Log("방향:" + direction);
         direction = newDirection;
         isfire = true;
         Fire();
-    }
-
+    }*/
+    /*
     void Fire()
     {
 
@@ -355,12 +356,9 @@ public class Player_Move : MonoBehaviour
                 break;
             
         }
-        /*if (direction == 0)
-        {//위
-            rigid.AddForce(Vector3.forward);
-        }*/
+
        
-    }
+    }*/
 
     public void StartSlip()
     {
