@@ -79,7 +79,13 @@ public class HairBallItemUse : MonoBehaviour
         if (Player_Move.Instance != null)
         {
             // 현재 플레이어 위치를 따라감
-            transform.position = Player_Move.Instance.transform.position;
+            transform.position = new Vector3(
+            Player_Move.Instance.transform.position.x,
+            0.25f,
+            Player_Move.Instance.transform.position.z
+        );
+            transform.rotation = Quaternion.Euler(70, 0, 0);
+
         }
 
     }
