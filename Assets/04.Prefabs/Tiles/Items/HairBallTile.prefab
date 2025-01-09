@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1617044052681711701}
   - component: {fileID: 3761349924235490333}
   - component: {fileID: 7110081414117137729}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HairBallTile
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   _animator: {fileID: 3761349924235490333}
   tileManager: {fileID: 0}
   playerInteract: {fileID: 0}
+  hairBallPrefab: {fileID: 7744802067183723968, guid: c46f5b56fe5e6f6418491300439b3f52, type: 3}
 --- !u!1001 &4818225848124307819
 PrefabInstance:
   m_ObjectHideFlags: 0

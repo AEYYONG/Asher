@@ -4,22 +4,43 @@ using UnityEngine;
 
 public class HairBallItem : Tile
 {
-    private HairBallItemUse hairBallItemUse;
-    
+    HairBallItemUse hairBallItemUse = FindObjectOfType<HairBallItemUse>();
+    [SerializeField] private GameObject hairBallPrefab;
+
     public override void ItemUse(StageUIManager uiManager)
     {
-        base.ItemUse(uiManager);
-        Debug.Log("헤어볼 아이템 사용");
         Player_Move player_Move = FindObjectOfType<Player_Move>();
         player_Move.useBall = true;
+        base.ItemUse(uiManager);
+        Debug.Log("헤어볼 아이템 사용");
 
-        GameObject hairBallObject = GameObject.FindWithTag("HairBall");
+        hairBallPrefab.SetActive(true);
+
+        hairBallItemUse =hairBallPrefab.GetComponent<HairBallItemUse>();
+        
+        hairBallItemUse.StartDirectionInput();
+        Debug.Log("호출이 되고있나요");
+        /*GameObject hairBallObject = null;
+        hairBallItemUse = hairBallObject.GetComponent<HairBallItemUse>();
+        Debug.Log("호출이 되고있나요1");
+        if (hairBallItemUse != null)
+        {
+            hairBallItemUse.StartDirectionInput();
+            Debug.Log("호출이 되고있나요");
+        }
+        else
+        {
+            Debug.LogWarning("HairBallItemUse 컴포넌트를 찾을 수 없습니다.");
+        }
         if (hairBallObject != null)
         {
+            Debug.Log("호출이 되고있나요1.1");
             hairBallItemUse = hairBallObject.GetComponent<HairBallItemUse>();
+            Debug.Log("호출이 되고있나요1");
             if (hairBallItemUse != null)
             {
                 hairBallItemUse.StartDirectionInput();
+                Debug.Log("호출이 되고있나요");
             }
             else
             {
@@ -29,6 +50,6 @@ public class HairBallItem : Tile
         else
         {
             Debug.LogWarning("HairBallUse 태그를 가진 오브젝트를 찾을 수 없습니다.");
-        }
+        }*/
     }
 }

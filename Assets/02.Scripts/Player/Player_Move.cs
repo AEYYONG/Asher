@@ -223,12 +223,12 @@ public class Player_Move : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(from, direction, out hit, lineLength, obstacleLayer))
         {
-            Debug.Log($"Hit Detected for Direction: {direction}, Hit Point: {hit.point}");
+           // Debug.Log($"Hit Detected for Direction: {direction}, Hit Point: {hit.point}");
             return hit.point; // 장애물에 닿은 경우
         }
         else
         {
-            Debug.Log($"No Hit Detected for Direction: {direction}, Calculated End: {from + direction * lineLength}");
+           // Debug.Log($"No Hit Detected for Direction: {direction}, Calculated End: {from + direction * lineLength}");
             return from + direction * lineLength; // 최대 거리까지
         }
     }
@@ -246,8 +246,16 @@ public class Player_Move : MonoBehaviour
     {
 
         Vector3 spawnPosition = transform.position + new Vector3(0, -0.3f, -0.5f);
-        GameObject HairballItem = Instantiate(HairBall, spawnPosition, transform.rotation);
-        Rigidbody rigid = HairballItem.GetComponent<Rigidbody>();
+
+        GameObject HairBallItem = Instantiate(HairBall, spawnPosition, transform.rotation, null);
+        HairBallItem.SetActive(true);
+
+        Rigidbody rigid = HairBallItem.GetComponent<Rigidbody>();
+        if (HairBallItem == null)
+        {
+            Debug.LogError("HairBall 프리팹이 null입니다. Inspector에서 프리팹을 연결했는지 확인하세요.");
+            return;
+        }
 
         //누르고있는 방향에 따라 다르게 발사
         switch (direction)
