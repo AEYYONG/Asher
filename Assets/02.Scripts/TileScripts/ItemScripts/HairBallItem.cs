@@ -8,12 +8,11 @@ public class HairBallItem : Tile
 
     public override void ItemUse(StageUIManager uiManager)
     {
-        Player_Move player_Move = FindObjectOfType<Player_Move>();
-        player_Move.useBall = true;
+        Player_Move.Instance.useBall = true;
         base.ItemUse(uiManager);
         Debug.Log("헤어볼 아이템 사용");
 
-        GameObject hairBallInstance = Instantiate(hairBallPrefab, player_Move.transform.position, Quaternion.identity);
+        GameObject hairBallInstance = Instantiate(hairBallPrefab, Player_Move.Instance.transform.position, Quaternion.identity);
 
         HairBallItemUse hairBallItemUse = hairBallInstance.GetComponent<HairBallItemUse>();
         hairBallItemUse.StartDirectionInput();
