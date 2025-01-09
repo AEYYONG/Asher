@@ -1498,11 +1498,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8942468829186383796, guid: 2ee5e4ff373f04423af16aebe5a2fb9d, type: 3}
   m_PrefabInstance: {fileID: 195123612}
   m_PrefabAsset: {fileID: 0}
---- !u!20 &195123615 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 1598590057969488992, guid: 2ee5e4ff373f04423af16aebe5a2fb9d, type: 3}
-  m_PrefabInstance: {fileID: 195123612}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &207482742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10910,6 +10905,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!20 &1678931928 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 1598590057969488992, guid: 2ee5e4ff373f04423af16aebe5a2fb9d, type: 3}
+  m_PrefabInstance: {fileID: 195123612}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1679092068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13892,14 +13892,10 @@ PrefabInstance:
     - target: {fileID: 7029848671301995821, guid: 56487d47fb6364149a586c458513e301, type: 3}
       propertyPath: screenSpaceCamera
       value: 
-      objectReference: {fileID: 195123615}
+      objectReference: {fileID: 1678931928}
     - target: {fileID: 8011192701188467863, guid: 56487d47fb6364149a586c458513e301, type: 3}
       propertyPath: m_Name
       value: -----[Canvas]
-      objectReference: {fileID: 0}
-    - target: {fileID: 8196240375797051246, guid: 56487d47fb6364149a586c458513e301, type: 3}
-      propertyPath: timer
-      value: 300
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
