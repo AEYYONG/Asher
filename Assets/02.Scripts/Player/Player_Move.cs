@@ -60,6 +60,7 @@ public class Player_Move : MonoBehaviour
     // LineRenderer 관련
     public LineRendererAtoB lineRendererPrefab; // LineRenderer 프리팹
     private List<LineRendererAtoB> activeLines = new List<LineRendererAtoB>();
+    private List<GameObject> activeArrows = new List<GameObject>();
     public float lineLength = 5f; // 라인의 길이
     public LayerMask obstacleLayer; // 장애물 레이어
     public bool useBall = false;
@@ -121,7 +122,6 @@ public class Player_Move : MonoBehaviour
             Slip();
         }
         else if(!isStart){
-            Debug.Log("플레이어가 정지 상태입니다.");
             return;
         }
         else MovePlayer();  // 이동 처리
@@ -139,6 +139,7 @@ public class Player_Move : MonoBehaviour
         if (!useBall)
         {
             ClearLines();
+            ClearArrows();
         }
 
 
@@ -178,7 +179,7 @@ public class Player_Move : MonoBehaviour
     {
         // 기존 라인을 모두 삭제
         ClearLines();
-
+        ClearArrows();
         // 4방향 정의
         Vector3[] directions = new Vector3[]
         {
@@ -192,20 +193,75 @@ public class Player_Move : MonoBehaviour
         foreach (Vector3 direction in directions)
         {
             Vector3 from = transform.position + direction * 0.3f;
-            from.z -= 0.2f; // z축 높이 조정 (플레이어의 중심에서 시작)
+            from.z -= 0.2f;
 
             Vector3 to = CalculateEndPoint(from, direction);
 
-            // LineRenderer 프리팹 인스턴스 생성
             LineRendererAtoB line = Instantiate(lineRendererPrefab, transform);
             line.Play(from, to);
 
-            // 활성 라인 리스트에 추가
             activeLines.Add(line);
+            ArrowOn(to, direction);
         }
     }
 
+    void ArrowOn(Vector3 position, Vector3 direction)
+    {
+        GameObject arrow;
 
+        if (activeArrows.Count <4)
+        {
+            arrow = new GameObject("Arrow");
+            arrow.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+
+            MeshRenderer renderer = arrow.AddComponent<MeshRenderer>();
+            MeshFilter filter = arrow.AddComponent<MeshFilter>();
+
+            Mesh mesh = new Mesh();
+            Vector3[] vertices = new Vector3[]
+            {
+            Vector3.forward,
+            Vector3.back,
+            Vector3.left,
+            Vector3.right
+            };
+            int[] triangles = new int[] { 0, 1, 2 };
+
+            mesh.vertices = vertices;
+            mesh.triangles = triangles;
+            filter.mesh = mesh;
+
+            renderer.material = new Material(Shader.Find("Sprites/Default")) { color = Color.red };
+        }
+        else
+        {
+            arrow = activeArrows[0];
+            activeArrows.RemoveAt(0);
+        }
+
+        arrow.transform.position = position;
+
+        if (direction == Vector3.forward)
+        {
+            arrow.transform.rotation = Quaternion.Euler(0, 90, 0); // 위
+        }
+        else if (direction == Vector3.back)
+        {
+            arrow.transform.rotation = Quaternion.Euler(0, -90, 0); // 아래
+        }
+        else if (direction == Vector3.left)
+        {
+            arrow.transform.rotation = Quaternion.Euler(0, 0, 0); // 왼쪽
+        }
+        else if (direction == Vector3.right)
+        {
+            arrow.transform.rotation = Quaternion.Euler(0, 180, 0); // 오른쪽
+        }
+
+
+        activeArrows.Add(arrow);
+        arrow.SetActive(true);
+    }
 
 
     void ClearLines()
@@ -216,20 +272,39 @@ public class Player_Move : MonoBehaviour
             Destroy(line.gameObject);
         }
         activeLines.Clear();
+
+    }
+    void ClearArrows()
+    {
+        foreach (var arrow in activeArrows)
+        {
+            Destroy(arrow.gameObject);
+        }
+        activeArrows.Clear();
     }
 
     Vector3 CalculateEndPoint(Vector3 from, Vector3 direction)
     {
         RaycastHit hit;
+
+
+
         if (Physics.Raycast(from, direction, out hit, lineLength, obstacleLayer))
         {
-           // Debug.Log($"Hit Detected for Direction: {direction}, Hit Point: {hit.point}");
-            return hit.point; // 장애물에 닿은 경우
+            float distance = Vector3.Distance(from, hit.point);
+
+            if (distance < 0.8f)
+            {
+                return from;
+            }
+
+            return hit.point - (direction.normalized * 0.5f); // 장애물에 닿은 경우
+
         }
         else
         {
-           // Debug.Log($"No Hit Detected for Direction: {direction}, Calculated End: {from + direction * lineLength}");
-            return from + direction * lineLength; // 최대 거리까지
+
+            return from + (direction.normalized * (lineLength - 0.5f)); // 최대 거리까지
         }
     }
 
