@@ -7,7 +7,7 @@ public class Phase2Tile : MonoBehaviour
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private List<GameObject> clickableTiles = new List<GameObject>(); // 클릭 가능한 타일 리스트
     [SerializeField] private List<Vector3> predefinedClickablePositions; // 클릭 가능한 타일 위치 리스트
-
+    [SerializeField] private GameObject redDot;
     public GameObject npcObject;
 
 
@@ -19,6 +19,7 @@ public class Phase2Tile : MonoBehaviour
         Reposition();
         Phase2TileTileGrid();
         ApplyVignetteToNonClickableTiles();
+        StartCoroutine(ShowRedDotsOnTiles());
     }
     private void Phase2TileTileGrid()
     {
@@ -38,6 +39,9 @@ public class Phase2Tile : MonoBehaviour
 
         }
     }
+
+
+   
 
     private void ApplyVignetteToNonClickableTiles()
     {
@@ -71,12 +75,38 @@ public class Phase2Tile : MonoBehaviour
         MeshRenderer renderer = vignetteOverlay.GetComponent<MeshRenderer>();
         renderer.material = vignetteMaterial;
 
-        // Plane의 충돌 제거
         Collider collider = vignetteOverlay.GetComponent<Collider>();
         if (collider != null)
         {
-            Destroy(collider); // 충돌 제거
+            Destroy(collider); 
         }
+    }
+    private IEnumerator ShowRedDotsOnTiles()
+    {
+        // 클릭 가능한 타일 중 3개를 랜덤 선택
+        List<GameObject> selectedTiles = new List<GameObject>();
+        List<GameObject> availableTiles = new List<GameObject>(clickableTiles);
+        
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (availableTiles.Count == 0) break;
+
+            int randomIndex = Random.Range(0, availableTiles.Count);
+            GameObject randomTile = availableTiles[randomIndex];
+            selectedTiles.Add(randomTile);
+            availableTiles.RemoveAt(randomIndex);
+        }
+
+        // 선택된 타일에 빨간 점 표시
+        foreach (GameObject tile in selectedTiles)
+        {
+            redDot.transform.localPosition = new Vector3(0, 0.1f, 0); // 타일 위에 표시
+            yield return new WaitForSeconds(1f); // 1초 대기
+            Destroy(redDot); // 빨간 점 제거
+        }
+
+        Debug.Log("빨간 점 표시 완료");
     }
 
     // npc,플레이어 위치
