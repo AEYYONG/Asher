@@ -87,6 +87,11 @@ public class GreenZone_Vignette : MonoBehaviour
         {
             if (greenZoneTiles.Contains(tile))
             {
+                Vector3 vfxPos = tile.transform.position + new Vector3(0, 1f, 0.5f);
+                VFXManager.Instance.PlayVFX("GreenZone", vfxPos);
+                
+
+                Debug.Log("그린존 활성화");
                 tile.SetActive(false); // 그린존 타일 비활성화
                 Debug.Log($"그린존 타일 비활성화: {tile.name}");
                 continue; // 다음 타일로 넘어감
