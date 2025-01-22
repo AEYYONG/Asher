@@ -5,11 +5,20 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
-[System.Serializable]
 public class DialogueData
 {
-    public Sprite portrait; 
+    public string characterId;
+    public DialogueTextData[] textDatas;
+}
+
+public class DialogueTextData
+{
     public string dialogueText;
+    public string choiceText1;
+    public string choiceText2;
+    public string resultDialogueId1;
+    public string resultDialogueId2;
+    public string nextDialougeId;
 }
 public class DialogueManager : MonoBehaviour
 {
@@ -72,14 +81,14 @@ public class DialogueManager : MonoBehaviour
 
         // 데이터 적용
         DialogueData dialogueData = dialogues[index];
-        portraitImage.sprite = dialogueData.portrait;
+        //portraitImage.sprite = dialogueData.portrait;
 
         // 대사 출력 시작
         if (typingCoroutine != null)
         {
             StopCoroutine(typingCoroutine);
         }
-        typingCoroutine = StartCoroutine(TypeDialogue(dialogueData.dialogueText));
+        //typingCoroutine = StartCoroutine(TypeDialogue(dialogueData.dialogueText));
     }
     
     private IEnumerator TypeDialogue(string text)
@@ -105,7 +114,7 @@ public class DialogueManager : MonoBehaviour
         }
 
         DialogueData dialogueData = dialogues[currentDialogueIndex];
-        dialogueText.text = dialogueData.dialogueText;
+        //dialogueText.text = dialogueData.dialogueText;
 
         isTyping = false;
         toggleButton.SetActive(true);
