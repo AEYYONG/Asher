@@ -12052,6 +12052,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5543279923838609234, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
   m_PrefabInstance: {fileID: 1317992646}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1317992648 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+  m_PrefabInstance: {fileID: 1317992646}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1319276581
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14817,7 +14822,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileOrderNames:
-  - 
+  - HairBall
+  - HairBall
+  - HairBall
+  - HairBall
+  - HairBall
   isPlayerTurn: 1
 --- !u!4 &1636203545
 Transform:
@@ -16929,6 +16938,8 @@ MonoBehaviour:
     count: 5
   - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
     count: 5
+  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+    count: 5
   furnitureTilePosList: []
   _tileShuffleList: []
   tileEntries:
@@ -16957,7 +16968,7 @@ MonoBehaviour:
   - position: {x: 5, y: 4}
     tile: {fileID: 588696752}
   - position: {x: 6, y: 4}
-    tile: {fileID: 1926672158}
+    tile: {fileID: 1317992648}
   - position: {x: 7, y: 4}
     tile: {fileID: 1319276583}
   - position: {x: 8, y: 4}
@@ -17554,11 +17565,6 @@ PrefabInstance:
 --- !u!4 &1926672157 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5543279923838609234, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
-  m_PrefabInstance: {fileID: 1926672156}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1926672158 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
   m_PrefabInstance: {fileID: 1926672156}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1956193088

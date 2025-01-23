@@ -32,7 +32,7 @@ public class Phase2PlayerInteract : MonoBehaviour
             if (Physics.Raycast(ray, out _hit, 100f))
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
-                Debug.Log("타일 이름: ", curTile);
+                //Debug.Log("타일 이름: " +curTile.name);
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -51,11 +51,13 @@ public class Phase2PlayerInteract : MonoBehaviour
                         //뒤집기 애니메이션 시작
                         AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
                         curTile._animator.SetTrigger("Select");
-
+                        Debug.Log("지금 뒤집은 타일 이름0: " + tileName);
+                        Debug.Log("지금 이름틀림0: " + tileOrderNames[currentOrderIndex]);
                         //타일 아이디 값 저장
                         _tiles.Add(curTile);
                         if (tileName == tileOrderNames[currentOrderIndex])
                         {
+                            Debug.Log("지금 이름: " + tileOrderNames[currentOrderIndex]);
                             // 순서가 맞다면
                             _curSelectCnt++;
                             curTile.tileSO.selectNum = _curSelectCnt;
@@ -72,9 +74,12 @@ public class Phase2PlayerInteract : MonoBehaviour
                         }
                         else
                         {
+                            Debug.Log("지금 뒤집은 타일 이름: " + tileName);
+                            Debug.Log("지금 이름틀림: " + tileOrderNames[currentOrderIndex]);
+                            isPlayerTurn = false;
                             _wrongtile.Add(curTile);
                             _tileManager.ReturnTile(_wrongtile);
-
+                            
                         }
                     }
 
