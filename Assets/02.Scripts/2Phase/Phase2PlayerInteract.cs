@@ -1,0 +1,87 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Phase2PlayerInteract : MonoBehaviour
+{
+    //타일을 뒤집기 위한 레이캐스트
+    private RaycastHit _hit;
+    private Vector3 _rayPos;
+
+    private bool canInteract = true;
+    private int _curSelectCnt = 0;
+    private List<Tile> _tiles = new List<Tile>();
+    private List<Tile> _wrongtile = new List<Tile>()
+;
+    private TileManager _tileManager;
+
+    [SerializeField] private string[] tileOrderNames;
+    private int currentOrderIndex = 0;
+
+    // 플레이어의 순서인지
+    public bool isPlayerTurn = true;
+
+    // Update is called once per frame
+    void Update()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red); // 디버그용 레이 시각화
+
+        if (isPlayerTurn)
+        {
+            if (Physics.Raycast(ray, out _hit, 100f))
+            {
+                Tile curTile = _hit.collider.GetComponent<Tile>();
+                Debug.Log("타일 이름: ", curTile);
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                if (Physics.Raycast(ray, out _hit, 100f))
+                {
+                    Tile curTile = _hit.collider.GetComponent<Tile>();
+
+                    string tileName = curTile.name.Split(':')[1].Trim();
+
+                    if (!curTile.isSelected && canInteract && curTile.tileType != TileType.RandomNotAvail)
+                    {   //선택되지 않은 타일이라면 && 상호작용 가능하다면
+
+
+
+                        //뒤집기 애니메이션 시작
+                        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
+                        curTile._animator.SetTrigger("Select");
+
+                        //타일 아이디 값 저장
+                        _tiles.Add(curTile);
+                        if (tileName == tileOrderNames[currentOrderIndex])
+                        {
+                            // 순서가 맞다면
+                            _curSelectCnt++;
+                            curTile.tileSO.selectNum = _curSelectCnt;
+                            _tiles.Add(curTile);
+                            currentOrderIndex++; // 다음 타일로 이동
+                                                 //선택 여부 true로 변경
+                            curTile.isSelected = true;
+
+                            // 최대 5개를 모두 뒤집었을 경우 상호작용 불가 설정
+                            if (_curSelectCnt >= tileOrderNames.Length)
+                            {
+                                canInteract = false;
+                            }
+                        }
+                        else
+                        {
+                            _wrongtile.Add(curTile);
+                            _tileManager.ReturnTile(_wrongtile);
+
+                        }
+                    }
+
+                }
+            }
+        }
+        
+
+    }
+}
