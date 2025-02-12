@@ -40,9 +40,12 @@ public class Phase2PlayerInteract : MonoBehaviour
                 if (Physics.Raycast(ray, out _hit, 100f))
                 {
                     Tile curTile = _hit.collider.GetComponent<Tile>();
-
+                    Debug.Log("타일 이름_: " + curTile.name);
+                    
+                    Debug.Log("isselected : " + curTile.isSelected);
+                    Debug.Log("caninteract : " +canInteract);
+                    Debug.Log("tiletype : " + curTile.tileType);
                     string tileName = curTile.name.Split(':')[1].Trim();
-
                     if (!curTile.isSelected && canInteract && curTile.tileType != TileType.RandomNotAvail)
                     {   //선택되지 않은 타일이라면 && 상호작용 가능하다면
 
