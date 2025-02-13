@@ -710,4 +710,16 @@ public class Player_Move : MonoBehaviour
         startPosition = position;
     }
 
+    // 플레이어 점프 애니메이션 관련 함수 : 최고 높이에 도달하기 전까지 플레이어의 z 값 증가
+    public void JumpUpAni()
+    {
+        transform.position += new Vector3(0, 0, 0.4f);
+    }
+    // 플레이어 점프 애니메이션 관련 함수 : 최고 높이에서 내려올때까지 플레이어의 z 값 감소
+    public void JumpDownAni()
+    {
+        transform.position -= new Vector3(0, 0, 0.2f);
+    }
+
+
 }
