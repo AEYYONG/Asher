@@ -25,6 +25,11 @@ public class Phase2PlayerInteract : MonoBehaviour
     public bool isPlayerTurn = true;
     public bool isNPCTurn = false;
 
+    // UI 음계 표시
+    public GameObject AsherPitch;
+    public GameObject NPCPitch;
+    private bool AsherSuccess = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -66,9 +71,14 @@ public class Phase2PlayerInteract : MonoBehaviour
                             _curSelectCnt++;
                             curTile.tileSO.selectNum = _curSelectCnt;
                             _tiles.Add(curTile);
+                            AsherSuccess = true;
+                            ActivateChildObjects(currentOrderIndex);
+                            AsherSuccess = false;
                             currentOrderIndex++; // 다음 타일로 이동
                                                  //선택 여부 true로 변경
                             curTile.isSelected = true;
+
+                          
 
                             // 최대 5개를 모두 뒤집었을 경우 상호작용 불가 설정
                             if (_curSelectCnt >= tileOrderNames.Length)
@@ -165,6 +175,7 @@ public class Phase2PlayerInteract : MonoBehaviour
             {
                 Debug.Log("npc가 옳게 선택함");
                 yield return new WaitForSeconds(1f);
+                ActivateChildObjects(currentNPCOrderIndex);
                 currentNPCOrderIndex++;
                 StartCoroutine(NPCTurn());
             }
@@ -198,5 +209,26 @@ public class Phase2PlayerInteract : MonoBehaviour
         }
         _wrongtile.Add(tile);
     }
+    // 음계 표시
+    private void ActivateChildObjects(int index)
+    {
+        if (AsherSuccess) // 애셔가 맞춘 경우
+        {
+            if (index < AsherPitch.transform.childCount)
+            {
+                AsherPitch.transform.GetChild(index).gameObject.SetActive(true);
+            }
+        }
+        
+
+        else //npc가 맞춘 경우
+        {
+            if (index < NPCPitch.transform.childCount)
+            {
+                NPCPitch.transform.GetChild(index).gameObject.SetActive(true);
+            }
+        }
+    }
+
 
 }
