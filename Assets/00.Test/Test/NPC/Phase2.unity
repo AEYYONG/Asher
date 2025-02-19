@@ -10475,11 +10475,11 @@ MonoBehaviour:
   buffItemTypes: []
   debuffItemTypes: []
   etcItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: 901194a5965c94a5a819245d8ff94a40, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: d20a5674090161940864874a4eb0c47f, type: 3}
     count: 5
-  - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: a74fc2c5920b1754db67743c79167b50, type: 3}
     count: 5
-  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: 19938bb6e26d8f44d948dc9423a64d6a, type: 3}
     count: 5
   furnitureTilePosList: []
   _tileShuffleList: []
