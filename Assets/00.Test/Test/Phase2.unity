@@ -9206,7 +9206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileOrderNames:
-  - HairBallTile
+  - Do
   - HairBall
   - HairBall
   - HairBall
@@ -10522,11 +10522,11 @@ MonoBehaviour:
   buffItemTypes: []
   debuffItemTypes: []
   etcItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: 901194a5965c94a5a819245d8ff94a40, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: 7a6c107604002ca49978a14ec7cc80ec, type: 3}
     count: 5
-  - tilePrefab: {fileID: 6389873552652161418, guid: 03de39d83aeb645e3bfa15af9a14ed46, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: 4c74461ffad787249a3a64d0b5fe1c66, type: 3}
     count: 5
-  - tilePrefab: {fileID: 6389873552652161418, guid: f1e3cce9a42154fc5ad894000f8cdf16, type: 3}
+  - tilePrefab: {fileID: 6389873552652161418, guid: dafcf6d6f204b6643a0256c1e24855a4, type: 3}
     count: 5
   furnitureTilePosList: []
   _tileShuffleList: []

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6620057068993517578}
   - component: {fileID: 1617044052681711701}
   - component: {fileID: 3761349924235490333}
-  - component: {fileID: -8037955239260411771}
-  m_Layer: 9
-  m_Name: Do
+  - component: {fileID: 189887260433250925}
+  m_Layer: 0
+  m_Name: AggroTile
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +34,7 @@ Transform:
   m_LocalScale: {x: 1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4273257563236235259}
+  - {fileID: 5185351313058504080}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3299938877987277406
@@ -65,7 +65,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b731dac880cbcd4290c2cfd7a8b7ab8, type: 2}
+  - {fileID: 2100000, guid: ce638b275c66b43a9bde468cef842602, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,7 +129,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-8037955239260411771
+--- !u!114 &189887260433250925
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,18 +138,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 6389873552652161418}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93a500d9937784cf782ac6f874bcd7d5, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f48e0547207b4257be23c2822026ac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileSO: {fileID: 11400000, guid: 2cc2e712323ad4580b9dd9c304e0d695, type: 2}
+  tileSO: {fileID: 11400000, guid: e8d1ad46632f44e5ca8703e6c5da0aeb, type: 2}
   _x: 0
   _z: 0
   isSelected: 0
   tileType: 0
-  _animator: {fileID: 0}
+  _animator: {fileID: 3761349924235490333}
   tileManager: {fileID: 0}
   playerInteract: {fileID: 0}
---- !u!1001 &4818225848124307819
+--- !u!1001 &4496420324405580544
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -206,8 +206,8 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
---- !u!4 &4273257563236235259 stripped
+--- !u!4 &5185351313058504080 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8759624410060525200, guid: 58772685260a84f7c9bd82c31084c577, type: 3}
-  m_PrefabInstance: {fileID: 4818225848124307819}
+  m_PrefabInstance: {fileID: 4496420324405580544}
   m_PrefabAsset: {fileID: 0}
