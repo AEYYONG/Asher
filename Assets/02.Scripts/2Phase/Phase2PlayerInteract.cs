@@ -30,6 +30,10 @@ public class Phase2PlayerInteract : MonoBehaviour
     public GameObject NPCPitch;
     private bool AsherSuccess = false;
 
+    // 선택할 타일 표시 시각화
+    public GameObject Selecting;
+    private GameObject currentSelect;
+
     // Update is called once per frame
     void Update()
     {
@@ -42,6 +46,12 @@ public class Phase2PlayerInteract : MonoBehaviour
             {
                 Tile curTile = _hit.collider.GetComponent<Tile>();
                 //Debug.Log("타일 이름: " +curTile.name);
+                ShowSelecting(curTile);
+            }
+
+            else
+            {
+                RemoveSelecting();
             }
 
             if (Input.GetMouseButtonUp(0))
@@ -228,6 +238,25 @@ public class Phase2PlayerInteract : MonoBehaviour
                 NPCPitch.transform.GetChild(index).gameObject.SetActive(true);
             }
         }
+    }
+
+    // 선택할 타일 표시
+    private void ShowSelecting(Tile tile)
+    {
+        if (currentSelect == null)
+        {
+            currentSelect = Instantiate(Selecting, tile.transform.position + new Vector3(0, 0.1f, 0), Quaternion.Euler(90, 0, 0));
+        }
+        else
+        {
+            currentSelect.transform.position = tile.transform.position + new Vector3(0, 0.1f, 0);
+        }
+    }
+
+    private void RemoveSelecting()
+    {
+        Destroy(currentSelect);
+        currentSelect = null;
     }
 
 

@@ -8279,37 +8279,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1341053552}
   m_CullTransparentMesh: 1
---- !u!1 &1355019471
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1355019472}
-  m_Layer: 0
-  m_Name: NPCInteraction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1355019472
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1355019471}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.01375, y: -3.907604, z: 5.4635534}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1355764024
 GameObject:
   m_ObjectHideFlags: 0
@@ -9927,6 +9896,7 @@ MonoBehaviour:
   isNPCTurn: 0
   AsherPitch: {fileID: 200917629}
   NPCPitch: {fileID: 1025058337}
+  Selecting: {fileID: 3310742281483961715, guid: a243b4bb060d3a34799c28a6fc125fea, type: 3}
 --- !u!4 &1636203545
 Transform:
   m_ObjectHideFlags: 0
@@ -13704,4 +13674,3 @@ SceneRoots:
   - {fileID: 1636203545}
   - {fileID: 1094294513}
   - {fileID: 1470562206}
-  - {fileID: 1355019472}
