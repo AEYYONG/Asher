@@ -9149,13 +9149,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e867d8d5d2d55714c8851d6cf4a77218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxWrongTiles: 1
+  _wrongtile: []
   tileOrderNames:
   - Do
   - HairBall
   - HairBall
   - HairBall
   - HairBall
+  NPCtileOrderNames:
+  - Do
+  - Sol
+  - Fa
+  - Sol
+  - Sol
   isPlayerTurn: 1
+  isNPCTurn: 0
 --- !u!4 &1636203545
 Transform:
   m_ObjectHideFlags: 0
@@ -10429,33 +10438,33 @@ MonoBehaviour:
   furnitureTilePosList: []
   _tileShuffleList: []
   tileEntries:
-  - position: {x: 0, y: 0}
+  - position: {x: 4, y: 2}
     tile: {fileID: 1537286717}
-  - position: {x: 1, y: 0}
+  - position: {x: 5, y: 2}
     tile: {fileID: 103656127}
-  - position: {x: 2, y: 0}
+  - position: {x: 6, y: 2}
     tile: {fileID: 1063410976}
-  - position: {x: 3, y: 0}
+  - position: {x: 7, y: 2}
     tile: {fileID: 2036881545}
-  - position: {x: 4, y: 0}
+  - position: {x: 8, y: 2}
     tile: {fileID: 891095452}
-  - position: {x: 0, y: 1}
+  - position: {x: 4, y: 3}
     tile: {fileID: 520412763}
-  - position: {x: 1, y: 1}
+  - position: {x: 5, y: 3}
     tile: {fileID: 1014978164}
-  - position: {x: 2, y: 1}
+  - position: {x: 6, y: 3}
     tile: {fileID: 860876498}
-  - position: {x: 3, y: 1}
+  - position: {x: 7, y: 3}
     tile: {fileID: 1678366550}
-  - position: {x: 4, y: 1}
+  - position: {x: 8, y: 3}
     tile: {fileID: 497537013}
-  - position: {x: 0, y: 2}
+  - position: {x: 4, y: 4}
     tile: {fileID: 565563724}
-  - position: {x: 1, y: 2}
+  - position: {x: 5, y: 4}
     tile: {fileID: 1987329203}
-  - position: {x: 2, y: 2}
+  - position: {x: 6, y: 2}
     tile: {fileID: 1961993425}
-  - position: {x: 3, y: 2}
+  - position: {x: 7, y: 2}
     tile: {fileID: 1741388973}
   - position: {x: 4, y: 2}
     tile: {fileID: 280556994}
