@@ -12529,14 +12529,6 @@ PrefabInstance:
       value: Asher
       objectReference: {fileID: 0}
     - target: {fileID: 3897806926975662045, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897806926975662045, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.18
-      objectReference: {fileID: 0}
-    - target: {fileID: 3897806926975662045, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 5
       objectReference: {fileID: 0}
@@ -13989,14 +13981,6 @@ PrefabInstance:
       propertyPath: textDisplay
       value: 
       objectReference: {fileID: 1663088018}
-    - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.2
-      objectReference: {fileID: 0}
     - target: {fileID: 1752290412067668391, guid: 1bfda62ba9b1be5469c193846e1d2b0e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2
