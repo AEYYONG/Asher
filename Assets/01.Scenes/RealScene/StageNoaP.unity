@@ -12488,6 +12488,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2066863250}
     m_Modifications:
+    - target: {fileID: 119551750109681491, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 907695079208561728, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: isFever
       value: 0
@@ -12512,6 +12516,14 @@ PrefabInstance:
       propertyPath: _stageUIManager
       value: 
       objectReference: {fileID: 2081828223}
+    - target: {fileID: 2042820725386075786, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_SortingOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2706758315640390962, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2791380705674465803, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_Color.a
       value: 1
@@ -12567,6 +12579,18 @@ PrefabInstance:
     - target: {fileID: 3897806926975662045, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472723005002410192, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599583048673312692, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6512102583946612326, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5942560119042791849, guid: 7ca60520217b24d408e1eede07c273a9, type: 3}
