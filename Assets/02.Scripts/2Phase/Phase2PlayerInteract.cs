@@ -118,7 +118,8 @@ public class Phase2PlayerInteract : MonoBehaviour
             {
                 isNPCTurn = false;
                 StartCoroutine(NPCTurn());
-              
+                RemoveSelecting();
+
             }
              
         }

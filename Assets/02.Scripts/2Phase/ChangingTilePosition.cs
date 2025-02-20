@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class ChangingTilePosition : MonoBehaviour
 {
-    void Start()
+    public static ChangingTilePosition Instance { get; private set; }
+    private void Awake()
     {
-        StartCoroutine(ChangingPosition());
-
-
+        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
-    private IEnumerator ChangingPosition()
+
+
+
+    public void ChangingPosition()
     {
-        yield return new WaitForSeconds(0.5f);
         transform.position = new Vector3(4, 0, 2);
-
     }
+
 }

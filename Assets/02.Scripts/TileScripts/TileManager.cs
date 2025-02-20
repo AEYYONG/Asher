@@ -182,6 +182,11 @@ public class TileManager : MonoBehaviour
                 tile.name = $"Tile{pos} : Furniture Tile";
             }
         }
+
+        if (ChangingTilePosition.Instance != null)
+        {
+            ChangingTilePosition.Instance.ChangingPosition();
+        }
         //타일 보드가 중앙에 오도록 카메라 위치 조정
         //cam.transform.position = new Vector3((float)width / 2 - 0.5f, 10f,-((float)height / 2 - 1.7f));
     }
