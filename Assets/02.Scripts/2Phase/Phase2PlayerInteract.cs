@@ -34,6 +34,15 @@ public class Phase2PlayerInteract : MonoBehaviour
     public GameObject Selecting;
     private GameObject currentSelect;
 
+    // 뺏기 아이템 사용 유무 변수
+    public bool isSteal = false;
+
+    // 리스트 중 빈 인덱스 번호
+    
+    // 뺏기 비교를 위한 리스트
+    [SerializeField] private List<Tile> _plyertile = new List<Tile>();
+    [SerializeField] private List<Tile> _npctile = new List<Tile>();
+
     // Update is called once per frame
     void Update()
     {
@@ -72,41 +81,78 @@ public class Phase2PlayerInteract : MonoBehaviour
                         curTile._animator.SetTrigger("Select");
                         Debug.Log("지금 뒤집은 타일 이름0: " + tileName);
                         Debug.Log("지금 이름틀림0: " + tileOrderNames[currentOrderIndex]);
-                        //타일 아이디 값 저장
-                        _tiles.Add(curTile);
-                        if (tileName == tileOrderNames[currentOrderIndex])
+
+                        // 뺏기 아이템 사용 전
+                        if (!isSteal)
                         {
-                            Debug.Log("지금 이름: " + tileOrderNames[currentOrderIndex]);
-                            // 순서가 맞다면
-                            _curSelectCnt++;
-                            curTile.tileSO.selectNum = _curSelectCnt;
-                            _tiles.Add(curTile);
-                            AsherSuccess = true;
-                            ActivateChildObjects(currentOrderIndex);
-                            AsherSuccess = false;
-                            currentOrderIndex++; // 다음 타일로 이동
-                                                 //선택 여부 true로 변경
-                            curTile.isSelected = true;
-
-                          
-
-                            // 최대 5개를 모두 뒤집었을 경우 상호작용 불가 설정
-                            if (_curSelectCnt >= tileOrderNames.Length)
+                            if (tileName == tileOrderNames[currentOrderIndex])
                             {
-                                canInteract = false;
+                                Debug.Log("지금 이름: " + tileOrderNames[currentOrderIndex]);
+                                // 순서가 맞다면
+                                _curSelectCnt++;
+                                curTile.tileSO.selectNum = _curSelectCnt;
+                                _tiles.Add(curTile);
+                                AsherSuccess = true;
+                                ActivateChildObjects(currentOrderIndex);
+                                AsherSuccess = false;
+                                _plyertile[currentOrderIndex] = curTile;
+                                currentOrderIndex++; // 다음 타일로 이동
+                                                     //선택 여부 true로 변경
+                                curTile.isSelected = true;
+                                
+
+
+                                // 최대 5개를 모두 뒤집었을 경우 상호작용 불가 설정
+                                if (_curSelectCnt >= tileOrderNames.Length)
+                                {
+                                    canInteract = false;
+                                }
+                            }
+                            else
+                            {
+                                Debug.Log("지금 뒤집은 타일 이름: " + tileName);
+                                Debug.Log("지금 이름틀림: " + tileOrderNames[currentOrderIndex]);
+                                isPlayerTurn = false;
+                                isNPCTurn = true;
+                                AddWrongTile(curTile);
+
+                                StartCoroutine(ReturnTile(curTile));
+
                             }
                         }
-                        else
+                        // 뺏기 아이템 사용 후 돌아온 턴, 플레이어와 npc의 타일 리스트에서 empty를 찾고 그걸 우선 비교
+                        else 
                         {
-                            Debug.Log("지금 뒤집은 타일 이름: " + tileName);
-                            Debug.Log("지금 이름틀림: " + tileOrderNames[currentOrderIndex]);
-                            isPlayerTurn = false;
-                            isNPCTurn = true;
-                            AddWrongTile(curTile);
+                             for (int i = 0; i < _plyertile.Count; i++)
+                            {
+                                if (_plyertile[i] == null) // 비어있는 경우(빼앗기거나 아직 안채워졌거나)
+                                {
+                                    if (tileName == tileOrderNames[i])
+                                    {
+                                        AsherSuccess = true;
+                                        ActivateChildObjects(i);
+                                        AsherSuccess = false;
+                                        _plyertile[i] = curTile;
+                                        curTile.isSelected = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        Debug.Log("지금 뒤집은 타일 이름: " + tileName);
+                                        Debug.Log("지금 이름틀림: " + tileOrderNames[currentOrderIndex]);
+                                        isPlayerTurn = false;
+                                        isNPCTurn = true;
+                                        AddWrongTile(curTile);
 
-                            StartCoroutine(ReturnTile(curTile));
+                                        StartCoroutine(ReturnTile(curTile));
+                                        break;
+                                    }
+                                }
+                            }
 
                         }
+                            
+                            
                     }
 
                 }
@@ -130,6 +176,7 @@ public class Phase2PlayerInteract : MonoBehaviour
         yield return new WaitForSeconds(2f);
         Debug.Log("npc의 턴입니다");
         Tile chosenTile = null;
+        // 뺏기 아이템 사용 전
 
         // wrongtile 리스트에서 현재 뒤집어야 하는 타일이 있는지 확인
         foreach (Tile tile in _wrongtile)
@@ -187,6 +234,7 @@ public class Phase2PlayerInteract : MonoBehaviour
                 Debug.Log("npc가 옳게 선택함");
                 yield return new WaitForSeconds(1f);
                 ActivateChildObjects(currentNPCOrderIndex);
+                _plyertile[currentNPCOrderIndex] = chosenTile;
                 currentNPCOrderIndex++;
                 StartCoroutine(NPCTurn());
             }
@@ -203,6 +251,8 @@ public class Phase2PlayerInteract : MonoBehaviour
         {
             Debug.Log("비어있는거야 뭐야");
         }
+
+        // 뺏기 아이템 사용 후
     }
 
 

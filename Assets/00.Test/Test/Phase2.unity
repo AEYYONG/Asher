@@ -16123,6 +16123,19 @@ MonoBehaviour:
   AsherPitch: {fileID: 200917629}
   NPCPitch: {fileID: 1025058337}
   Selecting: {fileID: 3310742281483961715, guid: a243b4bb060d3a34799c28a6fc125fea, type: 3}
+  isSteal: 0
+  _plyertile:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _npctile:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &1636203545
 Transform:
   m_ObjectHideFlags: 0
