@@ -36,12 +36,16 @@ public class Phase2PlayerInteract : MonoBehaviour
 
     // 뺏기 아이템 사용 유무 변수
     public bool isSteal = false;
+    public bool isStealDone = false;
 
     // 리스트 중 빈 인덱스 번호
-    
+
     // 뺏기 비교를 위한 리스트
-    [SerializeField] private List<Tile> _plyertile = new List<Tile>();
-    [SerializeField] private List<Tile> _npctile = new List<Tile>();
+    [SerializeField] public List<Tile> _plyertile = new List<Tile>();
+    [SerializeField] public List<Tile> _npctile = new List<Tile>();
+
+    // 뻿기 선택한 인덱스
+    public int stealIndex = 0;
 
     // Update is called once per frame
     void Update()
@@ -167,92 +171,232 @@ public class Phase2PlayerInteract : MonoBehaviour
                 RemoveSelecting();
 
             }
+
+            else if(isStealDone)// 뻿기 선택
+            {
+                isStealDone = false;
+
+                Debug.Log("여기 들어오나");
+                NPCPitch.transform.GetChild(stealIndex).gameObject.SetActive(false);
+
+                // 뺏은 타일이 필요한지 확인
+                Debug.Log("여기는?1");
+                Tile stolenTile = _npctile[stealIndex]; // 뻿은 타일
+                Debug.Log("여기는?2");
+                string stolenTileName = stolenTile.name.Split(':')[1].Trim();
+
+                _npctile[stealIndex] = null;
+                Debug.Log("여기는?3");
+                bool tilePlaced = false;
+                Debug.Log("여기는?");
+
+                for (int i = 0; i < _plyertile.Count; i++)
+                {
+                    if (_plyertile[i] == null) // 빈 슬롯 발견
+                    {
+                        string requiredTileName = tileOrderNames[i]; // Asher가 필요로 하는 타일
+
+                        Debug.Log($"Asher가 필요한 타일: {requiredTileName} (빈 자리 인덱스: {i})");
+
+                        if (stolenTileName == requiredTileName)
+                        {
+                            Debug.Log("타일이 Asher에게 필요함! 정상적으로 가져옴.");
+
+
+                            _plyertile[i] = stolenTile;
+                            ActivateChildObjects(i);
+                            tilePlaced = true;
+                            break; // 맞는 자리에 배치했으므로 종료
+                        }
+                    }
+
+                }
+
+                if (!tilePlaced)
+                {
+                    Debug.Log("타일이 Asher에게 필요하지 않음! 다시 뒤집기");
+
+                    // 필요 없는 경우 다시 뒤집기
+                    StartCoroutine(ReturnTile(stolenTile));
+
+                    // 다시 선택 가능하도록 변수 수정
+                    stolenTile.isSelected = false;
+                }
+
+            }
              
         }
 
     }
+    public void SetStealIndex(int index)
+    {
+        stealIndex = index;
+        isPlayerTurn = false;
+    }
+
+
     private IEnumerator NPCTurn()
     {
         yield return new WaitForSeconds(2f);
         Debug.Log("npc의 턴입니다");
         Tile chosenTile = null;
         // 뺏기 아이템 사용 전
-
-        // wrongtile 리스트에서 현재 뒤집어야 하는 타일이 있는지 확인
-        foreach (Tile tile in _wrongtile)
+        if (!isSteal)
         {
-            Debug.Log("wrongtile" + _wrongtile);
-            Debug.Log("npc의 턴 - wrongtile 리스트 크기: " + _wrongtile.Count);
-            Debug.Log("npc의 턴-뒤집기가능 타일이 wrongtile에 있는지 확인");
-            Debug.Log("npc의 턴 - wrongtile 리스트에서 검사 중: " + tile.name);
-            Debug.Log("npc의 턴 - wrongtile 리스트의 현재 비교 대상: " + tile.name.Split(':')[1].Trim());
-            Debug.Log("npc의 턴 - NPCtileOrderNames안의 비교 대상: " + NPCtileOrderNames[currentNPCOrderIndex]);
-            if (tile.name.Split(':')[1].Trim() == NPCtileOrderNames[currentNPCOrderIndex])
+            // wrongtile 리스트에서 현재 뒤집어야 하는 타일이 있는지 확인
+            foreach (Tile tile in _wrongtile)
             {
-               
-                chosenTile = tile;
-                Debug.Log("wrongtile리스트에서 찾음!" + chosenTile);
-                _wrongtile.Remove(chosenTile);
-                break;
-            }
-        }
-
-        if (chosenTile == null)
-        {
-            // 상호작용 가능 타일 랜덤으로 하나 선택
-            Debug.Log("npc의 턴-랜덤으로 하나 선택");
-            Tile[] allTiles = FindObjectsOfType<Tile>();
-            List<Tile> availableTiles = new List<Tile>();
-
-            foreach (Tile tile in allTiles)
-            {
-                if (!tile.isSelected && tile.tileType != TileType.RandomNotAvail)
+                Debug.Log("wrongtile" + _wrongtile);
+                Debug.Log("npc의 턴 - wrongtile 리스트 크기: " + _wrongtile.Count);
+                Debug.Log("npc의 턴-뒤집기가능 타일이 wrongtile에 있는지 확인");
+                Debug.Log("npc의 턴 - wrongtile 리스트에서 검사 중: " + tile.name);
+                Debug.Log("npc의 턴 - wrongtile 리스트의 현재 비교 대상: " + tile.name.Split(':')[1].Trim());
+                Debug.Log("npc의 턴 - NPCtileOrderNames안의 비교 대상: " + NPCtileOrderNames[currentNPCOrderIndex]);
+                if (tile.name.Split(':')[1].Trim() == NPCtileOrderNames[currentNPCOrderIndex])
                 {
-                    availableTiles.Add(tile);
+
+                    chosenTile = tile;
+                    Debug.Log("wrongtile리스트에서 찾음!" + chosenTile);
+                    _wrongtile.Remove(chosenTile);
+                    break;
                 }
             }
 
-            if (availableTiles.Count > 0)
+            if (chosenTile == null)
             {
-                
-                chosenTile = availableTiles[Random.Range(0, availableTiles.Count)];
-                Debug.Log("랜덤으로 하나 선택하는 부분, 선택된 타일: "+chosenTile);
+                // 상호작용 가능 타일 랜덤으로 하나 선택
+                Debug.Log("npc의 턴-랜덤으로 하나 선택");
+                Tile[] allTiles = FindObjectsOfType<Tile>();
+                List<Tile> availableTiles = new List<Tile>();
+
+                foreach (Tile tile in allTiles)
+                {
+                    if (!tile.isSelected && tile.tileType != TileType.RandomNotAvail)
+                    {
+                        availableTiles.Add(tile);
+                    }
+                }
+
+                if (availableTiles.Count > 0)
+                {
+
+                    chosenTile = availableTiles[Random.Range(0, availableTiles.Count)];
+                    Debug.Log("랜덤으로 하나 선택하는 부분, 선택된 타일: " + chosenTile);
+                }
+            }
+
+            if (chosenTile != null)
+            {
+                Debug.Log("npc의 턴입니다2");
+                Debug.Log("선택된 타일: " + chosenTile);
+                chosenTile._animator.SetTrigger("Select");
+                AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
+                _tiles.Add(chosenTile);
+                chosenTile.isSelected = true;
+
+                if (chosenTile.name.Split(':')[1].Trim() == NPCtileOrderNames[currentNPCOrderIndex]) // npc가 옳은 타일 선택한 경우
+                {
+                    Debug.Log("npc가 옳게 선택함");
+                    yield return new WaitForSeconds(1f);
+                    ActivateChildObjects(currentNPCOrderIndex);
+                    _npctile[currentNPCOrderIndex] = chosenTile;
+                    currentNPCOrderIndex++;
+                    StartCoroutine(NPCTurn());
+                }
+                else
+                {
+                    Debug.Log("npc가 틀림");
+                    yield return new WaitForSeconds(1f);
+                    StartCoroutine(ReturnTile(chosenTile));
+                    isPlayerTurn = true;
+                }
             }
         }
-
-        if (chosenTile != null)
-        {
-            Debug.Log("npc의 턴입니다2");
-            Debug.Log("선택된 타일: " + chosenTile);
-            chosenTile._animator.SetTrigger("Select");
-            AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
-            _tiles.Add(chosenTile);
-            chosenTile.isSelected = true;
-
-            if (chosenTile.name.Split(':')[1].Trim() == NPCtileOrderNames[currentNPCOrderIndex]) // npc가 옳은 타일 선택한 경우
-            {
-                Debug.Log("npc가 옳게 선택함");
-                yield return new WaitForSeconds(1f);
-                ActivateChildObjects(currentNPCOrderIndex);
-                _plyertile[currentNPCOrderIndex] = chosenTile;
-                currentNPCOrderIndex++;
-                StartCoroutine(NPCTurn());
-            }
-            else
-            {
-                Debug.Log("npc가 틀림");
-                yield return new WaitForSeconds(1f);
-                StartCoroutine(ReturnTile(chosenTile));
-                isPlayerTurn = true;
-            }
-        }
-
         else
         {
-            Debug.Log("비어있는거야 뭐야");
-        }
+            for (int i = 0; i < _plyertile.Count; i++)
+            {
+                if (_plyertile[i] == null) // 비어있는 경우(빼앗기거나 아직 안채워졌거나)
+                {
+                    foreach (Tile tile in _wrongtile)
+                    {
+                        Debug.Log("wrongtile" + _wrongtile);
+                        Debug.Log("npc의 턴 - wrongtile 리스트 크기: " + _wrongtile.Count);
+                        Debug.Log("npc의 턴-뒤집기가능 타일이 wrongtile에 있는지 확인");
+                        Debug.Log("npc의 턴 - wrongtile 리스트에서 검사 중: " + tile.name);
+                        Debug.Log("npc의 턴 - wrongtile 리스트의 현재 비교 대상: " + tile.name.Split(':')[1].Trim());
+                        Debug.Log("npc의 턴 - NPCtileOrderNames안의 비교 대상: " + NPCtileOrderNames[i]);
+                        if (tile.name.Split(':')[1].Trim() == NPCtileOrderNames[i])
+                        {
 
-        // 뺏기 아이템 사용 후
+                            chosenTile = tile;
+                            Debug.Log("wrongtile리스트에서 찾음!" + chosenTile);
+                            _wrongtile.Remove(chosenTile);
+                            break;
+                        }
+                    }
+
+                    if (chosenTile == null)
+                    {
+                        // 상호작용 가능 타일 랜덤으로 하나 선택
+                        Debug.Log("npc의 턴-랜덤으로 하나 선택");
+                        Tile[] allTiles = FindObjectsOfType<Tile>();
+                        List<Tile> availableTiles = new List<Tile>();
+
+                        foreach (Tile tile in allTiles)
+                        {
+                            if (!tile.isSelected && tile.tileType != TileType.RandomNotAvail)
+                            {
+                                availableTiles.Add(tile);
+                            }
+                        }
+
+                        if (availableTiles.Count > 0)
+                        {
+
+                            chosenTile = availableTiles[Random.Range(0, availableTiles.Count)];
+                            Debug.Log("랜덤으로 하나 선택하는 부분, 선택된 타일: " + chosenTile);
+                        }
+                    }
+
+                    if (chosenTile != null)
+                    {
+                        Debug.Log("npc의 턴입니다2");
+                        Debug.Log("선택된 타일: " + chosenTile);
+                        chosenTile._animator.SetTrigger("Select");
+                        AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
+                        _tiles.Add(chosenTile);
+                        chosenTile.isSelected = true;
+
+                        if (chosenTile.name.Split(':')[1].Trim() == NPCtileOrderNames[i]) // npc가 옳은 타일 선택한 경우
+                        {
+                            Debug.Log("npc가 옳게 선택함");
+                            yield return new WaitForSeconds(1f);
+                            ActivateChildObjects(i);
+                            _npctile[i] = chosenTile;
+                            StartCoroutine(NPCTurn());
+                        }
+                        else
+                        {
+                            Debug.Log("npc가 틀림");
+                            yield return new WaitForSeconds(1f);
+                            StartCoroutine(ReturnTile(chosenTile));
+                            isPlayerTurn = true;
+                        }
+                    }
+
+                    else
+                    {
+
+                        isPlayerTurn = true;
+
+                        StartCoroutine(ReturnTile(chosenTile));
+                        break;
+                    }
+                }
+            }
+
+        }
     }
 
 
