@@ -9,9 +9,12 @@ public class StealGauge : MonoBehaviour
 
     private Image playerGauge; // 게이지 변화(플레이어)
 
-    private int playerCount = 50;
-    private int npcCount = 50;
+    private float playerCount = 50f;
+    private float npcCount = 50f;
 
+    public float repeatTime = 0.2f;
+    public float playerScore = 1f;
+    public float npcScore = 1f;
     private const int Max_Total = 100;
 
     // 승리, 패배 변수
@@ -34,7 +37,7 @@ public class StealGauge : MonoBehaviour
         SetGauge(0.5f);
 
         // NPC 카운트 2초마다 1씩 증가
-        InvokeRepeating("IncreaseNpcCount", 2f, 2f);
+        InvokeRepeating("IncreaseNpcCount", 0.1f, 0.2f);
     }
 
     void Update()
@@ -44,7 +47,7 @@ public class StealGauge : MonoBehaviour
         // 플레이어가 스페이스바를 누르면 카운트 증가
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            ChangePlayerCount(1);
+            ChangePlayerCount(playerScore);
         }
     }
 
@@ -52,10 +55,10 @@ public class StealGauge : MonoBehaviour
     {
         if (isGameOver) return;
 
-        ChangePlayerCount(-1);
+        ChangePlayerCount(npcScore);
     }
 
-    void ChangePlayerCount(int amount)
+    void ChangePlayerCount(float amount)
     {
         playerCount += amount;
 

@@ -204,8 +204,11 @@ public class Phase2PlayerInteract : MonoBehaviour
 
 
                             _plyertile[i] = stolenTile;
+                            AsherSuccess = true;
                             ActivateChildObjects(i);
+                            AsherSuccess = false;
                             tilePlaced = true;
+                            isPlayerTurn = true;
                             break; // 맞는 자리에 배치했으므로 종료
                         }
                     }
@@ -221,6 +224,8 @@ public class Phase2PlayerInteract : MonoBehaviour
 
                     // 다시 선택 가능하도록 변수 수정
                     stolenTile.isSelected = false;
+                    isPlayerTurn = false;
+                    isNPCTurn = true;
                 }
 
             }
