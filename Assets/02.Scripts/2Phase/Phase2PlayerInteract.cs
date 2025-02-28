@@ -171,13 +171,21 @@ public class Phase2PlayerInteract : MonoBehaviour
                             isPlayerTurn = true;
                             break; // 맞는 자리에 배치했으므로 종료
                         }
+                        else
+                        {
+                            Debug.Log("현재의 타일이 Asher에게 필요하지 않음! 다시 뒤집기");
+
+                            tilePlaced = false;
+                            break;
+                        }
+                        
                     }
 
                 }
 
                 if (!tilePlaced)
                 {
-                    Debug.Log("타일이 Asher에게 필요하지 않음! 다시 뒤집기");
+                    Debug.Log("타일이 Asher에게 전혀 필요하지 않음! 다시 뒤집기");
 
                     // 필요 없는 경우 다시 뒤집기
                     StartCoroutine(ReturnTile(stolenTile));

@@ -28,6 +28,7 @@ public class StealGauge : MonoBehaviour
 
     [SerializeField] private GameObject StealController;
 
+    public float fillValue = 0.5f;
 
 
     void Start()
@@ -70,7 +71,7 @@ public class StealGauge : MonoBehaviour
 
     void UpdateGauge()
     {
-        float fillValue = (float)playerCount / Max_Total; 
+        fillValue = (float)playerCount / Max_Total; 
 
         SetGauge(fillValue);
 

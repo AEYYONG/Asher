@@ -75,7 +75,7 @@ public class SelectController : MonoBehaviour
             Debug.Log($"선택된 인덱스 변경 (↓): {selectedIndex}");
             UpdateChoosePointPosition();
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow)) // 엔터 누르면 확정
+        else if (Input.GetKeyDown(KeyCode.Return)) // 엔터 누르면 확정
         {
             SelectCurrentObject();
         }
@@ -94,15 +94,15 @@ public class SelectController : MonoBehaviour
     private void SelectCurrentObject()
     {
         Debug.Log($"선택된 위치: {npcPositions[selectedIndex]} (인덱스: {selectedIndex})");
-        Debug.Log($"✅ Phase2PlayerInteract.isSteal 값 변경: true");
-        Debug.Log($"✅ Phase2PlayerInteract.isPlayerTurn 값 변경: true");
+        Debug.Log($" Phase2PlayerInteract.isSteal 값 변경: true");
+        Debug.Log($" Phase2PlayerInteract.isPlayerTurn 값 변경: true");
         // 선택 UI 숨기기
 
     
         Phase2PlayerInteract.SetStealIndex(selectedIndex);
         Phase2PlayerInteract.isSteal = true;
         Phase2PlayerInteract.isStealDone = true;
-        Debug.Log("🟢 SelectController 비활성화 실행됨");
+        Debug.Log(" SelectController 비활성화 실행됨");
 
         gameObject.SetActive(false); 
     }

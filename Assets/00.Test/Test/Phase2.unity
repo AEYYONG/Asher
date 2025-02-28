@@ -5947,6 +5947,7 @@ GameObject:
   - component: {fileID: 537380369}
   - component: {fileID: 537380371}
   - component: {fileID: 537380370}
+  - component: {fileID: 537380372}
   m_Layer: 5
   m_Name: NoaVs
   m_TagString: Untagged
@@ -6011,6 +6012,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537380368}
   m_CullTransparentMesh: 1
+--- !u!114 &537380372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537380368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2e9012fd3081c4a8def5b6734a8a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StealGauge: {fileID: 1263886141}
+  ImgChange: 0.8
+  changeSprite: {fileID: 21300000, guid: 8ad9c6fb9089c964b901f7aa0bbddd05, type: 3}
 --- !u!1001 &538433686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9994,6 +10010,7 @@ GameObject:
   - component: {fileID: 947130786}
   - component: {fileID: 947130788}
   - component: {fileID: 947130787}
+  - component: {fileID: 947130789}
   m_Layer: 5
   m_Name: AsherVs
   m_TagString: Untagged
@@ -10058,6 +10075,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947130785}
   m_CullTransparentMesh: 1
+--- !u!114 &947130789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947130785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2e9012fd3081c4a8def5b6734a8a21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StealGauge: {fileID: 1263886141}
+  ImgChange: 0.3
+  changeSprite: {fileID: 21300000, guid: b616a5fe1aa2b1c4daa5c69cf327808d, type: 3}
 --- !u!1 &960217017
 GameObject:
   m_ObjectHideFlags: 0
@@ -13286,6 +13318,7 @@ MonoBehaviour:
   WinUI: {fileID: 696574926}
   LoseUI: {fileID: 55335750}
   StealController: {fileID: 400421284}
+  fillValue: 0.5
 --- !u!114 &1263886142
 MonoBehaviour:
   m_ObjectHideFlags: 0
