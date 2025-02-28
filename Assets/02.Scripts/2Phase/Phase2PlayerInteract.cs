@@ -18,7 +18,7 @@ public class Phase2PlayerInteract : MonoBehaviour
     private TileManager _tileManager;
 
     [SerializeField] private string[] tileOrderNames;
-    [SerializeField] private string[] NPCtileOrderNames;
+    [SerializeField] private string[] NPCTileOrderNames;
     private int currentOrderIndex = 0;
     private int currentNPCOrderIndex = 0;
 
@@ -227,8 +227,8 @@ public class Phase2PlayerInteract : MonoBehaviour
                     Debug.Log("npc의 턴-뒤집기가능 타일이 wrongtile에 있는지 확인");
                     Debug.Log("npc의 턴 - wrongtile 리스트에서 검사 중: " + tile.name);
                     Debug.Log("npc의 턴 - wrongtile 리스트의 현재 비교 대상: " + tile.name.Split(':')[1].Trim());
-                    Debug.Log("npc의 턴 - NPCtileOrderNames안의 비교 대상: " + NPCtileOrderNames[i]);
-                    if (tile.name.Split(':')[1].Trim() == NPCtileOrderNames[i])
+                    Debug.Log("npc의 턴 - NPCtileOrderNames안의 비교 대상: " + NPCTileOrderNames[i]);
+                    if (tile.name.Split(':')[1].Trim() == NPCTileOrderNames[i])
                     {
 
                         chosenTile = tile;
@@ -268,11 +268,12 @@ public class Phase2PlayerInteract : MonoBehaviour
                     chosenTile._animator.SetTrigger("Select");
                     AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
                     _tiles.Add(chosenTile);
-                    chosenTile.isSelected = true;
+                    
 
-                    if (chosenTile.name.Split(':')[1].Trim() == NPCtileOrderNames[i]) // npc가 옳은 타일 선택한 경우
+                    if (chosenTile.name.Split(':')[1].Trim() == NPCTileOrderNames[i]) // npc가 옳은 타일 선택한 경우
                     {
                         Debug.Log("npc가 옳게 선택함");
+                        chosenTile.isSelected = true;
                         yield return new WaitForSeconds(1f);
                         ActivateChildObjects(i);
                         _npctile[i] = chosenTile;

@@ -17628,17 +17628,17 @@ MonoBehaviour:
   maxWrongTiles: 1
   _wrongtile: []
   tileOrderNames:
-  - Do
-  - HairBall
-  - HairBall
-  - HairBall
-  - HairBall
-  NPCtileOrderNames:
-  - Do
-  - Sol
-  - Fa
-  - Sol
-  - Sol
+  - Fa#
+  - Fa#
+  - Si
+  - Me
+  - Do#
+  NPCTileOrderNames:
+  - Si
+  - Ra
+  - Sol#
+  - Me
+  - Fa#
   isPlayerTurn: 1
   isNPCTurn: 0
   AsherPitch: {fileID: 200917629}
@@ -18650,7 +18650,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1710804577
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18704,6 +18704,7 @@ GameObject:
   - component: {fileID: 1710918598}
   - component: {fileID: 1710918597}
   - component: {fileID: 1710918596}
+  - component: {fileID: 1710918599}
   m_Layer: 5
   m_Name: StealButton
   m_TagString: Untagged
@@ -18774,7 +18775,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1710804578}
+      - m_Target: {fileID: 1710918599}
         m_TargetAssemblyTypeName: StealBtn, Assembly-CSharp
         m_MethodName: OnclickBtn
         m_Mode: 1
@@ -18824,6 +18825,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1710918594}
   m_CullTransparentMesh: 1
+--- !u!114 &1710918599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710918594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df91ae9708c28a946a247af2945c8561, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Phase2PlayerInteract: {fileID: 1636203544}
+  StealUI: {fileID: 1377469176}
 --- !u!1 &1712455475
 GameObject:
   m_ObjectHideFlags: 0
@@ -20562,12 +20577,18 @@ MonoBehaviour:
   buffItemTypes: []
   debuffItemTypes: []
   etcItemTypes:
-  - tilePrefab: {fileID: 6389873552652161418, guid: 7a6c107604002ca49978a14ec7cc80ec, type: 3}
-    count: 5
-  - tilePrefab: {fileID: 6389873552652161418, guid: 4c74461ffad787249a3a64d0b5fe1c66, type: 3}
-    count: 5
-  - tilePrefab: {fileID: 6389873552652161418, guid: dafcf6d6f204b6643a0256c1e24855a4, type: 3}
-    count: 5
+  - tilePrefab: {fileID: 6389873552652161418, guid: 6fec6d78bb96f9349ab704ba7b9ea802, type: 3}
+    count: 3
+  - tilePrefab: {fileID: 6389873552652161418, guid: 47b719b949471144e81b5d973e37a167, type: 3}
+    count: 2
+  - tilePrefab: {fileID: 6389873552652161418, guid: 8ec4d62de0779fe47ba308ff73049264, type: 3}
+    count: 2
+  - tilePrefab: {fileID: 6389873552652161418, guid: 723be7bf0594efd45bc20f3eb3bce464, type: 3}
+    count: 4
+  - tilePrefab: {fileID: 6389873552652161418, guid: 4821ca5381b97474d871ee4460287bdb, type: 3}
+    count: 2
+  - tilePrefab: {fileID: 6389873552652161418, guid: b0ef012f0679cf14dab90704325ee92a, type: 3}
+    count: 2
   furnitureTilePosList: []
   _tileShuffleList: []
   tileEntries:

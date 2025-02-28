@@ -17,6 +17,7 @@ public class StealBtn : MonoBehaviour
         Phase2PlayerInteract.isNPCTurn = false;
         // UI 활성화
         StealUI.SetActive(true);
+        gameObject.SetActive(false);
 
     }
 }
