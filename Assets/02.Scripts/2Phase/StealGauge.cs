@@ -28,6 +28,8 @@ public class StealGauge : MonoBehaviour
 
     [SerializeField] private GameObject StealController;
 
+    [SerializeField] private GameObject MinigameUI;
+
     public float fillValue = 0.5f;
 
 
@@ -101,12 +103,13 @@ public class StealGauge : MonoBehaviour
         WinUI.SetActive(true);
         // 승리하면 
         Debug.Log("승리");
-
+        playerCount = 50f;
+        npcCount = 50f;
         // 승리하면 플레이어 턴으로 변경
         /*Phase2PlayerInteract.isPlayerTurn = true;
         Phase2PlayerInteract.isNPCTurn = false;*/
 
-        Invoke("ActiveStealController", 2f);
+        Invoke("ActiveStealController", 4f);
        
         
     }
@@ -119,6 +122,9 @@ public class StealGauge : MonoBehaviour
         // 패배 UI 활성화
         LoseUI.SetActive(true);
         Debug.Log("패배");
+        playerCount = 50f;
+        npcCount = 50f;
+        Invoke("Lose", 4f);
         // 패배하면 NPC 턴으로 변경(임시)
         /*Phase2PlayerInteract.isPlayerTurn = false;
         Phase2PlayerInteract.isNPCTurn = true;*/
@@ -127,5 +133,11 @@ public class StealGauge : MonoBehaviour
     void ActiveStealController()
     {
         StealController.SetActive(true);
+    }
+
+    void Lose()
+    {
+        LoseUI.SetActive(false);
+        MinigameUI.SetActive(false);
     }
 }
