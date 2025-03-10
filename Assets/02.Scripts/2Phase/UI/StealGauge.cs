@@ -30,6 +30,9 @@ public class StealGauge : MonoBehaviour
 
     [SerializeField] private GameObject MinigameUI;
 
+    // 게임 종료 이펙트
+    [SerializeField] private GameObject EndEffect_Player;
+
     public float fillValue = 0.5f;
 
 
@@ -79,12 +82,17 @@ public class StealGauge : MonoBehaviour
 
         if (fillValue >= 0.99f)
         {
-            GameWin();
+            EndEffect_Player.SetActive(true);
+            // 애니메이션 종료 후 이벤트로 GameWin 호출
+            isGameOver = true;
+
         }
 
         else if (fillValue <= 0.01f)
         {
-            GameLose();
+            // 패배버전 effect 애니메이션 넣기
+            //GameLose();
+            
         }
 
     }
@@ -94,9 +102,9 @@ public class StealGauge : MonoBehaviour
         playerGauge.fillAmount = value; 
     }
 
-    void GameWin()
+    public void GameWin()
     {
-        isGameOver = true; 
+        
         CancelInvoke("IncreaseNpcCount");
 
         // 승리 UI 활성화
@@ -114,7 +122,7 @@ public class StealGauge : MonoBehaviour
         
     }
 
-    void GameLose()
+    public void GameLose()
     {
         isGameOver = true; 
         CancelInvoke("IncreaseNpcCount");
