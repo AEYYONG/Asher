@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 public class Phase2PlayerInteract : MonoBehaviour
 {
     // 캐릭터 애니메이션 제어
-    public Animator Asher;
-    public Animator NPC;
+    [SerializeField] private CharactersAnim AsherAnim;
+    [SerializeField] private CharactersAnim NPCAnim;
 
     //타일을 뒤집기 위한 레이캐스트
     private RaycastHit _hit;
@@ -61,11 +61,7 @@ public class Phase2PlayerInteract : MonoBehaviour
     [SerializeField] private Balloon balloon;
     [SerializeField] private Balloon balloon_npc;
 
-    private void Start()
-    {
-        Asher = GetComponent<Animator>();
-        NPC = GetComponent<Animator>();
-    }
+
 
     // Update is called once per frame
     void Update()
@@ -116,10 +112,16 @@ public class Phase2PlayerInteract : MonoBehaviour
                             {
                                 if (tileName == tileOrderNames[i])
                                 {
-                                     if(_plyertile.Count(Item => Item != null) == 1) // 첫번째로 맞춘 경우
+                                     if(_plyertile.Count(Item => Item != null) == 0) // 첫번째로 맞춘 경우
                                     {
                                         balloon.isPlayer = 1;
                                         balloon.Condition = "first_find";
+                                    }
+
+                                    else if (_npctile.Count(Item => Item == null) == 1) // 애셔 승리 얼마 안남은 경우
+                                    {
+                                        balloon_npc.Condition = "almostlose";
+                                        balloon.Condition = "almostwin";
                                     }
                                     _tiles.Add(curTile);
                                     AsherSuccess = true;
@@ -142,18 +144,20 @@ public class Phase2PlayerInteract : MonoBehaviour
                                     Debug.Log("지금 뒤집은 타일 이름: " + tileName);
                                     Debug.Log("지금 이름틀림: " + tileOrderNames[currentOrderIndex]);
                                     balloon.isPlayer = 1;
-                                    Debug.Log("balloon 호출");
                                     balloon.Condition = "wrong_choice";
                                     isPlayerTurn = false;
                                     isNPCTurn = true;
                                     
                                     AddWrongTile(curTile);
+                                    // NPC 애니메이션 재생
+                                    Debug.Log("NPC 애니메이션 재생");
+                                    NPCAnim.SetTriggerOn();
+
                                     Debug.Log("코루틴 호출");
                                     StartCoroutine(ReturnTile(curTile));
                                     Debug.Log("코루틴 호출완");
                                     
-                                    // NPC 애니메이션 재생
-                                    NPC.SetBool("Trun", true);
+                                    
                                     break;
                                 }
                             }
@@ -183,14 +187,13 @@ public class Phase2PlayerInteract : MonoBehaviour
                 NPCPitch.transform.GetChild(stealIndex).gameObject.SetActive(false);
                 // 애셔 승리시 미니게임 승리 대사
                 balloon.Condition = "mg_win";
+                balloon_npc.Condition = "mg_lose";
                 // 뺏은 타일이 필요한지 확인
                 Tile stolenTile = _npctile[stealIndex]; // 뻿은 타일
                 string stolenTileName = stolenTile.name.Split(':')[1].Trim();
 
                 _npctile[stealIndex] = null;
-                Debug.Log("여기는?3");
                 bool tilePlaced = false;
-                Debug.Log("여기는?");
 
                 for (int i = 0; i < _plyertile.Count; i++)
                 {
@@ -211,7 +214,8 @@ public class Phase2PlayerInteract : MonoBehaviour
 
                             if (_plyertile.Count(Item => Item != null) == 4) // 애셔 승리 얼마 안남은 경우
                             {
-                                balloon.Condition = "almostwin";
+                                balloon_npc.Condition = "almostwin";
+                                balloon.Condition = "almostlose";
                             }
 
                             _plyertile[i] = stolenTile;
@@ -221,7 +225,7 @@ public class Phase2PlayerInteract : MonoBehaviour
                             tilePlaced = true;
                             isPlayerTurn = true;
                             // 플레이어 애니메이션 재생
-                            Asher.SetBool("Trun", true);
+                            AsherAnim.SetTriggerOn();
                             break; // 맞는 자리에 배치했으므로 종료
                         }
                         else
@@ -238,8 +242,6 @@ public class Phase2PlayerInteract : MonoBehaviour
 
                 if (!tilePlaced)
                 {
-                    Debug.Log("타일이 Asher에게 전혀 필요하지 않음! 다시 뒤집기");
-
                     // 필요 없는 경우 다시 뒤집기
                     StartCoroutine(ReturnTile(stolenTile));
 
@@ -247,7 +249,7 @@ public class Phase2PlayerInteract : MonoBehaviour
                     stolenTile.isSelected = false;
                     isPlayerTurn = true;
                     // 플레이어 애니메이션 재생
-                    Asher.SetBool("Trun", true);
+                    AsherAnim.SetTriggerOn();
                     isNPCTurn = false;
                 }
 
@@ -284,25 +286,18 @@ public class Phase2PlayerInteract : MonoBehaviour
     private IEnumerator NPCTurn()
     {
         yield return new WaitForSeconds(2f);
-        Debug.Log("npc의 턴입니다");
         Tile chosenTile = null;
         // 뺏기 아이템 사용 전
         for (int i = 0; i < _npctile.Count; i++)
         {
             if (_npctile[i] == null)
             {
-                Debug.Log("*** 빈 타일의 순서는 :" + i);
                 foreach (Tile tile in _wrongtile)
                 {
-                    Debug.Log("npc의 턴-뒤집기가능 타일이 wrongtile에 있는지 확인");
-                    Debug.Log("npc의 턴 - wrongtile 리스트에서 검사 중: " + tile.name);
-                    Debug.Log("npc의 턴 - wrongtile 리스트의 현재 비교 대상: " + tile.name.Split(':')[1].Trim());
-                    Debug.Log("npc의 턴 - NPCtileOrderNames안의 비교 대상: " + NPCTileOrderNames[i]);
                     if (tile.name.Split(':')[1].Trim() == NPCTileOrderNames[i])
                     {
 
                         chosenTile = tile;
-                        Debug.Log("wrongtile리스트에서 찾음!" + chosenTile);
                         _wrongtile.Remove(chosenTile);
                         break;
                     }
@@ -311,7 +306,6 @@ public class Phase2PlayerInteract : MonoBehaviour
                 if (chosenTile == null)
                 {
                     // 상호작용 가능 타일 랜덤으로 하나 선택
-                    Debug.Log("npc의 턴-랜덤으로 하나 선택");
                     Tile[] allTiles = FindObjectsOfType<Tile>();
                     List<Tile> availableTiles = new List<Tile>();
 
@@ -327,14 +321,13 @@ public class Phase2PlayerInteract : MonoBehaviour
                     {
 
                         chosenTile = availableTiles[Random.Range(0, availableTiles.Count)];
-                        Debug.Log("랜덤으로 하나 선택하는 부분, 선택된 타일: " + chosenTile);
                     }
                 }
 
                 if (chosenTile != null)
                 {
-                    Debug.Log("npc의 턴입니다2");
-                    Debug.Log("선택된 타일: " + chosenTile);
+                   // Debug.Log("npc의 턴입니다2");
+                  //  Debug.Log("선택된 타일: " + chosenTile);
                     
                     chosenTile._animator.SetTrigger("Select");
                     AudioManager.Instance.PlaySFX(AudioManager.Instance.sfxDictionary["SFX_TileFlip"]);
@@ -344,13 +337,15 @@ public class Phase2PlayerInteract : MonoBehaviour
                     if (chosenTile.name.Split(':')[1].Trim() == NPCTileOrderNames[i]) // npc가 옳은 타일 선택한 경우
                     {
                         Debug.Log("npc가 옳게 선택함");
-                        if (_npctile.Count(Item => Item != null) == 1) // 첫번째로 맞춘 경우
+                        if (_npctile.Count(Item => Item != null) == 0) // 첫번째로 맞춘 경우
                         {
                             balloon_npc.isPlayer = 2;
+                            Debug.Log("npc의 isplayer = " + balloon_npc.isPlayer);
                             balloon_npc.Condition = "first_find";
+                            Debug.Log("npc의 condition= " + balloon_npc.Condition);
                         }
 
-                        if (_npctile.Count(Item => Item != null) == 4) // npc 승리 얼마 안남은 경우
+                        else if (_npctile.Count(Item => Item == null) == 1) // npc 승리 얼마 안남은 경우
                         {
                             balloon.Condition = "almostlose";
                         }
@@ -358,8 +353,8 @@ public class Phase2PlayerInteract : MonoBehaviour
                         yield return new WaitForSeconds(1f);
                         ActivateChildObjects(i);
                         _npctile[i] = chosenTile;
-                        Debug.Log("***npc 타일 갯수 :" + _npctile.Count);
-                        Debug.Log("***npc 타일 null이 아닌 갯수 :" + _npctile.Count(Item => Item != null));
+                        //Debug.Log("***npc 타일 갯수 :" + _npctile.Count);
+                        //Debug.Log("***npc 타일 null이 아닌 갯수 :" + _npctile.Count(Item => Item != null));
 
                         // npc가 리스트의 개수와 지정한 리스트의 수가 동일한지 확인
                         if(_npctile.Count(Item => Item != null) == tileOrderNames.Length)
@@ -377,12 +372,13 @@ public class Phase2PlayerInteract : MonoBehaviour
                     {
                         Debug.Log("npc가 틀림");
                         balloon.isPlayer = 2; // 틀린 타일을 뒤집었을 때
-                        balloon.Condition = "wrong_choice";
+                        balloon_npc.Condition = "wrong_choice";
                         yield return new WaitForSeconds(1f);
                         StartCoroutine(ReturnTile(chosenTile));
                         isPlayerTurn = true;
                         // 플레이어 애니메이션 재생
-                        Asher.SetBool("Trun", true);
+                        AsherAnim.SetTriggerOn();
+
                         break;
                     }
                 }
@@ -392,7 +388,8 @@ public class Phase2PlayerInteract : MonoBehaviour
 
                     isPlayerTurn = true;
                     // 플레이어 애니메이션 재생
-                    Asher.SetBool("Trun", true);
+                    AsherAnim.SetTriggerOn();
+
                     StartCoroutine(ReturnTile(chosenTile));
                     break;
                 }

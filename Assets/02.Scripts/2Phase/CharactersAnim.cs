@@ -10,8 +10,9 @@ public class CharactersAnim : MonoBehaviour
     {
         anim = GetComponent<Animator>();
     }
-    public void AinmDone()
+
+    public void SetTriggerOn()
     {
-        anim.SetBool("Trun", false);
+        anim.SetTrigger("Turn");
     }
 }

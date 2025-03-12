@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Balloon : MonoBehaviour
 {
@@ -34,7 +35,14 @@ public class Balloon : MonoBehaviour
 
     // 아이템 사용 유무
     private bool stealItemUse = false;
+
+    // 이미지 활성화시 dotween 애니메이션
     private Image image;
+    [SerializeField] private float enableDuration = 0.5f;
+    [SerializeField] private Ease enableEase = Ease.OutQuad;
+    [SerializeField] private Ease hideEase = Ease.InBack;
+
+     private Vector3 originalScale;
 
     public string Condition
     {
@@ -51,13 +59,19 @@ public class Balloon : MonoBehaviour
     void Start()
     {
         image = GetComponent<Image>();
-        ScriptChange();
+        originalScale = balloonRect.localScale;
+        balloonRect.localScale = Vector3.zero; // 시작 시 숨김
     }
 
+    private void Update()
+    {
+    }
     void ScriptChange()
     {
+        Debug.Log("스크립트 변경, image 떠야함: "+_condition);
         // 이미지, 텍스트 활성화
         image.enabled = true;
+        ShowBalloon();
         switch (_condition)
         {
             case "start": //!
@@ -91,6 +105,8 @@ public class Balloon : MonoBehaviour
 
                 ShowRandomDialogue(WrongChoice);
                 wrongCount++;
+
+                // npc인지 플레이어인지 구분 필요
 
                /* if (isPlayer == 1)// 플레이어가 잘못 뒤집은 경우
                 {
@@ -189,6 +205,7 @@ public class Balloon : MonoBehaviour
         {
             string randomText = dialogueList[Random.Range(0, dialogueList.Count)];
             SetDialog(randomText);
+            _condition = "";
         }
         else
         {
@@ -215,7 +232,6 @@ public class Balloon : MonoBehaviour
     public void SetDialog(string text)
     {
         dialogText.text = text;
-        Debug.Log("현재 텍스트: " + text);
         UpdateSpeechBubbleSize();
     }
 
@@ -236,15 +252,40 @@ public class Balloon : MonoBehaviour
        
     }
 
+    public void ShowBalloon()
+    {
+        image.enabled = true;
+        balloonRect.DOScale(originalScale, enableDuration)
+            .SetEase(enableEase)
+            .OnComplete(() => StartCoroutine(AutoHideBalloon()));
+    }
+
+    private IEnumerator AutoHideBalloon()
+    {
+        yield return new WaitForSeconds(3f);
+
+        if (stealItemUse)
+            StealAnimStart();
+        else
+            HideBalloon();
+    }
+
     private void Done()
     {
-        // 이미지 텍스트 비활성화
-        
-        image.enabled = false;
-
+        HideBalloon();
 
         string Empty = "";
         SetDialog(Empty);
+    }
+
+    public void HideBalloon()
+    {
+        balloonRect.DOScale(Vector3.zero, enableDuration * 0.5f)
+       .SetEase(hideEase)
+       .OnComplete(() =>
+       {
+           image.enabled = false;
+        });
     }
 
     private void StealAnimStart()
@@ -260,4 +301,7 @@ public class Balloon : MonoBehaviour
         // 애니메이션 UI 활성화
         StealAnimUI.SetActive(true);
     }
+
+    // 말풍선 활성화 닷트윈 효과
+    
 }
