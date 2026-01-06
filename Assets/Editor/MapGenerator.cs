@@ -86,7 +86,7 @@ public class MapGenerator : EditorWindow
         _curWidth = _prevWidth;
         
         //grid prefab 초기화
-        _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CustomEditor/Grid.prefab");
+        _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/04.Prefabs/CustomEditor/Grid.prefab");
         
         //초기화 확인
         if (_tilePrefab == null)
@@ -118,8 +118,8 @@ public class MapGenerator : EditorWindow
         _curDrawMode = DrawMode.DEFAULT;
         
         //타일 타입 텍스쳐 불러오기
-        _notAvail = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CustomEditor/NotAvail.prefab");
-        _event = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/CustomEditor/Event.prefab");
+        _notAvail = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/04.Prefabs/CustomEditor/NotAvail.prefab");
+        _event = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/04.Prefabs/CustomEditor/Event.prefab");
         _texParent = new GameObject();
         _texParent.name = "Tex Parent";
     }
