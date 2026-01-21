@@ -13,17 +13,12 @@ public class MapGenerator : EditorWindow
 {
     private MapContext _ctx;
     private GridFeatures _gridSection;
+    private TileFeatures _tileSection;
     
     
     private Vector2 scrollPos;
     
-    //타일 생성
-    private int _prevWidth; //이전 타일 너비
-    private int _prevHeight; //이전 타일 높이
-    private int _curWidth; //타일 너비
-    private int _curHeight; //타일 높이
-    private GameObject _tilePrefab; //타일 프리팹
-    private GameObject _tileParent; //타일들이 생성될 부모 오브젝트
+    
     
     //타일 매니저 스크립트
     private TileManager _tileManager;
@@ -76,35 +71,10 @@ public class MapGenerator : EditorWindow
             _ctx = new MapContext();
         }
 
-        _gridSection = new GridFeatures(_ctx);
-        
-        //해당 씬 내의 tile manager를 통해 값 초기화 하기
         _tileManager = FindObjectOfType<TileManager>();
-        _prevHeight = _tileManager.height;
-        _prevWidth = _tileManager.width;
-        _curHeight = _prevHeight;
-        _curWidth = _prevWidth;
+        _gridSection = new GridFeatures(_ctx);
+        _tileSection = new TileFeatures(_ctx);
         
-        
-        
-        //초기화 확인
-        if (_tilePrefab == null)
-        {
-            Debug.Log("tile prefab does not initiate.");
-        }
-        else if (_tileParent == null)
-        {
-            Debug.Log("tile parent does not initiate");
-        }
-        else if (_tileManager == null)
-        {
-            Debug.Log("tile manager does not initiate");
-        }
-
-        if (_curWidth == 0 && _curHeight == 0)
-        {
-            _tileManager.tileEntries.Clear();
-        }
 
         // 씬 뷰에서 이벤트를 수신하기 위해 duringSceneGui 이벤트에 핸들러 추가
         SceneView.duringSceneGui += OnSceneGUI;
@@ -127,8 +97,7 @@ public class MapGenerator : EditorWindow
     {
         //커스텀 에디터 창이 끌 때
         //타일 매니저에 해당 타일의 정보 저장
-        _tileManager.width = _curWidth;
-        _tileManager.height = _curHeight;
+        _tileSection.SaveTileData(_ctx);
         
         // 이벤트 핸들러 제거
         SceneView.duringSceneGui -= OnSceneGUI;
@@ -166,29 +135,9 @@ public class MapGenerator : EditorWindow
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
         
         _gridSection.DrawGridSection(_ctx);
+        _tileSection.DrawTileSection(_ctx);
         
         
-        //타일 생성 부분
-        GUILayout.Label("Generate Tile",EditorStyles.largeLabel);
-        _curWidth = EditorGUILayout.IntSlider("width",_curWidth,0,20);
-        _curHeight = EditorGUILayout.IntSlider("height",_curHeight,0,20);
-        _tilePrefab = (GameObject)EditorGUILayout.ObjectField("tile", _tilePrefab, typeof(GameObject),false);
-        _tileParent = (GameObject)EditorGUILayout.ObjectField("tile parent", _tileParent, typeof(GameObject), true);
-        EditorGUILayout.Space();
-        
-        //타일의 이전 너비/높이와 현재 너비/높이가 달라졌을 경우 타일 생성/삭제 함수 호출
-        if (_prevWidth != _curWidth)
-        {
-            //가로 값이 달라졌다면
-            GenerateTile();
-            _prevWidth = _curWidth;
-        }
-        if (_prevHeight != _curHeight)
-        {
-            //세로 값이 달라졌다면
-            GenerateTile();
-            _prevHeight = _curHeight;
-        }
         
         //타일 그리기 부분
         GUILayout.BeginHorizontal();
@@ -419,115 +368,7 @@ public class MapGenerator : EditorWindow
 
     
     
-    //타일 증가 및 감소 관리 함수
-    void GenerateTile()
-    {
-        //현재 타일 너비가 직전 타일 너비보다 크다면 -> 타일을 증가하겠다는 의도
-        if (_curWidth > _prevWidth)
-        {
-            //타일이 가로로 증가
-            //현재 높이만큼 채우기
-            for (int i = 0; i < _curHeight; i++)
-            {
-                //이미 채워져있던 너비 이후 만큼 채우기
-                for (int j = 0; j < _curWidth - _prevWidth; j++)
-                {
-                    //현재 너비 - 이전 너비를 하여 추가되어야 하는 가로 타일 개수(j)를 계산
-                    int x = _prevWidth + j;
-                    int z = i;
-                    Vector2Int pos = new Vector2Int(x, z);
-                    //TileEntry 생성 후, 타일 매니저 내의 타일 리스트에 추가하기
-                    TileEntry entry = new TileEntry();
-                    entry.position = pos;
-                    entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
-                    entry.tile.name = $"Tile({x},{z})";
-                    entry.tile.GetComponent<Tile>().InitTile(x,z);
-                    entry.tile.transform.position = new Vector3(x, 0, z);
-                    EditorUtility.SetDirty(entry.tile);
-                    _tileManager.tileEntries.Add(entry);
-                }
-            }
-        }
-        else if(_curWidth < _prevWidth) //현재 너비가 이전 너비보다 작다면 -> 타일을 가로로 감소하려는 의도
-        {
-            //삭제할 타일 엔트리 리스트를 생성, foreach 내에서 리스트 삭제 시 예외처리 발생하기 때문임.
-            //컬렉션을 순회하면서 동시에 수정하려고 하면 런타임 예외가 발생함.
-            List<TileEntry> removeEntries = new List<TileEntry>();
-            //타일이 가로로 감소
-            for (int i = 0; i <_curHeight; i++)
-            {
-                for (int j = 0; j < _prevWidth-_curWidth; j++)
-                {
-                    int x = _prevWidth -1 - j;
-                    int z = i;
-                    Vector2Int pos = new Vector2Int(x, z);
-                    foreach (var entry in _tileManager.tileEntries)
-                    {
-                        if (entry.position == pos)
-                        {
-                            DestroyImmediate(entry.tile);
-                            removeEntries.Add(entry);
-                        }
-                    }
-                }
-            }
-            //리스트 내에서 타일 엔트리 삭제
-            foreach (var entry in removeEntries)
-            {
-                _tileManager.tileEntries.Remove(entry);
-            }
-            
-        }
-        
-        //현재 높이가 이전 높이보다 크다면 -> 높이를 증가하려는 의도
-        if (_curHeight > _prevHeight)
-        {
-            //타일이 세로로 증가
-            for (int i = 0; i < _curHeight - _prevHeight; i++)
-            {
-                for (int j = 0; j < _curWidth; j++)
-                {
-                    int x = j;
-                    int z = _prevHeight + i;
-                    Vector2Int pos = new Vector2Int(x, z);
-                    TileEntry entry = new TileEntry();
-                    entry.position = pos;
-                    entry.tile = PrefabUtility.InstantiatePrefab(_tilePrefab,_tileParent.transform) as GameObject;
-                    entry.tile.name = $"Tile({x},{z})";
-                    entry.tile.GetComponent<Tile>().InitTile(x,z);
-                    entry.tile.transform.position = new Vector3(x, 0, z);
-                    EditorUtility.SetDirty(entry.tile);
-                    _tileManager.tileEntries.Add(entry);
-                }
-            }
-        }
-        else if(_curHeight < _prevHeight) //현재 높이가 이전 높이보다 작다면 -> 높이를 감소하려는 의도
-        {
-            List<TileEntry> removeEntries = new List<TileEntry>();
-            //타일이 세로로 감소
-            for (int i = 0; i < _prevHeight - _curHeight; i++)
-            {
-                for (int j = 0; j < _curWidth; j++)
-                {
-                    int x = j;
-                    int z = _prevHeight -1 - i;
-                    Vector2Int pos = new Vector2Int(x, z);
-                    foreach (var entry in _tileManager.tileEntries)
-                    {
-                        if (entry.position == pos)
-                        {
-                            DestroyImmediate(entry.tile);
-                            removeEntries.Add(entry);
-                        }
-                    }
-                }
-            }
-            foreach (var entry in removeEntries)
-            {
-                _tileManager.tileEntries.Remove(entry);
-            }
-        }
-    }
+    
     
     //타일 브러쉬,지우개 함수
     void DrawTile(Vector2 mousePos)
@@ -551,7 +392,7 @@ public class MapGenerator : EditorWindow
                 Vector2Int pos = new Vector2Int(x, z);
                 TileEntry entry = new TileEntry();
                 entry.position = pos;
-                entry.tile = PrefabUtility.InstantiatePrefab(_selectedTile,_tileParent.transform) as GameObject;
+                entry.tile = PrefabUtility.InstantiatePrefab(_selectedTile,_ctx.tileParent.transform) as GameObject;
                 entry.tile.name = $"Tile({x},{z})";
                 entry.tile.GetComponent<Tile>().InitTile(x,z);
                 entry.tile.transform.position = new Vector3(x, 0, z);

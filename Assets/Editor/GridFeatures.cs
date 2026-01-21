@@ -5,7 +5,7 @@ public class GridFeatures
 {
     public GridFeatures(MapContext ctx)
     {
-        ctx.gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/04.Prefabs/CustomEditor/Grid.prefab");
+        ctx.gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(ctx.prefabPath+"Grid.prefab");
 
         CheckGridParent(ctx);
     }
