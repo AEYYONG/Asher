@@ -7,6 +7,8 @@ public static class GUIStyles
     public static GUIStyle HeaderLabel { get; private set; }
     public static GUIStyle MiniButton { get; private set; }
     public static GUIStyle RowBox { get; private set; }
+    
+    public static Texture2D EmptyTex { get; private set; }
 
     public static void Ensure()
     {
@@ -32,5 +34,17 @@ public static class GUIStyles
             padding = new RectOffset(6, 6, 6, 6),
             margin  = new RectOffset(0, 0, 4, 4)
         };
+        
+        if (EmptyTex != null) return;
+        EmptyTex = MakeTex(70, 70, new Color(82, 82, 82, 1));
+    }
+    
+    private static Texture2D MakeTex(int w, int h, Color col)
+    {
+        var tex = new Texture2D(w, h);
+        tex.hideFlags = HideFlags.HideAndDontSave;
+        tex.SetPixel(0, 0, col);
+        tex.Apply();
+        return tex;
     }
 }
