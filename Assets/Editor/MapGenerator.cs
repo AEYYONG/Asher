@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Remoting;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -15,14 +11,11 @@ public struct TexEntry
 }
 public class MapGenerator : EditorWindow
 {
-    private Vector2 scrollPos;
+    private MapContext _ctx;
+    private GridFeatures _gridSection;
     
-    //Grid 생성
-    private int _gridWidth; //grid 가로 개수
-    private int _gridHeight; //grid 세로 개수 
-    private GameObject _gridPrefab; //grid prefab
-    private GameObject _gridParent; //생성된 grid들이 들어갈 부모 오브젝트
-    private List<GameObject> _gridList = new List<GameObject>(); //grid 오브젝트들을 저장할 리스트
+    
+    private Vector2 scrollPos;
     
     //타일 생성
     private int _prevWidth; //이전 타일 너비
@@ -78,6 +71,13 @@ public class MapGenerator : EditorWindow
 
     private void OnEnable()
     {
+        if (_ctx == null)
+        {
+            _ctx = new MapContext();
+        }
+
+        _gridSection = new GridFeatures(_ctx);
+        
         //해당 씬 내의 tile manager를 통해 값 초기화 하기
         _tileManager = FindObjectOfType<TileManager>();
         _prevHeight = _tileManager.height;
@@ -85,8 +85,7 @@ public class MapGenerator : EditorWindow
         _curHeight = _prevHeight;
         _curWidth = _prevWidth;
         
-        //grid prefab 초기화
-        _gridPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/04.Prefabs/CustomEditor/Grid.prefab");
+        
         
         //초기화 확인
         if (_tilePrefab == null)
@@ -165,21 +164,10 @@ public class MapGenerator : EditorWindow
     {
         //스크롤 포지션 할당
         scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-        //grid 생성 부분
-        GUILayout.Label("Generate Grid",EditorStyles.largeLabel);
-        _gridWidth = EditorGUILayout.IntField("grid width", _gridWidth);
-        _gridHeight = EditorGUILayout.IntField("grid height", _gridHeight);
-        //generate 버튼 클릭 시, grid 생성 함수 호출
-        if (GUILayout.Button("Generate Grid"))
-        {
-            GenerateGrid(_gridWidth,_gridHeight);
-        }
-        //destroy 버튼 클릭 시, grid 삭제 함수 호출
-        if (GUILayout.Button("Destroy Grid"))
-        {
-            DestroyGrid();
-        }
-        EditorGUILayout.Space(10);
+        
+        _gridSection.DrawGridSection(_ctx);
+        
+        
         //타일 생성 부분
         GUILayout.Label("Generate Tile",EditorStyles.largeLabel);
         _curWidth = EditorGUILayout.IntSlider("width",_curWidth,0,20);
@@ -429,39 +417,7 @@ public class MapGenerator : EditorWindow
     }
     
 
-    //Grid Map 생성하기
-    void GenerateGrid(int w, int h)
-    {
-        //grid parent로 사용할 빈 오브젝트 생성하고, 이름을 Grid Parent로 명명하기
-        _gridParent = new GameObject();
-        _gridParent.name = "Grid Parent";
-        for (int i = 0; i < h; i++)
-        {
-            for (int j = 0; j < w; j++)
-            {
-                //grid를 gird parent의 자식으로 생성한 후, grid 리스트에 넣기
-                GameObject grid = PrefabUtility.InstantiatePrefab(_gridPrefab, _gridParent.transform) as GameObject;
-                grid.transform.position = new Vector3(j, -0.1f, i);
-                _gridList.Add(grid);
-            }
-        }
-    }
-    //Grid Map 삭제하기
-    void DestroyGrid()
-    {
-        //씬에서 Grid Parent 이름의 오브젝트를 찾기
-        GameObject gridParent = GameObject.Find("Grid Parent");
-        if (gridParent == null)
-        {
-            Debug.Log("Grid Parent가 없습니다");
-        }
-        else
-        {
-            //Grid Parent를 삭제하며 리스트 초기화
-            DestroyImmediate(gridParent);
-            _gridList.Clear();
-        }
-    }
+    
     
     //타일 증가 및 감소 관리 함수
     void GenerateTile()
