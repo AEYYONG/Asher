@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class TileSelectWindow : EditorWindow
 {
+    private TileTypes _tileTypes;
     private GameObject selectedPrefab;
     private MapGenerator parentEditor;
     private List<TileTypeStruct> _tileTypeList;

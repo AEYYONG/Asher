@@ -19,6 +19,12 @@ public enum TypeMode
     NOTAVAIL,
     EVENT
 };
+
+public struct TexEntry
+{
+    public Vector2Int pos;
+    public GameObject tex;
+};
 public class MapContext
 {
     public TileManager tileManager;
@@ -47,4 +53,11 @@ public class MapContext
     public GameObject eventTile;
     public List<TexEntry> texList = new List<TexEntry>();
     public GameObject texParent;
+    
+    //타일 종류
+    public int totalTileCnt;
+    public bool buffItemStatus;
+    public bool debuffItemStatus;
+    public bool etcItemStatus;
+    public List<TileTypeStruct> curTileTypeList;
 }
