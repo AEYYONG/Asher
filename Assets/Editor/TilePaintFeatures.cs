@@ -80,6 +80,12 @@ public class TilePaintFeatures
         if (ctx.curDrawMode == DrawMode.BRUSH && ctx.selectedTile == null)
             EditorGUILayout.HelpBox("Brush 모드입니다. 먼저 타일 프리팹을 선택하세요.", MessageType.Warning);
         
+        // 설명 박스
+        EditorGUILayout.HelpBox(
+            "특정 타일을 원하는 위치에 배치할 수 있습니다.\nBrush를 통해 격자를 선택하면 해당 격자 위치에 타일이 생성되고\nEraser를 통해 타일을 제거할 수 있습니다.",
+            MessageType.Info
+        );
+        
         EditorGUILayout.Space(10);
         EditorGUILayout.BeginHorizontal();
 
@@ -115,6 +121,15 @@ public class TilePaintFeatures
         }
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndHorizontal();
+        
+        // 설명 박스
+        EditorGUILayout.HelpBox(
+            "타일의 타입을 지정할 수 있습니다." +
+            "\nNotAvail은 상호작용이 되지 않도록 할 타일에 클릭하여 적용하고" +
+            "\nEvent는 이벤트 타일이 배치되었으면 하는 위치에 지정해주세요." +
+            "\nClear를 통해 지정을 취소할 수 있습니다.",
+            MessageType.Info
+        );
         
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);

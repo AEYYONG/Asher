@@ -69,6 +69,12 @@ public class TileFeatures
         ctx.curWidth = EditorGUILayout.IntSlider("Width",ctx.curWidth,0,20);
         ctx.curHeight = EditorGUILayout.IntSlider("Height",ctx.curHeight,0,20);
         
+        // 설명 박스
+        EditorGUILayout.HelpBox(
+            "슬라이더를 조절하여 타일을 직사각형 형태로 생성할 수 있습니다.",
+            MessageType.Info
+        );
+        
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
 

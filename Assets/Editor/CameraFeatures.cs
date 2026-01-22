@@ -23,6 +23,12 @@ public class CameraFeatures
         }
         EditorGUILayout.EndHorizontal();
         
+        // 설명 박스
+        EditorGUILayout.HelpBox(
+            "타일 width와 height을 기준으로 카메라 위치를 재설정합니다.",
+            MessageType.Info
+        );
+        
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
     }

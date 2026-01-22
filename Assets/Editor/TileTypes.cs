@@ -31,6 +31,13 @@ public class TileTypes
         DrawTileTypeCategory(ref ctx.debuffItemStatus, "DeBuff Items", ctx.tileManager.debuffItemTypes,
             () => { ctx.curTileTypeList = ctx.tileManager.debuffItemTypes; TileSelectWindow.ShowWindow(window); });
 
+        // 설명 박스
+        EditorGUILayout.HelpBox(
+            "맵에 등장할 타일 종류와 개수를 설정합니다. 랜덤 배치 시 사용되는 데이터입니다." +
+            "\n타일 전체 개수와 일치하게 지정해주세요.",
+            MessageType.Info
+        );
+        
         EditorGUILayout.EndVertical();
         EditorGUILayout.Space(10);
     }
