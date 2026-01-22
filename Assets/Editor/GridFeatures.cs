@@ -42,7 +42,18 @@ public class GridFeatures
     // Grid Parent 오브젝트가 있는지 없는지 체크하는 함수
     void CheckGridParent(MapContext ctx)
     {
-        
+        // 씬에 Grid Parenet 오브젝트가 있는지 체크
+        if (GameObject.Find("Grid Parent") is GameObject _gridParent)
+        {
+            ctx.gridParent = _gridParent;
+            CalculateGridSize(ctx);
+        }
+        else
+        {
+            // grid parent로 사용할 빈 오브젝트 생성하고, 이름을 Grid Parent로 명명하기
+            ctx.gridParent = new GameObject();
+            ctx.gridParent.name = "Grid Parent";
+        }
     }
     
     // Grid 섹션 그리기
@@ -67,6 +78,12 @@ public class GridFeatures
         {
             DestroyGrid(ctx);
         }
+        
+        // 설명 박스
+        EditorGUILayout.HelpBox(
+            "타일을 Paint 하기위한 기본 격자를 설정합니다.\nGrid 크기를 변경한 뒤 Generate 버튼을 눌러 적용하세요.",
+            MessageType.Info
+        );
         EditorGUILayout.EndVertical();
 
         EditorGUILayout.Space(10);
