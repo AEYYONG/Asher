@@ -36,7 +36,7 @@ public static class GUIStyles
         };
         
         if (EmptyTex != null) return;
-        EmptyTex = MakeTex(70, 70, new Color(82, 82, 82, 1));
+        EmptyTex = MakeTex(70, 70, new Color(82/255f, 82/255f, 82/255f));
     }
     
     private static Texture2D MakeTex(int w, int h, Color col)

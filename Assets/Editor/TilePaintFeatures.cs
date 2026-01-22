@@ -33,7 +33,7 @@ public class TilePaintFeatures
         }
     }
 
-    public void DrawTilePaintFeatures(MapContext ctx)
+    public void DrawTilePaintFeatures(MapContext ctx, EditorWindow window)
     {
         // 공통 스타일 입히기
         GUIStyles.Ensure();
@@ -48,9 +48,14 @@ public class TilePaintFeatures
         {
             ctx.curDrawMode = DrawMode.DEFAULT;
             ctx.curTypeMode = TypeMode.DEFAULT;
+            ctx.selectedTile = null;
         }
         EditorGUILayout.EndHorizontal();
 
+        EditorGUILayout.Space(4);
+        
+        DrawSelectedPreviewSection(ctx, window);
+        
         EditorGUILayout.Space(4);
 
         EditorGUILayout.BeginHorizontal();
@@ -171,26 +176,20 @@ public class TilePaintFeatures
     public void DrawSelectedPreviewSection(MapContext ctx, EditorWindow window)
     {
         if (ctx.selectedTile == null) return;
-
-        EditorGUILayout.BeginVertical(GUIStyles.SectionBox);
-        GUILayout.Label("Selected Tile Preview", GUIStyles.HeaderLabel);
-
-        Texture2D previewTexture = AssetPreview.GetAssetPreview(ctx.selectedTile);
         
+        Texture2D previewTexture = AssetPreview.GetAssetPreview(ctx.selectedTile);
+
+        EditorGUILayout.BeginVertical();
         if (previewTexture != null)
         {
-            float w = window.position.width - 40;
-            float h = Mathf.Min(180, w);
-            GUILayout.Label(previewTexture, GUILayout.Width(w), GUILayout.Height(h));
+            GUILayout.Label(previewTexture, GUILayout.Width(100), GUILayout.Height(100));
         }
         else
         {
             EditorGUILayout.HelpBox("프리뷰를 생성 중.", MessageType.Info);
             window.Repaint();
         }
-
         EditorGUILayout.EndVertical();
-        EditorGUILayout.Space(10);
     }
 
     public void DestroyTexParent(MapContext ctx)
@@ -199,7 +198,7 @@ public class TilePaintFeatures
     }
     
     //타일 영역 지정
-    void SetTileType(Vector2 mousePos, MapContext ctx)
+    public void SetTileType(Vector2 mousePos, MapContext ctx)
     {
         //레이 생성
         Ray ray = HandleUtility.GUIPointToWorldRay(mousePos);

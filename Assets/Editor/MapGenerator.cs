@@ -91,7 +91,7 @@ public class MapGenerator : EditorWindow
 
             if (_ctx.curTypeMode != TypeMode.DEFAULT)
             {
-                //SetTileType(e.mousePosition);
+                _tilePaintSection.SetTileType(e.mousePosition, _ctx);
             }
             e.Use(); // 이벤트 처리 완료 표시
         }
@@ -104,8 +104,7 @@ public class MapGenerator : EditorWindow
         
         _gridSection.DrawGridSection(_ctx);
         _tileSection.DrawTileSection(_ctx);
-        _tilePaintSection.DrawTilePaintFeatures(_ctx);
-        _tilePaintSection.DrawSelectedPreviewSection(_ctx, this);
+        _tilePaintSection.DrawTilePaintFeatures(_ctx, this);
         
         //타일 종류
         EditorGUILayout.Space(10);
