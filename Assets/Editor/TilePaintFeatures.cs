@@ -164,7 +164,7 @@ public class TilePaintFeatures
                 EditorUtility.SetDirty(entry.tile);
                 ctx.tileManager.tileEntries.Add(entry);
             }
-            else if (hit.collider.name.Substring(0,4) == "Tile" &&  ctx.curDrawMode == DrawMode.ERASER)
+            else if (hit.collider.name.StartsWith("Tile") &&  ctx.curDrawMode == DrawMode.ERASER)
             {
                 //선택한 오브젝트가 tile 이면서 eraser 모드이면 해당 자리의 타일을 삭제
                 int x = (int)hit.transform.position.x;
