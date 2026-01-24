@@ -833,6 +833,7 @@ public void AttackedHairBall()
             ChangeAnimationState("dizzy2");
             isAnimationLocked = true; // 애니메이션 변경 잠금
             safe = true;
+            isChasing = false; // 쫓는 것 끝
             Invoke("WakeUp", 2f);
         }
     }
